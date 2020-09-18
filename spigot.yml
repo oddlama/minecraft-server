@@ -1,0 +1,161 @@
+# This is the main configuration file for Spigot.
+# As you can see, there's tons to configure. Some options may impact gameplay, so use
+# with caution, and make sure you know what each option does before configuring.
+# For a reference for any variable inside this file, check out the Spigot wiki at
+# http://www.spigotmc.org/wiki/spigot-configuration/
+# 
+# If you need help with the configuration or have any questions related to Spigot,
+# join us at the IRC or drop by our forums and leave a post.
+# 
+# IRC: #spigot @ irc.spi.gt ( http://www.spigotmc.org/pages/irc/ )
+# Forums: http://www.spigotmc.org/
+
+config-version: 12
+settings:
+  bungeecord: true
+  debug: false
+  log-villager-deaths: true
+  moved-too-quickly-multiplier: 1000.0
+  moved-wrongly-threshold: 1.625
+  netty-threads: 4
+  player-shuffle: 0
+  restart-on-crash: false
+  restart-script: ./start.sh
+  sample-count: 12
+  save-user-cache-on-stop-only: false
+  timeout-time: 60
+  user-cache-size: 1000
+  attribute:
+    maxHealth:
+      max: 2048.0
+    movementSpeed:
+      max: 2048.0
+    attackDamage:
+      max: 2048.0
+messages:
+  whitelist: You are not whitelisted on this server!
+  unknown-command: Unknown command
+  server-full: The server is full!
+  outdated-client: Outdated client! Please use {0}
+  outdated-server: Client too new! Please use {0}
+  restart: Server is restarting
+advancements:
+  disable-saving: false
+  disabled:
+  - minecraft:story/disabled
+commands:
+  log: true
+  tab-complete: 0
+  send-namespaced: true
+  spam-exclusions:
+  - /skill
+  silent-commandblock-console: false
+  replace-commands:
+  - setblock
+  - summon
+  - testforblock
+  - tellraw
+stats:
+  disable-saving: false
+  forced-stats: {}
+world-settings:
+  default:
+    arrow-despawn-rate: 1200
+    dragon-death-sound-radius: 0
+    enable-zombie-pigmen-portal-spawns: true
+    end-portal-sound-radius: 0
+    hanging-tick-frequency: 100
+    hopper-amount: 1
+    item-despawn-rate: 6000
+    max-entity-collisions: 8
+    max-tnt-per-tick: 100
+    mob-spawn-range: 8
+    nerf-spawner-mobs: false
+    seed-bastion: 30084131
+    seed-desert: 14357116
+    seed-endcity: 10317311
+    seed-fortress: 30184231
+    seed-fossil: 14157920
+    seed-igloo: 14351617
+    seed-jungle: 14157618
+    seed-mansion: 10381318
+    seed-monument: 10317312
+    seed-ocean: 14357120
+    seed-outpost: 165741295
+    seed-portal: 34212644
+    seed-shipwreck: 161745294
+    seed-slime: 987214910
+    seed-swamp: 14357119
+    seed-village: 10187311
+    trident-despawn-rate: 1200
+    verbose: true
+    view-distance: default
+    wither-spawn-sound-radius: 0
+    zombie-aggressive-towards-villager: true
+    merge-radius:
+      exp: 0.2
+      item: 0.2
+    growth:
+      cactus-modifier: 100
+      cane-modifier: 100
+      melon-modifier: 100
+      mushroom-modifier: 100
+      pumpkin-modifier: 100
+      sapling-modifier: 100
+      beetroot-modifier: 100
+      carrot-modifier: 100
+      potato-modifier: 100
+      wheat-modifier: 100
+      netherwart-modifier: 100
+      vine-modifier: 100
+      cocoa-modifier: 100
+      bamboo-modifier: 100
+      sweetberry-modifier: 100
+      kelp-modifier: 100
+    entity-activation-range:
+      animals: 48
+      monsters: 48
+      raiders: 48
+      misc: 48
+      water: 48
+      villagers: 48
+      flying-monsters: 48
+      villagers-work-immunity-after: 100
+      villagers-work-immunity-for: 20
+      villagers-active-for-panic: true
+      tick-inactive-villagers: true
+      wake-up-inactive:
+        animals-max-per-tick: 4
+        animals-every: 1200
+        animals-for: 100
+        monsters-max-per-tick: 8
+        monsters-every: 400
+        monsters-for: 100
+        villagers-max-per-tick: 4
+        villagers-every: 600
+        villagers-for: 100
+        flying-monsters-max-per-tick: 8
+        flying-monsters-every: 200
+        flying-monsters-for: 100
+    ticks-per:
+      hopper-transfer: 8
+      hopper-check: 1
+    hunger:
+      jump-walk-exhaustion: 0.05
+      jump-sprint-exhaustion: 0.2
+      combat-exhaustion: 0.1
+      regen-exhaustion: 6.0
+      swim-multiplier: 0.01
+      sprint-multiplier: 0.1
+      other-multiplier: 0.0
+    max-tick-time:
+      tile: 50
+      entity: 50
+    squid-spawn-range:
+      min: 45.0
+    entity-tracking-range:
+      players: 512
+      animals: 512
+      monsters: 512
+      misc: 512
+      other: 512
