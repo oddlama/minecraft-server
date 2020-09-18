@@ -61,13 +61,13 @@ stats:
 world-settings:
   default:
     arrow-despawn-rate: 1200
-    dragon-death-sound-radius: 0
+    dragon-death-sound-radius: 256
     enable-zombie-pigmen-portal-spawns: true
-    end-portal-sound-radius: 0
+    end-portal-sound-radius: 16
     hanging-tick-frequency: 100
     hopper-amount: 1
     item-despawn-rate: 6000
-    max-entity-collisions: 8
+    max-entity-collisions: 12
     max-tnt-per-tick: 100
     mob-spawn-range: 8
     nerf-spawner-mobs: false
