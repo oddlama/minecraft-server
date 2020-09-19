@@ -15,8 +15,8 @@ if len(sys.argv) < 2:
 
 for filename in sys.argv[1:]:
     print(f"Sorting {filename}")
-    with open(sys.argv[1], 'r') as file:
+    with open(filename, 'r') as file:
         data = yaml.safe_load(file)
 
-    with open(sys.argv[1], 'w') as file:
+    with open(filename, 'w') as file:
         yaml.dump(data, file, Dumper=DumperWithCorrectListIndent, default_flow_style=False, indent=2)
