@@ -1,0 +1,51 @@
+# vim: set tabstop=2 softtabstop=0 expandtab shiftwidth=2:
+
+# A mapping of <port>: <multiplexer_id>
+# Allows players with the permission 'vane_waterfall.multiplex_auth.<multiplexer_id>'
+# to connect to the same server multiple times with a fake uuid. Multiplexer id's must be > 0.
+# Default:
+# auth_multiplex: {}
+auth_multiplex:
+  - 25566: 1
+
+# A dictionary of managed servers, which will be started on demand.
+# Example:
+# my_server:
+#   display_name: "My Minecraft Server"
+#   # %SERVER%: The server identifier
+#   favicon: "../%SERVER%/favicon.png"
+#   motd:
+#     # %SERVER_DISPLAY_NAME%: The server display name
+#     online: "§f>> §3%SERVER_DISPLAY_NAME%§f <<\n\
+#             §aowo"
+#     # %SERVER_DISPLAY_NAME%: The server display name
+#     offline: "§f>> §3%SERVER_DISPLAY_NAME%§f <<\n\
+#              §cowo"
+#   start:
+#     # %SERVER%: The server identifier
+#     cmd: ["/path/to/startscript", "arg1", "will also subsitute %SERVER%"]
+#     # %SERVER%: The server identifier
+#     # %SERVER_DISPLAY_NAME%: The server display name
+#     kick_msg: "§f>> §3%SERVER_DISPLAY_NAME%§f << §7is being started.\n\
+#               §7Try again in §b10 Seconds§7 \\(^-^)/"
+# Default:
+# managed_servers: {}
+managed_servers:
+  server:
+    display_name: "owo paniik"
+    # %SERVER%: The server identifier
+    favicon: "../%SERVER%/favicon.png"
+    motd:
+      # %SERVER_DISPLAY_NAME%: The server display name
+      online: "§f>> §3%SERVER_DISPLAY_NAME%§f <<\n\
+              §a\\(^-^)/"
+      # %SERVER_DISPLAY_NAME%: The server display name
+      offline: "§f>> §3%SERVER_DISPLAY_NAME%§f <<\n\
+               §c~(°~°)~"
+    start:
+      # %SERVER%: The server identifier
+      cmd: ["../%SERVER%/service.sh", "start"]
+      # %SERVER%: The server identifier
+      # %SERVER_DISPLAY_NAME%: The server display name
+      kick_msg: "§f>> §3%SERVER_DISPLAY_NAME%§f << §7is being started.\n\
+                §7Try again in §b10 Seconds§7 \\(^-^)/"
