@@ -13,7 +13,7 @@ listeners:
   tab_list: GLOBAL_PING
   tab_size: 60
   priorities:
-    - main_server
+    - server
 - host: 0.0.0.0:25566
   bind_local_address: true
   query_enabled: false
@@ -27,7 +27,7 @@ listeners:
   tab_list: GLOBAL_PING
   tab_size: 60
   priorities:
-    - main_server
+    - server
 remote_ping_cache: -1
 network_compression_threshold: 256
 permissions:
@@ -50,7 +50,7 @@ online_mode: true
 forge_support: false
 disabled_commands: []
 servers:
-  main_server:
+  server:
     motd: ''
     address: 127.0.0.1:25501
     restricted: false
