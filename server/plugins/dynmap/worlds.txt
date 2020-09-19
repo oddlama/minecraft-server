@@ -1,0 +1,91 @@
+# These are examples of world-specific settings - customize your content as you see fit
+#
+# NOTES:
+#   All lines here are commented with the # symbol - delete the # symbol on copied lines you wish to enable
+#   Definitions of a world made here will superecede any world definition with the same name in configuration.txt
+#   Deleting this file will result in a fresh copy being produced by dynmap.jar on the next startup.
+#
+worlds:
+  - name: world
+    title: "World"
+    enabled: true
+    bigworld: true
+    extrazoomout: 1
+    tileupdatedelay: 20
+    maps:
+      - class: org.dynmap.hdmap.HDMap
+        name: surface
+        title: "Surface"
+        icon: images/block_flat.png
+        bigmap: true
+        prefix: surface
+        perspective: iso_SE_60_lowres
+        shader: default
+        lighting: shadows
+        mapzoomin: 1
+      - class: org.dynmap.hdmap.HDMap
+        name: cave
+        title: "Cave"
+        icon: images/block_cave.png
+        bigmap: true
+        prefix: cave
+        perspective: iso_SE_60_lowres
+        shader: lit-cave
+        lighting: default
+        mapzoomin: 1
+      - class: org.dynmap.hdmap.HDMap
+        name: northtop
+        title: "North-Oriented"
+        icon: images/block_flat.png
+        bigmap: true
+        prefix: northtop
+        perspective: iso_S_90_lowres
+        shader: default
+        lighting: shadows
+        mapzoomin: 1
+      - class: org.dynmap.hdmap.HDMap
+        name: amidst
+        title: "Biomes"
+        icon: images/block_biome.png
+        bigmap: true
+        prefix: amidst
+        perspective: iso_S_90_vlowres
+        shader: amidst
+        lighting: default
+        mapzoomin: 0
+  - name: world_nether
+    title: "World - Nether"
+    enabled: false
+  - name: world_the_end
+    title: "World - The End"
+    enabled: true
+    bigworld: false
+    extrazoomout: 0
+    tileupdatedelay: 20
+    visibilitylimits:
+      - x0: -768
+        z0: -768
+        x1: 768
+        z1: 768
+    maps:
+      - class: org.dynmap.hdmap.HDMap
+        name: surface
+        title: "Surface"
+        icon: images/block_flat.png
+        bigmap: true
+        prefix: surface
+        perspective: iso_SE_60_lowres
+        shader: default
+        lighting: shadows
+        mapzoomin: 1
+        hidestyle: air
+      - class: org.dynmap.hdmap.HDMap
+        name: northtop
+        title: "North-Oriented"
+        icon: images/block_flat.png
+        bigmap: true
+        prefix: northtop
+        perspective: iso_S_90_lowres
+        shader: default
+        lighting: shadows
+        mapzoomin: 1
