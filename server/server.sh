@@ -14,6 +14,7 @@ mkdir -p "$LOG_DIR" \
 link_dir "$LOG_DIR" "logs"
 
 # Start java
+status "Starting server"
 java -Xms10G -Xmx10G \
 	-XX:+UseG1GC \
 	-XX:+ParallelRefProcEnabled \
@@ -38,6 +39,7 @@ java -Xms10G -Xmx10G \
 	-jar paper.jar nogui
 
 # Backup world
+status_time "Starting backup"
 LOGFILE="logs/backup.log"
 BACKUP_TO="backup"
 BACKUP_DIRS=(
@@ -50,8 +52,10 @@ BACKUP_DIRS=(
 mkdir -p "$BACKUP_TO" &>/dev/null
 
 for i in "${!BACKUP_DIRS[@]}"; do
-	echo "$(date) backing up ${BACKUP_DIRS[$i]}" &>> "$LOGFILE"
+	status_time "Backing up ${BACKUP_DIRS[$i]}"
+	echo "$(datetime) Backing up ${BACKUP_DIRS[$i]}" &>> "$LOGFILE"
 	rdiff-backup "${BACKUP_DIRS[$i]}" "$BACKUP_TO/${BACKUP_DIRS[$i]}" &>> "$LOGFILE"
 done
 
-echo "$(date) backup finished" &>> "$LOGFILE"
+status_time "Backup finished"
+echo "$(datetime) Backup finished" &>> "$LOGFILE"
