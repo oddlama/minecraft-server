@@ -1,0 +1,129 @@
+# vim: set tabstop=2 softtabstop=0 expandtab shiftwidth=2:
+
+# The language for this module. The corresponding language file must be named
+# lang-{lang}.yml. Specifying 'inherit' will load the value set for vane-core.
+# Default: "inherit"
+lang: "inherit"
+
+# The module will only add functionality if this is set to true.
+# Default: true
+enabled: true
+
+# Enable plugin metrics via bStats. You can opt-out here or via the global bStats
+# configuration.
+# Default: true
+metrics_enabled: true
+
+autostop:
+  # Enable automatic server stop after certain time without online players.
+  # Default: true
+  enabled: true
+
+  command_autostop:
+    # Enable command autostop
+    # Default: true
+    enabled: true
+
+  # Delay in seconds after which to stop the server.
+  # Valid values: [0,)
+  # Default: 1200
+  delay: 1200
+
+command_gamemode:
+  # Enable command gamemode
+  # Default: true
+  enabled: true
+
+command_setspawn:
+  # Enable command setspawn
+  # Default: true
+  enabled: true
+
+command_spawn:
+  # Enable command spawn
+  # Default: true
+  enabled: true
+
+command_time:
+  # Enable command time
+  # Default: true
+  enabled: true
+
+command_weather:
+  # Enable command weather
+  # Default: true
+  enabled: true
+
+hazard_protection:
+  # Enable hazard protection. The options below allow more fine-grained control
+  # over the hazards to protect from.
+  # Default: true
+  enabled: true
+
+  # Disables explosions from creepers.
+  # Default: true
+  disable_creeper_explosions: true
+
+  # Disables entities from breaking doors (various zombies).
+  # Default: true
+  disable_door_breaking: true
+
+  # Disables enderman block pickup.
+  # Default: true
+  disable_enderman_block_pickup: true
+
+  # Disables fire from lightning.
+  # Default: true
+  disable_lightning_fire: true
+
+  # Disables explosions from the wither.
+  # Default: true
+  disable_wither_explosions: true
+
+  # Restrict wither spawning to a list of worlds defined by
+  # wither_world_whitelist.
+  # Default: true
+  enable_wither_world_whitelist: true
+
+  # A list of worlds in which the wither may be spawned.
+  # Default:
+  #   - "world_nether"
+  #   - "world_the_end"
+  wither_world_whitelist:
+    - "world_nether"
+    - "world_the_end"
+
+  world_rebuild:
+    # Instead of cancelling explosions, the world will regenerate after a short
+    # amount of time.
+    # Default: true
+    enabled: true
+
+    # Delay in milliseconds until the world will be rebuilt.
+    # Valid values: [0,)
+    # Default: 2000
+    delay: 2000
+
+    # Determines rebuild speed. Higher falloff means faster transition to quicker
+    # rebuild. After n blocks, the delay until the next block will be d_n = delay
+    # * exp(-x * delay_falloff). For example 0.0 will result in same delay for
+    # every block.
+    # Valid values: [0.0,)
+    # Default: 0.175
+    delay_falloff: 0.175
+
+    # Minimum delay in milliseconds between rebuilding two blocks. Anything <= 50
+    # milliseconds will be one tick.
+    # Valid values: [50,)
+    # Default: 50
+    min_delay: 50
+
+world_protection:
+  # Enable world protection. This will prevent anyone from modyfing the world of
+  # they don't have the permission 'vane.admin.modify_world'.
+  # Default: true
+  enabled: true
+
+# DO NOT CHANGE! The version of this config file. Used to determine if the config
+# needs to be updated.
+version: 1

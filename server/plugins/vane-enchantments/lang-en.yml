@@ -1,0 +1,107 @@
+# vim: set tabstop=2 softtabstop=0 expandtab shiftwidth=2:
+#
+# >> See lang-en.yml for variable descriptions <<
+#
+# +-----------------------------------+
+# | CAUTION: Do NOT change this file! |
+# +-----------------------------------+
+#
+# It will be silently overwritten with updates! If you want
+# to customize strings yourself, copy this file to lang-custom.yml
+# and set the language in the config.yml to "lang: 'custom'"
+
+# DO NOT CHANGE! The version of this language file. Used to determine
+# if the file needs to be updated.
+version: 1
+# The corresponding language code used in resource packs. Used for
+# resource pack generation. Typically this is a combination of the
+# language code (ISO 639) and the country code (ISO 3166).
+resource_pack_lang_code: 'en_us'
+
+item_ancient_tome:
+  book:
+    # The display name of this item variant.
+    name: "Ancient Tome"
+
+  enchanted_book:
+    # The display name of this item variant.
+    name: "Ancient Tome"
+
+item_ancient_tome_of_knowledge:
+  book:
+    # The display name of this item variant.
+    name: "Ancient Tome of Knowledge"
+
+  enchanted_book:
+    # The display name of this item variant.
+    name: "Ancient Tome of Knowledge"
+
+item_ancient_tome_of_the_gods:
+  book:
+    # The display name of this item variant.
+    name: "Ancient Tome of The Gods"
+
+  enchanted_book:
+    # The display name of this item variant.
+    name: "Ancient Tome of The Gods"
+
+enchantment_angel:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Angel"
+
+enchantment_careless:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Careless"
+
+enchantment_grappling_hook:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Grappling Hook"
+
+enchantment_hell_bent:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Hell Bent"
+
+enchantment_leafchopper:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Leafchopper"
+
+enchantment_rake:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Rake"
+
+enchantment_seeding:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Seeding"
+
+enchantment_soulbound:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Soulbound"
+
+enchantment_take_off:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Take Off"
+
+enchantment_unbreakable:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Unbreakable"
+
+enchantment_wings:
+  # The display name of this enchantment. Will be packed into a resource pack.
+  name: "Wings"
+
+command_enchant:
+  # This message is sent when an enchantment level is given that is too low for the chosen enchantment.
+  # %1$s: Given level
+  # %2$s: Minimum level
+  level_too_low: "§cerror:§6 level %1$s§6 is too low, must be at least %2$s"
+  # This message is sent when an enchantment level is given that is too high for the chosen enchantment.
+  # %1$s: Given level
+  # %2$s: Maximum level
+  level_too_high: "§cerror:§6 level %1$s§6 is too high, must be at most %2$s"
+  # This message is sent when the selected enchantment cannot be applied to the item in hand.
+  # %1$s: Enchantment
+  # %2$s: Item in hand
+  invalid_enchantment: "§cerror: %1$s§6 cannot be applied to %2$s"
+  usage: "%1$s §benchantment §7[§blevel§7]"
+  description: "Enchants the item in your hand."
+  help: "Enchants the item in your hand."

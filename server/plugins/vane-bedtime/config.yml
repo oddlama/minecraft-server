@@ -1,0 +1,34 @@
+# vim: set tabstop=2 softtabstop=0 expandtab shiftwidth=2:
+
+# The language for this module. The corresponding language file must be named
+# lang-{lang}.yml. Specifying 'inherit' will load the value set for vane-core.
+# Default: "inherit"
+lang: "inherit"
+
+# The module will only add functionality if this is set to true.
+# Default: true
+enabled: true
+
+# Enable plugin metrics via bStats. You can opt-out here or via the global bStats
+# configuration.
+# Default: true
+metrics_enabled: true
+
+# The interpolation time in ticks for a smooth change of time.
+# Valid values: [0,1200]
+# Default: 100
+interpolation_ticks: 100
+
+# The percentage of sleeping players required to advance time.
+# Valid values: [0.0,1.0]
+# Default: 0.5
+sleep_threshold: 0.5
+
+# The target time in ticks to advance to. 1000 is just after sunrise.
+# Valid values: [0,12000]
+# Default: 1000
+target_time: 1000
+
+# DO NOT CHANGE! The version of this config file. Used to determine if the config
+# needs to be updated.
+version: 1

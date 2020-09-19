@@ -1,0 +1,158 @@
+# vim: set tabstop=2 softtabstop=0 expandtab shiftwidth=2:
+
+# The language for this module. The corresponding language file must be named
+# lang-{lang}.yml. Specifying 'inherit' will load the value set for vane-core.
+# Default: "inherit"
+lang: "inherit"
+
+# The module will only add functionality if this is set to true.
+# Default: true
+enabled: true
+
+# Enable plugin metrics via bStats. You can opt-out here or via the global bStats
+# configuration.
+# Default: true
+metrics_enabled: true
+
+command_vane:
+  # Enable command vane
+  # Default: true
+  enabled: true
+
+hide_commands:
+  # Hide error messages for all commands for which a player has no permission, by
+  # displaying the default "Unknown Command" message instead.
+  # Default: true
+  enabled: true
+
+menus:
+  # Menu configuration for generic selector menus.
+  generic_selector:
+    # Used to cancel selection.
+    cancel:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:prismarine_shard"
+      material: "minecraft:prismarine_shard"
+
+    # Used to indicate current page.
+    current_page:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:map"
+      material: "minecraft:map"
+
+    # Used to filter items.
+    filter:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:hopper"
+      material: "minecraft:hopper"
+
+    # Used to select pages.
+    page:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:paper"
+      material: "minecraft:paper"
+
+  # Menu configuration for the head selector menu.
+  head_selector:
+    # Used to represent a head in the head library.
+    select_head:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:barrier"
+      material: "minecraft:barrier"
+
+  # Menu configuration for item selector menus.
+  item_selector:
+    # Used to confirm item selection.
+    accept:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:lime_terracotta"
+      material: "minecraft:lime_terracotta"
+
+    # Used to cancel item selection.
+    cancel:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:red_terracotta"
+      material: "minecraft:red_terracotta"
+
+    # Represents the selected item. Left-clicking will reset the selection to the
+    # initial value, and right-clicking will clear the selected item. The given
+    # stack is used as the 'empty', cleared item.
+    selected:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:barrier"
+      material: "minecraft:barrier"
+
+message_delaying:
+  # Enable delaying messages to players until their resource pack is fully loaded.
+  # This prevents display of untranslated chat messages.
+  # Default: true
+  enabled: true
+
+resource_pack:
+  # Enable resource pack distribution.
+  # Default: true
+  enabled: true
+
+  # Kick players if they deny to use the specified resource pack (if set).
+  # Individual players can be exempt from this rule by giving them the permission
+  # 'vane.core.resource_pack.bypass'.
+  # Default: true
+  force: true
+
+  # Resource pack SHA-1 sum. Required to verify resource pack integrity.
+  # Default: ""
+  sha1: ""
+
+  # URL to an resource pack. Will request players to use the specified resource
+  # pack. [as of 1.16.2] Beware that the minecraft client currently has issues
+  # with webservers that serve resource packs via https and don't allow ssl3. This
+  # protocol is considered insecure and therefore should NOT be used. To
+  # workaround this issue, you should host the file in a http context. Using http
+  # is not a security issue, as the file will be verified via its sha1 sum by the
+  # client.
+  # Default: "https://your-server.tld/path/to/pack.zip"
+  url: "https://your-server.tld/path/to/pack.zip"
+
+# DO NOT CHANGE! The version of this config file. Used to determine if the config
+# needs to be updated.
+version: 1
