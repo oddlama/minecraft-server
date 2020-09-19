@@ -8,9 +8,11 @@ source "../env.sh" || exit 1
 # Download waterfall
 download_waterfall
 
+# Create plugins directory
+mkdir -p plugins \
+	|| die "Could not create directory 'plugins'"
+
 # Copy vane-waterfall
 status "Copying vane-waterfall plugins"
-mkdir -p plugins \
-	|| die "Could not create plugins directory"
 cp "../build/vane-waterfall/"*.jar plugins/ \
 	|| die "Could not copy vane-waterfall plugins"
