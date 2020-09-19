@@ -7,18 +7,18 @@ die() {
 	exit 1
 }
 
-#waterfall_version="$(http GET "https://papermc.io/api/v1/waterfall" | jq -r ".versions[0]")" \
+#waterfall_version="$(curl -s -o - "https://papermc.io/api/v1/waterfall" | jq -r ".versions[0]")" \
 #	|| die "Error while retrieving waterfall version"
-#waterfall_build="$(http GET "https://papermc.io/api/v1/waterfall/$waterfall_version" | jq -r ".builds.latest")" \
+#waterfall_build="$(curl -s -o - "https://papermc.io/api/v1/waterfall/$waterfall_version" | jq -r ".builds.latest")" \
 #	|| die "Error while retrieving waterfall build"
 #
 #curl "https://papermc.io/api/v1/waterfall/$waterfall_version/$waterfall_build/download" \
 #	-o waterfall.jar
 
 # Download paper
-paper_version="$(http GET "https://papermc.io/api/v1/paper" | jq -r ".versions[0]")" \
+paper_version="$(curl -s -o - "https://papermc.io/api/v1/paper" | jq -r ".versions[0]")" \
 	|| die "Error while retrieving paper version"
-paper_build="$(http GET "https://papermc.io/api/v1/paper/$paper_version" | jq -r ".builds.latest")" \
+paper_build="$(curl -s -o - "https://papermc.io/api/v1/paper/$paper_version" | jq -r ".builds.latest")" \
 	|| die "Error while retrieving paper build"
 
 echo "[+] Downloading paper version $paper_version build $paper_build"
