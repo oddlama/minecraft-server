@@ -35,3 +35,21 @@ download_waterfall() {
 		-o waterfall.jar \
 		|| die "Could not download waterfall"
 }
+
+link_dir() {
+	local dst="$1"
+	local link="$2"
+	if [[ -h "$link" ]]; then
+		if [[ "$(readlink "$link")" == "$dst" ]]; then
+			return 0
+		else
+			# Relink
+			rm "$link"
+		fi
+	elif [[ -e "$link" ]]; then
+		die "'$link' already exists and is not a link. Please resolve manually."
+	fi
+
+	ln -s "$dst" "$link" \
+		|| die "Could not link '$dst' to '$link' directory"
+}
