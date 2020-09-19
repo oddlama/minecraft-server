@@ -2,5 +2,9 @@ web
 renderdata
 export
 texturepacks/standard/README
+markers.yml
 markers.yml.old
 version.txt
+ids-by-ip.txt
+lightings.txt
+shaders.txt
