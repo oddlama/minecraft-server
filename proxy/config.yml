@@ -1,11 +1,10 @@
-prevent_proxy_connections: false
 listeners:
 - host: 0.0.0.0:25565
   bind_local_address: true
   query_enabled: false
   query_port: 25565
   force_default_server: false
-  forced_hosts: []
+  forced_hosts: {}
   max_players: 6666
   motd: ''
   ping_passthrough: false
@@ -13,13 +12,13 @@ listeners:
   tab_list: GLOBAL_PING
   tab_size: 60
   priorities:
-    - server
+  - server
 - host: 0.0.0.0:25566
   bind_local_address: true
   query_enabled: false
   query_port: 25565
   force_default_server: false
-  forced_hosts: []
+  forced_hosts: {}
   max_players: 6666
   motd: ''
   ping_passthrough: false
@@ -27,25 +26,26 @@ listeners:
   tab_list: GLOBAL_PING
   tab_size: 60
   priorities:
-    - server
+  - server
 remote_ping_cache: -1
 network_compression_threshold: 256
 permissions:
   default:
-    - bungeecord.command.server
-    - vane_waterfall.command.ping
-    - vane_waterfall.auth_multiplex.1
+  - bungeecord.command.server
+  - vane_waterfall.command.ping
+  - vane_waterfall.auth_multiplex.1
 log_pings: true
 connection_throttle_limit: 3
 server_connect_timeout: 15000
 timeout: 30000
+stats: 9ed141db-fddc-4945-90d1-e39f06d23dbf
 player_limit: -1
 ip_forward: true
 groups: {}
 remote_ping_timeout: 5000
 connection_throttle: 1000
 log_commands: true
-stats: 9ed141db-fddc-4945-90d1-e39f06d23dbf
+prevent_proxy_connections: false
 online_mode: true
 forge_support: false
 disabled_commands: []
