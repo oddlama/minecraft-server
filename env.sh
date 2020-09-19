@@ -12,6 +12,14 @@ status() {
 	echo "[1m[[1;32m+[m[1m][m $*"
 }
 
+datetime() {
+	date "+%Y-%m-%d %H:%M:%S"
+}
+
+status_time() {
+	status "[$(datetime)]" "$@"
+}
+
 download_paper() {
 	paper_version="$(curl -s -o - "https://papermc.io/api/v1/paper" | jq -r ".versions[0]")" \
 		|| die "Error while retrieving paper version"
