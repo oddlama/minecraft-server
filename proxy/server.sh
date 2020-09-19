@@ -14,5 +14,6 @@ mkdir -p "$LOG_DIR" \
 link_dir "$LOG_DIR" "logs"
 
 # Start java
+status "Starting server"
 java -Xms1G -Xmx1G \
 	-jar waterfall.jar nogui

@@ -54,6 +54,8 @@ managed_servers:
         - "Warum liegt hier Stroh?"
         - "Mhh, Melonenjoghurt mit ganzen Früchten"
         - "Ravioli ravioli, gib mir die Formuoli!"
+        - "Ich bin der Melonenlord! Muhahahahhah!"
+        - "Nicht meine Kohlköpfe!"
       offline:
         - "Ach Scheise, is leer -.-"
         - "Ah, yes."
