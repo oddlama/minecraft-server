@@ -45,20 +45,25 @@ auth_multiplex:
 # managed_servers: {}
 managed_servers:
   server:
-    display_name: "goodest mincraft server"
+    display_name: "§6◊ §6§lDENK DIR DOCH SELBER 'NEN NAMEN AUS§6 ◊"
     favicon: "../%SERVER%/favicon.png"
     quotes:
       online:
+        - "SPRICH DEUTSCH DU"
+        - "It was time for time for Thomas to leave."
+        - "Warum liegt hier Stroh?"
         - "Mhh, Melonenjoghurt mit ganzen Früchten"
         - "Ravioli ravioli, gib mir die Formuoli!"
       offline:
         - "Ach Scheise, is leer -.-"
+        - "Ah, yes."
+        - "§4§lALARM§c!!"
     motd:
-      online: "§f>> §3%SERVER_DISPLAY_NAME%§f <<\n\
+      online: "%SERVER_DISPLAY_NAME%\n\
         §a\\(^-^)/§7 | %QUOTE%"
-      offline: "§f>> §3%SERVER_DISPLAY_NAME%§f <<\n\
-        §c~(°~°)~§7 | %QUOTE%"
+      offline: "%SERVER_DISPLAY_NAME%\n\
+        §c~(°·°)~§7 | %QUOTE%"
     start:
       cmd: ["../%SERVER%/service.sh", "start"]
-      kick_msg: "§f>> §3%SERVER_DISPLAY_NAME%§f << §7is being started.\n\
+      kick_msg: "%SERVER_DISPLAY_NAME% §7is being started.\n\
         §7Try again in §b10 Seconds§7 \\(^-^)/"

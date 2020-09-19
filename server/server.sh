@@ -35,7 +35,7 @@ java -Xms10G -Xmx10G \
 	-XX:MaxTenuringThreshold=1 \
 	-Dusing.aikars.flags=https://mcflags.emc.gs \
 	-Daikars.new.flags=true \
-	-jar paperclip.jar nogui
+	-jar paper.jar nogui
 
 # Backup world
 LOGFILE="logs/backup.log"
