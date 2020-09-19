@@ -1,7 +1,9 @@
 #!/bin/bash
 
-export PATH="/opt/oracle-jdk-bin-11.0.2/bin:$PATH"
-export JAVA_HOME="/opt/oracle-jdk-bin-11.0.2"
+set -uo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
+	|| exit 1
+source "../env.sh" || exit 1
 
 java -Xms10G -Xmx10G \
 	-XX:+UseG1GC \
