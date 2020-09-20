@@ -12,7 +12,7 @@ set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "../env.sh" || exit 1
-source "../server-helper.sh" || die "Failed to source server-helper"
+source "../scripts/server-helper.sh" || die "Failed to source server-helper"
 
 # Invocation protection
 INITD="${PIDFILE:-false}"
