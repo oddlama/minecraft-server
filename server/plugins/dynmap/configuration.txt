@@ -304,13 +304,13 @@ render-triggers:
   #- blockredstone
 
 # Title for the web page - if not specified, defaults to the server's name (unless it is the default of 'Unknown Server')
-#webpage-title: "My Awesome Server Map"
+webpage-title: "Le Baguette"
 
 # The path where the tile-files are placed.
-tilespath: web/tiles
+tilespath: /var/www/mc.oddlama.org/htdocs/map/tiles
 
 # The path where the web-files are located.
-webpath: web
+webpath: /var/www/mc.oddlama.org/htdocs/map
 
 # The path were the /dynmapexp command exports OBJ ZIP files
 exportpath: export
@@ -326,7 +326,7 @@ webserver-port: 8123
 max-sessions: 30
 
 # Disables Webserver portion of Dynmap (Advanced users only)
-disable-webserver: true
+#disable-webserver: false
 
 # Enable/disable having the web server allow symbolic links (true=compatible with existing code, false=more secure (default))
 allow-symlinks: false
