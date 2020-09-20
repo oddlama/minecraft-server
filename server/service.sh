@@ -15,7 +15,7 @@ source "../env.sh" || exit 1
 source "../scripts/server-helper.sh" || die "Failed to source server-helper"
 
 # Invocation protection
-INITD="${PIDFILE:-false}"
+INITD="${INITD:-false}"
 [[ $INITD == true ]] \
 	|| die "Do not call this script directly! Use the init.d wrapper!"
 
