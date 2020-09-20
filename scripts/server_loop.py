@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 def exit_usage():
-    print("usage: {sys.argv[0]} [--block blockfile] COMMAND")
+    print(f"usage: {sys.argv[0]} [--block blockfile] COMMAND")
     sys.exit(1)
 
 def main():
@@ -28,9 +28,9 @@ def main():
 
     # Check and create pidfile
     pid = str(os.getpid())
-    pidfile = os.environ["PIDFILE"]
+    pidfile = Path(os.environ["PIDFILE"])
 
-    if os.path.isfile(pidfile):
+    if pidfile.is_file():
         print(f"Pidfile {pidfile} already exists, exiting")
         sys.exit(1)
 
@@ -56,7 +56,7 @@ def main():
         shared_data["process"].wait()
 
         end_time = time.time()
-        if start_time - end_time < 2:
+        if end_time - start_time < 2:
             print("Server exited abnormally fast, aborting!")
             sys.exit(1)
         shared_data["process"] = None
@@ -80,9 +80,10 @@ def main():
                 block_start()
             run_server()
     finally:
-        if blockfile:
+        if blockfile and blockfile.exists():
             blockfile.unlink()
-        os.unlink(pidfile)
+        if pidfile.exists():
+            pidfile.unlink()
 
 if __name__ == '__main__':
     main()
