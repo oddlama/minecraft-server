@@ -62,6 +62,7 @@ def main():
             block_start()
             run_server()
     finally:
+        blockfile.unlink()
         os.unlink(pidfile)
 
 if __name__ == '__main__':
