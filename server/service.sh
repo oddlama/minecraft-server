@@ -21,7 +21,7 @@ INITD="${INITD:-false}"
 
 case "$1" in
 	"start")
-		service_start "$(pwd)/start.sh"
+		service_start "$(pwd)/server.sh"
 		;;
 
 	"stop")

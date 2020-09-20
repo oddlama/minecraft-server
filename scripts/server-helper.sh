@@ -27,7 +27,7 @@ service_start() {
 	$TMUX_EXEC kill-server 2>/dev/null
 	wait_for_pidfile_to_disappear
 
-	exec_fork $TMUX_EXEC new-session -d ./start.sh
+	exec_fork $TMUX_EXEC new-session -d "$1"
 }
 
 service_stop() {
