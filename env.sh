@@ -3,6 +3,10 @@
 export PATH="/opt/oracle-jdk-bin-11.0.2/bin:$PATH"
 export JAVA_HOME="/opt/oracle-jdk-bin-11.0.2"
 
+einfo() {
+	echo " [1;32m*[m $*"
+}
+
 eerror() {
 	echo "[1;31merror:[m $*" >&2
 }
