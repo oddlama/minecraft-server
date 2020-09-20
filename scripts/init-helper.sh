@@ -4,6 +4,8 @@
 # Necessary environment variables:
 # SERVER_NAME
 
+set -uo pipefail
+
 extra_started_commands="attach"
 
 SERVER_DIR="/opt/minecraft/server/$SERVER_NAME"
@@ -13,7 +15,7 @@ LOG_DIR="/var/log/minecraft/$SERVER_NAME"
 TMUX_DIR="/opt/minecraft/tmux"
 
 PIDDIR="/var/run/minecraft"
-PIDFILE="$PIDDIR/$NAME.pid"
+PIDFILE="$PIDDIR/$SERVER_NAME.pid"
 
 depend() {
 	need net

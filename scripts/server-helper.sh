@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -uo pipefail
+
 exec_fork() {
 	setsid "$@" &
 }
