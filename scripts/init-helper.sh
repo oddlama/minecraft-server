@@ -11,7 +11,8 @@ extra_started_commands="attach"
 SERVER_DIR="/opt/minecraft/server/$SERVER_NAME"
 SERVER_SERVICE_SCRIPT="$SERVER_DIR/service.sh"
 
-LOG_DIR="/var/log/minecraft/$SERVER_NAME"
+LOG_DIR_BASE="/var/log/minecraft"
+LOG_DIR="$LOG_DIR_BASE/$SERVER_NAME"
 TMUX_DIR="/opt/minecraft/tmux"
 
 PIDDIR="/var/run/minecraft"
@@ -36,6 +37,7 @@ run_server() {
 
 start_pre() {
 	checkpath -qd --owner minecraft:minecraft --mode 0700 \
+		"$LOG_DIR_BASE" \
 		"$LOG_DIR" \
 		"$TMUX_DIR" \
 		"$PIDDIR" \
