@@ -51,8 +51,13 @@ def main():
 
     def run_server():
         print(f"Starting process {cmd} ...")
+        start_time = time.time()
         shared_data["process"] = subprocess.Popen(cmd)
         shared_data["process"].wait()
+
+        end_time = time.time()
+        if start_time - end_time < 2:
+            print("Server exited abnormally fast, aborting!")
         shared_data["process"] = None
 
     def signal_handler(sig, frame):
