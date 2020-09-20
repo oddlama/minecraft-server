@@ -58,6 +58,7 @@ def main():
         end_time = time.time()
         if start_time - end_time < 2:
             print("Server exited abnormally fast, aborting!")
+            sys.exit(1)
         shared_data["process"] = None
 
     def signal_handler(sig, frame):
