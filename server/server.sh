@@ -2,7 +2,7 @@
 
 LOG_DIR="/var/log/minecraft/server"
 BACKUP_LOG_FILE="$LOG_DIR/backup.log"
-BACKUP_TO="backup"
+BACKUP_TO="backups"
 BACKUP_DIRS=(
 	'plugins'
 	'world'
