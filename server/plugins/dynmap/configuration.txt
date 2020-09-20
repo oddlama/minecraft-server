@@ -304,7 +304,7 @@ render-triggers:
   #- blockredstone
 
 # Title for the web page - if not specified, defaults to the server's name (unless it is the default of 'Unknown Server')
-webpage-title: "Le Baguette"
+webpage-title: "Le Baguette - Map"
 
 # The path where the tile-files are placed.
 tilespath: /var/www/mc.oddlama.org/htdocs/map/tiles
