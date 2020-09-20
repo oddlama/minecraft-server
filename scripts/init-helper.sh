@@ -4,8 +4,6 @@
 # Necessary environment variables:
 # SERVER_NAME
 
-set -uo pipefail
-
 extra_started_commands="attach"
 
 SERVER_DIR="/opt/minecraft/server/$SERVER_NAME"
