@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -uo pipefail
+
 LOG_DIR="/var/log/minecraft/server"
 BACKUP_LOG_FILE="$LOG_DIR/backup.log"
 BACKUP_TO="backups"
@@ -10,7 +12,6 @@ BACKUP_DIRS=(
 	'world_the_end'
 )
 
-set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "../env.sh" || exit 1

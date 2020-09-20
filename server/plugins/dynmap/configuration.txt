@@ -329,7 +329,7 @@ max-sessions: 30
 disable-webserver: true
 
 # Enable/disable having the web server allow symbolic links (true=compatible with existing code, false=more secure (default))
-allow-symlinks: true
+allow-symlinks: false
 
 # Enable login support
 login-enabled: false
