@@ -66,7 +66,10 @@ if len(cur.lines) > 0:
 
 # Sort blocks and reappend header
 blocks.sort(key=lambda b: b.key)
-new_content = ''.join(header) + ''.join([''.join(b.lines) for b in blocks])
+# Header is disabled for now.
+# We don't want the ever-chaning header!
+# new_content = ''.join(header) + ''.join([''.join(b.lines) for b in blocks])
+new_content = ''.join([''.join(b.lines) for b in blocks])
 
 # Write to file
 with open(filename, 'w') as file:
