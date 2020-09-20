@@ -8,12 +8,23 @@ import sys
 import time
 from pathlib import Path
 
+def exit_usage():
+    print("usage: {sys.argv[0]} [--block blockfile] COMMAND")
+    sys.exit(1)
+
 def main():
     if len(sys.argv) < 2:
-        print("usage: {sys.argv[0]} COMMAND")
-        sys.exit(1)
+        exit_usage()
 
-    blockfile = Path('start.block')
+    blockfile = None
+    if sys.argv[1] == "--block":
+        if len(sys.argv) < 4:
+            exit_usage()
+
+        blockfile = Path(sys.argv[2])
+        cmd = sys.argv[3:]
+    else:
+        cmd = sys.argv[1:]
 
     # Check and create pidfile
     pid = str(os.getpid())
@@ -39,8 +50,8 @@ def main():
             time.sleep(.5)
 
     def run_server():
-        print("Blockfile deleted, starting server ...")
-        shared_data["process"] = subprocess.Popen(sys.argv[1:])
+        print(f"Starting process {cmd} ...")
+        shared_data["process"] = subprocess.Popen(cmd)
         shared_data["process"].wait()
         shared_data["process"] = None
 
@@ -59,10 +70,12 @@ def main():
     # Run until killed
     try:
         while not shared_data["stop"]:
-            block_start()
+            if blockfile:
+                block_start()
             run_server()
     finally:
-        blockfile.unlink()
+        if blockfile:
+            blockfile.unlink()
         os.unlink(pidfile)
 
 if __name__ == '__main__':
