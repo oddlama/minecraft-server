@@ -1,5 +1,12 @@
 #!/bin/bash
 
+mkdir -p /usr/bin/minecraft
+init_helper_file="/usr/bin/minecraft/init-helper.sh"
+echo "Installing $init_helper_file ..."
+cp "scripts/init-helper.sh" "$init_helper_file"
+chown root: "$init_helper_file"
+chmod 755 "$init_helper_file"
+
 for name in server proxy; do
 	file="/etc/init.d/minecraft-$name"
 	echo "Installing $file ..."
@@ -9,7 +16,7 @@ for name in server proxy; do
 
 SERVER_NAME="$name"
 
-source /opt/minecraft/server/scripts/init-helper.sh
+source "$init_helper_file"
 EOF
 
 	chown root: "$file"
