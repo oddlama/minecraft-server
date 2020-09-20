@@ -21,7 +21,7 @@ INITD="${INITD:-false}"
 
 case "$1" in
 	"start")
-		service_start "$(pwd)/server.sh"
+		service_start "$(pwd)/../server_loop.py"
 		;;
 
 	"stop")

@@ -66,6 +66,6 @@ managed_servers:
       offline: "%SERVER_DISPLAY_NAME%\n\
         §c~(°·°)~§7 | %QUOTE%"
     start:
-      cmd: ["../%SERVER%/service.sh", "start"]
+      cmd: ["rm", "../%SERVER%/start.block"]
       kick_msg: "%SERVER_DISPLAY_NAME% §7is being started.\n\
         §7Try again in §b10 Seconds§7 \\(^-^)/"
