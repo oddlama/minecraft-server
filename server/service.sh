@@ -7,7 +7,7 @@ source "../env.sh" || exit 1
 
 case "$1" in
 	"start")
-		"./server.sh" &
+		# "./server.sh" &
 		;;
 
 	"stop")   ;;
