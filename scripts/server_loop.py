@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 def exit_usage():
-    print(f"usage: {sys.argv[0]} [--block blockfile] COMMAND... [; POST_SCRIPT...]")
+    print(f"usage: {sys.argv[0]} [--block blockfile] COMMAND... [:POST: POST_SCRIPT...]")
     sys.exit(1)
 
 def main():
@@ -29,7 +29,7 @@ def main():
     # Split cmd and post-cmd
     post = None
     try:
-        separator = cmd.index(";")
+        separator = cmd.index(":POST:")
         post = cmd[separator + 1:]
         cmd = cmd[:separator]
     except ValueError:
