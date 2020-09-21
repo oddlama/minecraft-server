@@ -47,7 +47,6 @@ def main():
         print(f"Blocking on {blockfile}")
         blockfile.touch()
         while blockfile.exists() and not shared_data["stop"]:
-            print("slep")
             time.sleep(.5)
 
     def run_server():
