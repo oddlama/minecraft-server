@@ -52,7 +52,7 @@ def main():
     def run_server():
         print(f"Starting process {cmd} ...")
         start_time = time.time()
-        shared_data["process"] = subprocess.Popen(cmd)
+        shared_data["process"] = subprocess.Popen(cmd, preexec_fn=os.setsid)
         shared_data["process"].wait()
 
         end_time = time.time()
@@ -62,13 +62,18 @@ def main():
         shared_data["process"] = None
 
     def signal_handler(sig, frame):
-        print(shared_data["process"])
         if not shared_data["process"]:
+            print("No process started, exiting!")
             sys.exit(0)
         else:
             print("Passing signal to child ...")
-            shared_data["process"].send_signal(sig)
-            shared_data["stop"] = True
+            try:
+                shared_data["process"].send_signal(sig)
+            except OSError as e:
+                pass
+
+            if sig == signal.SIGTERM:
+                shared_data["stop"] = True
 
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
@@ -79,6 +84,7 @@ def main():
             if blockfile:
                 block_start()
             run_server()
+        print("Exiting.")
     finally:
         if blockfile and blockfile.exists():
             blockfile.unlink()
