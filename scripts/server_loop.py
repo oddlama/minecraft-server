@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 def exit_usage():
-    print(f"usage: {sys.argv[0]} [--block blockfile] COMMAND")
+    print(f"usage: {sys.argv[0]} [--block blockfile] COMMAND... [; POST_SCRIPT...]")
     sys.exit(1)
 
 def main():
@@ -25,6 +25,15 @@ def main():
         cmd = sys.argv[3:]
     else:
         cmd = sys.argv[1:]
+
+    # Split cmd and post-cmd
+    post = None
+    try:
+        separator = cmd.index(";")
+        post = cmd[separator + 1:]
+        cmd = cmd[:separator]
+    except ValueError:
+        pass
 
     # Check and create pidfile
     pid = str(os.getpid())
@@ -61,8 +70,15 @@ def main():
         end_time = time.time()
         if end_time - start_time < 2:
             print("Server exited abnormally fast, aborting!")
-            sys.exit(1)
+            shared_data["stop"] = True
+            return
+
         shared_data["process"] = None
+
+        # Launch post script
+        if post:
+            print("Running post script ...")
+            subprocess.run(post)
 
     def signal_forward(sig, frame):
         if shared_data["process"]:

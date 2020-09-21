@@ -3,14 +3,6 @@
 set -uo pipefail
 
 LOG_DIR="/var/log/minecraft/server"
-BACKUP_LOG_FILE="$LOG_DIR/backup.log"
-BACKUP_TO="backups"
-BACKUP_DIRS=(
-	'plugins'
-	'world'
-	'world_nether'
-	'world_the_end'
-)
 
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
@@ -23,8 +15,8 @@ mkdir -p "$LOG_DIR" \
 link_dir "$LOG_DIR" "logs"
 
 # Start java
-status "Starting server"
-java -Xms10G -Xmx10G \
+status "Exec server"
+exec java -Xms10G -Xmx10G \
 	-XX:+UseG1GC \
 	-XX:+ParallelRefProcEnabled \
 	-XX:MaxGCPauseMillis=200 \
