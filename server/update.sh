@@ -34,10 +34,10 @@ curl "https://dynmap.us/builds/dynmap/Dynmap-3.1-SNAPSHOT-spigot.jar" \
 	|| die "Could not download dynmap"
 
 # WorldBorder
-status "Please manually update WorldBorder from here: https://github.com/PryPurity/WorldBorder"
+#status "Please manually update WorldBorder from here: https://github.com/PryPurity/WorldBorder"
 
 # WorldEdit?
 status "Downloading worldedit"
-curl "https://dev.bukkit.org/projects/worldedit/files/latest" \
+curl -L "https://dev.bukkit.org/projects/worldedit/files/latest" \
 	-o plugins/optional/worldedit.jar \
 	|| die "Could not download worldedit"
