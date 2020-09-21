@@ -33,11 +33,15 @@ service_start() {
 service_stop() {
 	einfo "Please be patient, stopping the server can take some time (up to $MAX_SECONDS_WAIT seconds)."
 
-	# Kill the tmux server
-	$TMUX_EXEC kill-server 2>/dev/null
+	# Kill the pid
+	kill "$(cat "$PIDFILE")"
 
+	# Wait until stopped
 	wait_for_pidfile_to_disappear \
 		|| eerror "Pidfile still existent after $MAX_SECONDS_WAIT seconds. Ignoring, server might be forcibly killed."
+
+	# Then exit tmux
+	$TMUX_EXEC kill-server 2>/dev/null
 }
 
 service_attach() {
