@@ -77,12 +77,12 @@ def main():
 
         # Launch post script
         if post:
-            print("Running post script ...")
-            subprocess.run(post)
+            print(f"Starting post process {post} ...")
+            subprocess.run(post, preexec_fn=os.setsid)
 
     def signal_forward(sig, frame):
         if shared_data["process"]:
-            print("Passing signal to child ...")
+            print(f"Passing signal {sig} to child ...")
             try:
                 shared_data["process"].send_signal(sig)
             except OSError as e:
