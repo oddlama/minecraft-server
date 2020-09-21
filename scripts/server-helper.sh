@@ -33,6 +33,12 @@ service_start() {
 service_stop() {
 	einfo "Please be patient, stopping the server can take some time (up to $MAX_SECONDS_WAIT seconds)."
 
+	if ! [[ -e $PIDFILE ]]; then
+		# If there is no pidfile, simply force kill the tmux server
+		$TMUX_EXEC kill-server 2>/dev/null
+		return
+	fi
+
 	# Kill the pid
 	kill "$(cat "$PIDFILE")"
 	sleep 5
