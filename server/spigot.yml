@@ -121,22 +121,22 @@ world-settings:
       item: 0.2
     mob-spawn-range: 8
     nerf-spawner-mobs: false
-    seed-bastion: 30084131
-    seed-desert: 14357116
-    seed-endcity: 10317311
-    seed-fortress: 30184231
-    seed-fossil: 14157920
-    seed-igloo: 14351617
-    seed-jungle: 14157618
-    seed-mansion: 10381318
-    seed-monument: 10317312
-    seed-ocean: 14357120
-    seed-outpost: 165741295
-    seed-portal: 34212644
-    seed-shipwreck: 161745294
-    seed-slime: 987214910
-    seed-swamp: 14357119
-    seed-village: 10187311
+    seed-bastion: 30084130
+    seed-desert: 14357115
+    seed-endcity: 10317310
+    seed-fortress: 30184230
+    seed-fossil: 14157919
+    seed-igloo: 14351616
+    seed-jungle: 14157617
+    seed-mansion: 10381317
+    seed-monument: 10317311
+    seed-ocean: 14357119
+    seed-outpost: 165741294
+    seed-portal: 34212643
+    seed-shipwreck: 161745293
+    seed-slime: 987214909
+    seed-swamp: 14357118
+    seed-village: 10187310
     squid-spawn-range:
       min: 45.0
     ticks-per:
