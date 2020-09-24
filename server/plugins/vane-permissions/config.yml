@@ -45,6 +45,7 @@ default_group: "default"
 #     - vane.permissions.commands.vouch
 #   admin:
 #     - vane.permissions.groups.verified
+#     - vane.admin.bypass_spawn_protection
 #     - vane.*.commands.*
 #   user:
 #     - vane.permissions.groups.default
@@ -60,6 +61,7 @@ groups:
     - vane.permissions.commands.vouch
   admin:
     - vane.permissions.groups.verified
+    - vane.admin.bypass_spawn_protection
     - vane.*.commands.*
   user:
     - vane.permissions.groups.default

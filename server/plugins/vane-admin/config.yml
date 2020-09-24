@@ -133,7 +133,7 @@ spawn_protection:
   # Radius to protect.
   # Valid values: Any int
   # Default: 64
-  radius: 64
+  radius: 260
 
   # Use world's spawn location instead of the specified center coordinates.
   # Default: true
