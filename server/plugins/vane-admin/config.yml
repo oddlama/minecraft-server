@@ -118,8 +118,43 @@ hazard_protection:
     # Default: 50
     min_delay: 50
 
+spawn_protection:
+  # Enable spawn protection. Slightly more sophisticated than the vanilla spawn
+  # protection, if you need even more control, use regions. This will prevent
+  # anyone from modifying the spawn of the world if they don't have the permission
+  # 'vane.admin.bypass_spawn_protection'.
+  # Default: true
+  enabled: true
+
+  # Allow interaction events at spawn (buttons, levers, etc.).
+  # Default: true
+  allow_interaction: true
+
+  # Radius to protect.
+  # Valid values: Any int
+  # Default: 64
+  radius: 64
+
+  # Use world's spawn location instead of the specified center coordinates.
+  # Default: true
+  use_spawn_location: true
+
+  # The spawn world.
+  # Default: "world"
+  world: "world"
+
+  # Center X coordinate.
+  # Valid values: Any int
+  # Default: 0
+  x: 0
+
+  # Center Z coordinate.
+  # Valid values: Any int
+  # Default: 0
+  z: 0
+
 world_protection:
-  # Enable world protection. This will prevent anyone from modyfing the world of
+  # Enable world protection. This will prevent anyone from modifying the world if
   # they don't have the permission 'vane.admin.modify_world'.
   # Default: true
   enabled: true
