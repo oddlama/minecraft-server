@@ -48,8 +48,11 @@ cp "$TMP_SERVER/cache/patched"*.jar "libs/" \
 	|| die "Could not copy targets to libs/"
 
 status "Compiling vane"
-./gradlew build \
-	|| die "Could not compile vane"
+if ! ./gradlew build; then
+	status "Gradle failed, retrying once."
+	./gradlew build \
+		|| die "Could not compile vane"
+fi
 
 popd >/dev/null \
 	|| die "could not popd out of '$TMP_DIR'"
