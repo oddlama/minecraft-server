@@ -49,6 +49,7 @@ default_group: "default"
 #     - vane.*.commands.*
 #   user:
 #     - vane.permissions.groups.default
+#     - vane.admin.commands.spawn
 #     - vane.admin.modify_world
 #     - vane.trifles.commands.heads
 groups:
@@ -59,12 +60,15 @@ groups:
   verified:
     - vane.permissions.groups.user
     - vane.permissions.commands.vouch
-  admin:
+  moderator:
     - vane.permissions.groups.verified
     - vane.admin.bypass_spawn_protection
+  admin:
+    - vane.permissions.groups.moderator
     - vane.*.commands.*
   user:
     - vane.permissions.groups.default
+    - vane.admin.commands.spawn
     - vane.admin.modify_world
     - vane.trifles.commands.heads
 
