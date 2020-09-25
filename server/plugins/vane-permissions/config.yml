@@ -63,6 +63,7 @@ groups:
   moderator:
     - vane.permissions.groups.verified
     - vane.admin.bypass_spawn_protection
+    - minecraft.command.stop
   admin:
     - vane.permissions.groups.moderator
     - vane.*.commands.*
