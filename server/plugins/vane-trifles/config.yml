@@ -36,8 +36,8 @@ command_heads:
   enabled: true
 
   # Currency material used to buy heads.
-  # Default: "minecraft:skeleton_skull"
-  currency: "minecraft:skeleton_skull"
+  # Default: "minecraft:bone"
+  currency: "minecraft:bone"
 
   # Price (in currency) per head. Set to 0 for free heads.
   # Valid values: [0,)
