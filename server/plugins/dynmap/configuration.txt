@@ -86,8 +86,8 @@ components:
     require-player-login-ip: false
     block-banned-player-chat: true
     hideifsneaking: true
-    hideifshadow: 0
-    hideifundercover: 0
+    # hideifshadow: 0
+    # hideifundercover: 0
     # Require login for web-to-server chat (requires login-enabled: true)
     webchat-requires-login: true
     # If set to true, users must have dynmap.webchat permission in order to chat
