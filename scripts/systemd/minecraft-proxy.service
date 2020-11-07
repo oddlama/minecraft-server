@@ -1,0 +1,42 @@
+[Unit]
+Description=Minecraft server proxy
+After=network.target
+
+[Service]
+User=minecraft
+Group=minecraft
+
+Environment="INITD=true"
+Environment="SERVER_NAME=proxy"
+Environment="PIDFILE=/run/minecraft/${SERVER_NAME}.pid"
+
+Type=forking
+PIDFile=/run/minecraft/${SERVER_NAME}.pid
+ExecStart=/opt/minecraft/server/${SERVER_NAME}/service.sh start
+ExecStop=/opt/minecraft/server/${SERVER_NAME}/service.sh stop
+
+LimitNOFILE=1048576
+LimitNPROC=32
+
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+
+RestrictNamespaces=yes
+
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+WorkingDirectory=/opt/minecraft/server/${SERVER_NAME}
+RuntimeDirectory=minecraft
+LogsDirectory=minecraft/${SERVER_NAME}
+
+ReadWriteDirectories=/opt/minecraft
+
+[Install]
+WantedBy=multi-user.target

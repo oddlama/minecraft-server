@@ -19,6 +19,9 @@ INITD="${INITD:-false}"
 [[ $INITD == true ]] \
 	|| die "Do not call this script directly! Use the init.d wrapper!"
 
+mkdir -p "$(dirname "$TMUX_SOCKET")"  \
+	|| die "Could not create tmux socket directory"
+
 case "$1" in
 	"start")
 		service_start "../scripts/server_loop.py ./start.sh"

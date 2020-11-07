@@ -16,7 +16,7 @@ link_dir "$LOG_DIR" "logs"
 
 # Start java
 status "Exec server"
-exec java -Xms10G -Xmx10G \
+exec java -Xms2G -Xmx2G \
 	-XX:+UseG1GC \
 	-XX:+ParallelRefProcEnabled \
 	-XX:MaxGCPauseMillis=200 \

@@ -30,7 +30,7 @@ settings:
       max: 2048.0
     movementSpeed:
       max: 2048.0
-  bungeecord: true
+  bungeecord: false
   debug: false
   log-villager-deaths: true
   moved-too-quickly-multiplier: 1000.0
