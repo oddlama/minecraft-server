@@ -8,12 +8,12 @@ Group=minecraft
 
 Environment="INITD=true"
 Environment="SERVER_NAME=proxy"
-Environment="PIDFILE=/run/minecraft/${SERVER_NAME}.pid"
+Environment="PIDFILE=/run/minecraft/proxy.pid"
 
 Type=forking
-PIDFile=/run/minecraft/${SERVER_NAME}.pid
-ExecStart=/opt/minecraft/server/${SERVER_NAME}/service.sh start
-ExecStop=/opt/minecraft/server/${SERVER_NAME}/service.sh stop
+PIDFile=/run/minecraft/proxy.pid
+ExecStart=/opt/minecraft/server/proxy/service.sh start
+ExecStop=/opt/minecraft/server/proxy/service.sh stop
 
 LimitNOFILE=1048576
 LimitNPROC=32
@@ -32,9 +32,9 @@ SystemCallArchitectures=native
 SystemCallFilter=@system-service
 RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
 
-WorkingDirectory=/opt/minecraft/server/${SERVER_NAME}
+WorkingDirectory=/opt/minecraft/server/proxy
 RuntimeDirectory=minecraft
-LogsDirectory=minecraft/${SERVER_NAME}
+LogsDirectory=minecraft/proxy
 
 ReadWriteDirectories=/opt/minecraft
 
