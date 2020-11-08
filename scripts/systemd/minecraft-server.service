@@ -1,15 +1,42 @@
 [Unit]
-Description=The nginx HTTP and reverse proxy server
-After=network.target remote-fs.target nss-lookup.target
+Description=Minecraft server
+After=network.target
 
 [Service]
+User=minecraft
+Group=minecraft
+
+Environment="INITD=true"
+Environment="SERVER_NAME=server"
+Environment="PIDFILE=/run/minecraft/server.pid"
+
 Type=forking
-PIDFile=/run/nginx.pid
-ExecStartPre=/usr/sbin/nginx -t
-ExecStart=/usr/sbin/nginx
-ExecStartPost=/bin/sleep 0.1
-ExecReload=/bin/kill -HUP $MAINPID
-ExecStop=/bin/kill -QUIT $MAINPID
+PIDFile=/run/minecraft/server.pid
+ExecStart=/opt/minecraft/server/server/service.sh start
+ExecStop=/opt/minecraft/server/server/service.sh stop
+
+LimitNOFILE=1048576
+LimitNPROC=32
+
+PrivateTmp=true
+PrivateDevices=true
+ProtectHome=true
+ProtectSystem=strict
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+
+RestrictNamespaces=yes
+
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+WorkingDirectory=/opt/minecraft/server/server
+RuntimeDirectory=minecraft
+LogsDirectory=minecraft/server
+
+ReadWriteDirectories=/opt/minecraft
 
 [Install]
 WantedBy=multi-user.target
