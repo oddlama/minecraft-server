@@ -41,13 +41,13 @@ service_stop() {
 
 	# Kill the pid
 	kill "$(cat "$PIDFILE")"
-	sleep 5
+	sleep 1
 
 	# Wait until stopped
 	wait_for_pidfile_to_disappear \
 		|| eerror "Pidfile still existent after $MAX_SECONDS_WAIT seconds. Ignoring, server might be forcibly killed."
 
-	sleep 5
+	sleep 1
 	# Then exit tmux
 	$TMUX_EXEC kill-server 2>/dev/null
 }
