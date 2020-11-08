@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -o pipefail
+
+SERVER_NAME="$1"
+SERVER_DIR="/opt/minecraft/server/$SERVER_NAME"
+SERVER_SERVICE_SCRIPT="$SERVER_DIR/service.sh"
+
+run_server() {
+	(
+		cd "$SERVER_DIR"
+		sudo -u minecraft -- \
+			env \
+				INITD=true \
+				SERVER_NAME="$SERVER_NAME" \
+				"$SERVER_SERVICE_SCRIPT" \
+				"$@"
+	)
+}
+
+run_server attach

@@ -7,3 +7,9 @@ for name in server proxy; do
 	chown root: "$file"
 	chmod 644 "$file"
 done
+
+minecraft_attach="/usr/bin/minecraft-attach"
+echo "Installing $minecraft_attach ..."
+cp "scripts/systemd/minecraft-attach" "$minecraft_attach"
+chown root: "$minecraft_attach"
+chmod 755 "$minecraft_attach"
