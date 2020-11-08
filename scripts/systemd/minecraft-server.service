@@ -35,12 +35,12 @@ RestrictNamespaces=yes
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
 RestrictAddressFamilies=AF_INET AF_INET6
+AmbientCapabilities=CAP_KILL
+CapabilityBoundingSet=CAP_KILL
 
 WorkingDirectory=/opt/minecraft/server/server
 RuntimeDirectory=minecraft
 LogsDirectory=minecraft/server
-AmbientCapabilities=
-CapabilityBoundingSet=
 
 ReadWriteDirectories=/opt/minecraft
 
