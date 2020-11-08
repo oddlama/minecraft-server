@@ -15,9 +15,6 @@ PIDFile=/run/minecraft/proxy.pid
 ExecStart=/opt/minecraft/server/proxy/service.sh start
 ExecStop=/opt/minecraft/server/proxy/service.sh stop
 
-LimitNOFILE=1048576
-LimitNPROC=32
-
 PrivateTmp=true
 PrivateDevices=true
 ProtectHome=true

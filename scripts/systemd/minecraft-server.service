@@ -15,9 +15,6 @@ PIDFile=/run/minecraft/server.pid
 ExecStart=/opt/minecraft/server/server/service.sh start
 ExecStop=/opt/minecraft/server/server/service.sh stop
 
-LimitNOFILE=1048576
-LimitNPROC=32
-
 PrivateTmp=true
 PrivateDevices=true
 ProtectHome=true
