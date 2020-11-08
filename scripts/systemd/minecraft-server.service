@@ -23,15 +23,24 @@ ProtectKernelTunables=yes
 ProtectKernelModules=yes
 ProtectControlGroups=yes
 
+NoNewPrivileges=true
+PrivateUsers=true
+ProtectClock=true
+ProtectKernelLogs=true
+ProtectHostname=true
+LockPersonality=true
+RestrictSUIDSGID=true
 RestrictNamespaces=yes
 
 SystemCallArchitectures=native
 SystemCallFilter=@system-service
-RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictAddressFamilies=AF_INET AF_INET6
 
 WorkingDirectory=/opt/minecraft/server/server
 RuntimeDirectory=minecraft
 LogsDirectory=minecraft/server
+AmbientCapabilities=
+CapabilityBoundingSet=
 
 ReadWriteDirectories=/opt/minecraft
 
