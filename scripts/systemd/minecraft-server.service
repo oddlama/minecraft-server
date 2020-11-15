@@ -42,7 +42,9 @@ WorkingDirectory=/opt/minecraft/server/server
 RuntimeDirectory=minecraft
 LogsDirectory=minecraft/server
 
+# TODO manually with edit
 ReadWriteDirectories=/opt/minecraft
+ReadWriteDirectories=/media/hdd8t/minecraft
 
 [Install]
 WantedBy=multi-user.target
