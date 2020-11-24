@@ -18,11 +18,11 @@ class PlotSlimeChunks {
 	}
 
 	public static void main(String args[]) {
-		if (args.length != 3) {
-			System.out.println("usage: " + args[0] + " <x> <z>");
+		if (args.length != 2) {
+			System.out.println("usage: ./plot_slime_chunks <x> <z>");
 		}
-		int x = Integer.parseInt(args[1]);
-		int z = Integer.parseInt(args[2]);
+		int x = Integer.parseInt(args[0]);
+		int z = Integer.parseInt(args[1]);
 		if (x < 0) { x = x / 16 - 1; } else { x = x / 16; }
 		if (z < 0) { z = z / 16 - 1; } else { z = z / 16; }
 

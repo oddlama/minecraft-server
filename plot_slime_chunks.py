@@ -180,7 +180,14 @@ slime_seed = 987214909
 radius = 16
 
 def seeded_random(i, j, k, l):
-    return Random(((k + (i * i * 4987142) + (i * 5947611) + (j * j) * 4392871 + (j * 389711)) & 0xffffffffffffffff) ^ l)
+    return Random(
+            (
+                (k +
+                    (i * i * 4987142 & 0xffffffff)
+                    + (i * 5947611 & 0xffffffff)
+                    + ((j * j) * 4392871 & 0xffffffff)
+                    + (j * 389711 & 0xffffffff)) & 0xffffffffffffffff)
+                ^ l)
 
 def is_slime_chunk(x, z):
     return seeded_random(x, z, world_seed, slime_seed).nextInt(10) == 0
