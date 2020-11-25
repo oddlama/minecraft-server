@@ -22,6 +22,8 @@ messages:
   server-full: The server is full!
   unknown-command: Unknown command
   whitelist: You are not whitelisted on this server!
+players:
+  disable-saving: false
 settings:
   attribute:
     attackDamage:
@@ -147,3 +149,5 @@ world-settings:
     view-distance: default
     wither-spawn-sound-radius: 0
     zombie-aggressive-towards-villager: true
+  worldeditregentempworld:
+    verbose: false

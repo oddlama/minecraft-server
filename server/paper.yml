@@ -28,6 +28,7 @@ settings:
     tab-spam-increment: 1
     tab-spam-limit: 500
   suggest-player-names-when-null-tab-completions: true
+  track-plugin-scoreboards: false
   unsupported-settings:
     allow-headless-pistons: true
     allow-headless-pistons-readme: This setting controls if players should be able
@@ -79,6 +80,7 @@ world-settings:
         - diamond_ore
         - redstone_ore
         - emerald_ore
+      lava-obscures: false
       max-chunk-section-index: 3
       replacement-blocks:
         - stone
