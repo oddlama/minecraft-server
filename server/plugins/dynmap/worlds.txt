@@ -1,10 +1,7 @@
-# These are examples of world-specific settings - customize your content as you see fit
-#
 # NOTES:
 #   All lines here are commented with the # symbol - delete the # symbol on copied lines you wish to enable
 #   Definitions of a world made here will superecede any world definition with the same name in configuration.txt
 #   Deleting this file will result in a fresh copy being produced by dynmap.jar on the next startup.
-#
 worlds:
   - name: world
     title: "World"
@@ -20,7 +17,7 @@ worlds:
         bigmap: true
         prefix: surface
         perspective: iso_SE_60_lowres
-        shader: default
+        shader: stdtexture
         lighting: shadows
         mapzoomin: 1
       - class: org.dynmap.hdmap.HDMap
@@ -30,7 +27,7 @@ worlds:
         bigmap: true
         prefix: cave
         perspective: iso_SE_60_lowres
-        shader: lit-cave
+        shader: stdtexture-cave
         lighting: default
         mapzoomin: 1
       - class: org.dynmap.hdmap.HDMap
@@ -40,7 +37,7 @@ worlds:
         bigmap: true
         prefix: northtop
         perspective: iso_S_90_lowres
-        shader: default
+        shader: stdtexture
         lighting: shadows
         mapzoomin: 1
       - class: org.dynmap.hdmap.HDMap
@@ -53,20 +50,69 @@ worlds:
         shader: amidst
         lighting: default
         mapzoomin: 0
+      - class: org.dynmap.hdmap.HDMap
+        name: inhabited
+        title: "Inhabited Time"
+        icon: images/block_biome.png
+        bigmap: true
+        prefix: inhabited
+        perspective: iso_SE_60_lowres
+        shader: inhabited
+        lighting: default
+        mapzoomin: 0
   - name: world_nether
     title: "World - Nether"
-    enabled: false
+    enabled: true
+    bigworld: true
+    extrazoomout: 1
+    tileupdatedelay: 20
+    maps:
+      - class: org.dynmap.hdmap.HDMap
+        name: nether_regular
+        title: "Nether"
+        icon: images/block_flat.png
+        bigmap: true
+        prefix: nether_regular
+        perspective: iso_SE_60_lowres
+        shader: stdtexture
+        lighting: nethershadows
+        mapzoomin: 1
+      - class: org.dynmap.hdmap.HDMap
+        name: nether_roof
+        title: "Nether Roof"
+        icon: images/block_cave.png
+        bigmap: true
+        prefix: nether_roof
+        perspective: iso_SE_60_lowres
+        shader: stdtexture
+        lighting: default
+        mapzoomin: 1
+      - class: org.dynmap.hdmap.HDMap
+        name: nether_roof_northtop
+        title: "Nether Roof North-Oriented"
+        icon: images/block_flat.png
+        bigmap: true
+        prefix: nether_roof_northtop
+        perspective: iso_S_90_lowres_nether_roof
+        shader: stdtexture
+        lighting: shadows
+        mapzoomin: 1
+      - class: org.dynmap.hdmap.HDMap
+        name: amidst
+        title: "Biomes"
+        icon: images/block_biome.png
+        bigmap: true
+        prefix: amidst
+        perspective: iso_S_90_vlowres
+        shader: amidst
+        lighting: default
+        mapzoomin: 0
   - name: world_the_end
     title: "World - The End"
     enabled: true
-    bigworld: false
-    extrazoomout: 0
+    bigworld: true
+    extrazoomout: 1
     tileupdatedelay: 20
-    visibilitylimits:
-      - x0: -768
-        z0: -768
-        x1: 768
-        z1: 768
     maps:
       - class: org.dynmap.hdmap.HDMap
         name: surface
@@ -75,7 +121,7 @@ worlds:
         bigmap: true
         prefix: surface
         perspective: iso_SE_60_lowres
-        shader: default
+        shader: stdtexture
         lighting: shadows
         mapzoomin: 1
         hidestyle: air
@@ -86,6 +132,6 @@ worlds:
         bigmap: true
         prefix: northtop
         perspective: iso_S_90_lowres
-        shader: default
+        shader: stdtexture
         lighting: shadows
         mapzoomin: 1
