@@ -13,7 +13,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: surface
         title: "Surface"
-        icon: images/block__world_surface.png
+        icon: images/block_world_surface.png
         bigmap: true
         prefix: surface
         perspective: iso_SE_60_lowres
@@ -22,11 +22,11 @@ worlds:
         mapzoomin: 1
       - class: org.dynmap.hdmap.HDMap
         name: cave
-        title: "Cave"
+        title: "Underground"
         icon: images/block_world_cave.png
         bigmap: true
         prefix: cave
-        perspective: iso_SE_60_lowres
+        perspective: iso_SE_60_lowres_cave
         shader: stdtexture-cave
         lighting: default
         mapzoomin: 1
@@ -83,7 +83,7 @@ worlds:
         icon: images/block_other.png
         bigmap: true
         prefix: nether_roof
-        perspective: iso_SE_60_lowres
+        perspective: iso_SE_60_lowres_nether_roof
         shader: stdtexture
         lighting: default
         mapzoomin: 1
@@ -100,7 +100,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: amidst
         title: "Biomes"
-        icon: images/block_biome.png
+        icon: images/block_world_biome.png
         bigmap: true
         prefix: amidst
         perspective: iso_S_90_vlowres
