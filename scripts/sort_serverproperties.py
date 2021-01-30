@@ -10,7 +10,7 @@ def is_comment(line):
     return bool(comment_regex.match(line))
 
 def is_empty(line):
-    return not line or line is '\n'
+    return not line or line == '\n'
 
 class Block:
     def __init__(self):
