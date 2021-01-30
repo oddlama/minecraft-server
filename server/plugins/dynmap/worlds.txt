@@ -26,7 +26,7 @@ worlds:
         icon: images/block_world_cave.png
         bigmap: true
         prefix: cave
-        perspective: iso_SE_60_lowres_cave
+        perspective: iso_SE_60_lowres
         shader: stdtexture-cave
         lighting: default
         mapzoomin: 1
