@@ -14,6 +14,25 @@ enabled: true
 # Default: true
 metrics_enabled: true
 
+dynmap:
+  # Enable dynmap integration. Player spawnpoints (beds) will then be shown on a
+  # separate dynmap layer.
+  # Default: true
+  enabled: true
+
+  # If the layer should be hidden by default.
+  # Default: false
+  layer_hide: false
+
+  # Layer ordering priority.
+  # Valid values: [0,)
+  # Default: 25
+  layer_priority: 25
+
+  # The dynmap marker icon.
+  # Default: "house"
+  marker_icon: "house"
+
 # The interpolation time in ticks for a smooth change of time.
 # Valid values: [0,1200]
 # Default: 100
@@ -31,4 +50,4 @@ target_time: 1000
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 1
+version: 2
