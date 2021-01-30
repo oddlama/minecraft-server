@@ -13,7 +13,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: surface
         title: "Surface"
-        icon: images/block_flat.png
+        icon: images/block_surface.png
         bigmap: true
         prefix: surface
         perspective: iso_SE_60_lowres
@@ -53,7 +53,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: inhabited
         title: "Inhabited Time"
-        icon: images/block_biome.png
+        icon: images/warp.png
         bigmap: true
         prefix: inhabited
         perspective: iso_SE_60_lowres
@@ -70,7 +70,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: nether_regular
         title: "Nether"
-        icon: images/block_flat.png
+        icon: images/block_nether_surface.png
         bigmap: true
         prefix: nether_regular
         perspective: iso_SE_60_lowres
@@ -80,7 +80,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: nether_roof
         title: "Nether Roof"
-        icon: images/block_cave.png
+        icon: images/block_other.png
         bigmap: true
         prefix: nether_roof
         perspective: iso_SE_60_lowres
@@ -90,7 +90,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: nether_roof_northtop
         title: "Nether Roof North-Oriented"
-        icon: images/block_flat.png
+        icon: images/block_nether_flat.png
         bigmap: true
         prefix: nether_roof_northtop
         perspective: iso_S_90_lowres_nether_roof
@@ -117,7 +117,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: surface
         title: "Surface"
-        icon: images/block_flat.png
+        icon: images/block_the_end_surface.png
         bigmap: true
         prefix: surface
         perspective: iso_SE_60_lowres
@@ -128,7 +128,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: northtop
         title: "North-Oriented"
-        icon: images/block_flat.png
+        icon: images/block_the_end_flat.png
         bigmap: true
         prefix: northtop
         perspective: iso_S_90_lowres
