@@ -13,7 +13,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: surface
         title: "Surface"
-        icon: images/block_surface.png
+        icon: images/block__world_surface.png
         bigmap: true
         prefix: surface
         perspective: iso_SE_60_lowres
@@ -23,7 +23,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: cave
         title: "Cave"
-        icon: images/block_cave.png
+        icon: images/block_world_cave.png
         bigmap: true
         prefix: cave
         perspective: iso_SE_60_lowres
@@ -33,7 +33,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: northtop
         title: "North-Oriented"
-        icon: images/block_flat.png
+        icon: images/block_world_flat.png
         bigmap: true
         prefix: northtop
         perspective: iso_S_90_lowres
@@ -43,7 +43,7 @@ worlds:
       - class: org.dynmap.hdmap.HDMap
         name: amidst
         title: "Biomes"
-        icon: images/block_biome.png
+        icon: images/block_world_biome.png
         bigmap: true
         prefix: amidst
         perspective: iso_S_90_vlowres
