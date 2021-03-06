@@ -45,7 +45,7 @@ auth_multiplex:
 # managed_servers: {}
 managed_servers:
   server:
-    display_name: "§6◊ §6§lGIEF GOOD NAME PLS§6 ◊"
+    display_name: "§6◊ §6§lLAMAFARM§6 ◊"
     favicon: "../%SERVER%/favicon.png"
     quotes:
       online:
