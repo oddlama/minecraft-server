@@ -1,0 +1,1 @@
+* MCASelector to trim chunks
