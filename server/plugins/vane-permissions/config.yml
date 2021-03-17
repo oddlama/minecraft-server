@@ -51,6 +51,7 @@ default_group: "default"
 #     - vane.permissions.groups.default
 #     - vane.admin.commands.spawn
 #     - vane.admin.modify_world
+#     - vane.regions.commands.region
 #     - vane.trifles.commands.heads
 groups:
   default:
@@ -71,6 +72,7 @@ groups:
     - vane.permissions.groups.default
     - vane.admin.commands.spawn
     - vane.admin.modify_world
+    - vane.regions.commands.region
     - vane.trifles.commands.heads
 
 # Remove all default permissions to start with a clean preset.
