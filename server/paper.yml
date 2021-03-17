@@ -16,6 +16,7 @@ settings:
   chunk-tasks-per-tick: 1000
   console-has-all-permissions: false
   enable-player-collisions: true
+  fix-entity-position-desync: true
   incoming-packet-spam-threshold: 300
   load-permissions-yml-before-plugins: true
   max-joins-per-tick: 3
@@ -25,6 +26,8 @@ settings:
   save-empty-scoreboard-teams: false
   save-player-data: true
   spam-limiter:
+    recipe-spam-increment: 1
+    recipe-spam-limit: 20
     tab-spam-increment: 1
     tab-spam-limit: 500
   suggest-player-names-when-null-tab-completions: true
@@ -54,16 +57,20 @@ timings:
   hidden-config-entries:
     - database
     - settings.bungeecord-addresses
+    - settings.velocity-support.secret
   history-interval: 300
   history-length: 3600
   server-name: Unknown Server
   server-name-privacy: false
   verbose: true
+use-display-name-in-quit-message: false
 verbose: false
 world-settings:
   default:
     all-chunks-are-slime-chunks: false
     allow-non-player-entities-on-scoreboards: false
+    allow-using-signs-inside-spawn-protection: false
+    allow-vehicle-collisions: true
     alt-item-despawn-rate:
       enabled: false
       items:
@@ -85,6 +92,7 @@ world-settings:
       replacement-blocks:
         - stone
       update-radius: 2
+      use-permission: false
     armor-stands-do-collision-entity-lookups: true
     armor-stands-tick: true
     auto-save-interval: -1
@@ -102,16 +110,30 @@ world-settings:
     disable-ice-and-snow: false
     disable-teleportation-suffocation-check: false
     disable-thunder: false
+    door-breaking-difficulty:
+      vindicator:
+        - NORMAL
+        - HARD
+      zombie:
+        - HARD
     duplicate-uuid-resolver: saferegen
     duplicate-uuid-saferegen-delete-range: 32
     enable-treasure-maps: true
+    ender-dragons-death-always-places-dragon-egg: false
     entities-target-with-follow-range: false
+    entity-per-chunk-save-limit:
+      arrow: -1
+      ender_pearl: -1
+      experience_orb: -1
+      snowball: -1
     experience-merge-max-value: -1
     falling-block-height-nerf: 0
     filter-nbt-data-from-spawn-eggs-and-related: true
     fishing-time-range:
       MaximumTicks: 600
       MinimumTicks: 100
+    fix-climbing-bypassing-cramming-rule: false
+    fix-wither-targeting-bug: false
     fixed-chunk-inhabited-time: -1
     frosted-ice:
       delay:
@@ -121,11 +143,13 @@ world-settings:
     game-mechanics:
       disable-chest-cat-detection: false
       disable-end-credits: false
+      disable-mob-spawner-spawn-egg-transformation: false
       disable-pillager-patrols: false
       disable-player-crits: false
       disable-relative-projectile-velocity: false
       disable-sprint-interruption-on-attack: false
       disable-unloaded-chunk-enderpearl-exploit: false
+      fix-curing-zombie-villager-discount-exploit: true
       nerf-pigmen-from-nether-portals: false
       pillager-patrols:
         spawn-chance: 0.2
@@ -161,11 +185,19 @@ world-settings:
     max-auto-save-chunks-per-tick: 24
     max-entity-collisions: 16
     max-growth-height:
+      bamboo:
+        max: 16
+        min: 11
       cactus: 3
       reeds: 3
+    max-leash-distance: 10.0
     mob-spawner-tick-rate: 1
+    mobs-can-always-pick-up-loot:
+      skeletons: false
+      zombies: false
     nether-ceiling-void-damage-height: 0
     non-player-arrow-despawn-rate: -1
+    only-players-collide: false
     optimize-explosions: false
     parrots-are-unaffected-by-player-movement: true
     per-player-mob-spawns: true
@@ -173,19 +205,29 @@ world-settings:
     phantoms-only-attack-insomniacs: true
     portal-create-radius: 16
     portal-search-radius: 128
+    portal-search-vanilla-dimension-scaling: true
     prevent-moving-into-unloaded-chunks: false
     prevent-tnt-from-moving-in-water: false
     remove-corrupt-tile-entities: false
+    seed-based-feature-search: true
+    should-remove-dragon: false
     skeleton-horse-thunder-spawn-chance: 0.01
     spawner-nerfed-mobs-should-jump: false
     squid-spawn-height:
       maximum: 0.0
     tnt-entity-height-nerf: 0
     treasure-maps-return-already-discovered: false
+    update-pathfinding-on-block-update: true
     use-faster-eigencraft-redstone: false
     use-vanilla-world-scoreboard-name-coloring: false
     viewdistances:
       no-tick-view-distance: -1
+    wandering-trader:
+      spawn-chance-failure-increment: 25
+      spawn-chance-max: 75
+      spawn-chance-min: 25
+      spawn-day-length: 24000
+      spawn-minute-length: 1200
     water-over-lava-flow-speed: 5
     zombie-villager-infection-chance: -1.0
     zombies-target-turtle-eggs: true

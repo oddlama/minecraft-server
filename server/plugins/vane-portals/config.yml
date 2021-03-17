@@ -302,6 +302,17 @@ menus:
       # Default: "minecraft:ender_pearl"
       material: "minecraft:ender_pearl"
 
+    # Used to change and indicate group internal visibility.
+    visibility_group_internal:
+      # The item stack amount.
+      # Valid values: [0,)
+      # Default: 1
+      amount: 1
+
+      # The item stack material. Also accepts heads from the head library.
+      # Default: "minecraft:fire_charge"
+      material: "minecraft:fire_charge"
+
     # Used to change and indicate private visibility.
     visibility_private:
       # The item stack amount.
@@ -639,4 +650,4 @@ styles:
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 1
+version: 2
