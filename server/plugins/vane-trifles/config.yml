@@ -182,6 +182,21 @@ item_home_scroll:
   # Default: 10000
   cooldown: 10000
 
+item_reinforced_elytra:
+  # Enable item reinforced_elytra
+  # Default: true
+  enabled: true
+
+  netherite:
+    # Enable 'netherite' item variant
+    # Default: true
+    enabled: true
+
+    # Amount of defense points.
+    # Valid values: [0.0,)
+    # Default: 6.0
+    defense_points: 6.0
+
 item_sickle:
   # Enable item sickle
   # Default: true
@@ -372,4 +387,4 @@ repair_cost_limiter:
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 1
+version: 2
