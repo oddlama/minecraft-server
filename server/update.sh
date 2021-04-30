@@ -6,6 +6,20 @@ cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 source "../env.sh" || exit 1
 
 # Download paper
+function download_paper() {
+	local paper_version
+	local paper_build
+	paper_version="$(curl -s -o - "https://papermc.io/api/v1/paper" | jq -r ".versions[0]")" \
+		|| die "Error while retrieving paper version"
+	paper_build="$(curl -s -o - "https://papermc.io/api/v1/paper/$paper_version" | jq -r ".builds.latest")" \
+		|| die "Error while retrieving paper build"
+
+	status "Downloading paper version $paper_version build $paper_build"
+	curl --progress-bar "https://papermc.io/api/v1/paper/$paper_version/$paper_build/download" \
+		-o paper.jar \
+		|| die "Could not download paper"
+}
+
 download_paper
 
 # Create plugins directory
