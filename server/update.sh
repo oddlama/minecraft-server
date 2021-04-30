@@ -16,20 +16,34 @@ mkdir -p plugins \
 mkdir -p plugins/optional \
 	|| die "Could not create directory 'plugins/optional'"
 
-# Copy vane modules
-status "Copying vane modules"
-cp "../build/vane/"*.jar plugins/ \
-	|| die "Could not copy vane modules"
+# Download and verify vane modules
+status "Downloading vane modules"
+for module in admin bedtime core enchantments permissions portals regions trifles; do
+	curl --progress-bar -L "https://github.com/oddlama/vane/releases/download/v$VANE_VERSION/vane-$module-$VANE_VERSION.jar" \
+		-o plugins/vane-$module.jar \
+		|| die "Could not download vane-$module-$VANE_VERSION.jar"
+
+	curl -s -L "https://github.com/oddlama/vane/releases/download/v$VANE_VERSION/vane-$module-$VANE_VERSION.jar.asc" \
+		-o plugins/vane-$module.jar.asc \
+		|| die "Could not download vane-$module-$VANE_VERSION.jar.asc"
+done
+
+status "Verifying vane signatures"
+for jar in plugins/vane-*.jar; do
+	gpg --verify "$jar.asc" "$jar" \
+		|| die "Could not verify signature for '$jar'"
+	rm "$jar.asc"
+done
 
 # Download ProtocolLib
 status "Downloading ProtocolLib"
-curl "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar" \
+curl --progress-bar "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar" \
 	-o plugins/ProtocolLib.jar \
 	|| die "Could not download ProtocolLib"
 
 # Dynmap
 status "Downloading dynmap"
-curl "https://dynmap.us/builds/dynmap/Dynmap-3.1-SNAPSHOT-spigot.jar" \
+curl --progress-bar "https://dynmap.us/builds/dynmap/Dynmap-$DYNMAP_VERSION-spigot.jar" \
 	-o plugins/dynmap.jar \
 	|| die "Could not download dynmap"
 
@@ -38,6 +52,6 @@ curl "https://dynmap.us/builds/dynmap/Dynmap-3.1-SNAPSHOT-spigot.jar" \
 
 # WorldEdit?
 status "Downloading worldedit"
-curl -L "https://dev.bukkit.org/projects/worldedit/files/latest" \
+curl --progress-bar -L "https://dev.bukkit.org/projects/worldedit/files/latest" \
 	-o plugins/optional/worldedit.jar \
 	|| die "Could not download worldedit"

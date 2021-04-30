@@ -1,5 +1,23 @@
 #!/bin/bash
 
+export DYNMAP_VERSION="3.1-SNAPSHOT"
+export VANE_VERSION="1.1.3"
+
+function download_paper() {
+	local paper_version
+	local paper_build
+	paper_version="$(curl -s -o - "https://papermc.io/api/v1/paper" | jq -r ".versions[0]")" \
+		|| die "Error while retrieving paper version"
+	paper_build="$(curl -s -o - "https://papermc.io/api/v1/paper/$paper_version" | jq -r ".builds.latest")" \
+		|| die "Error while retrieving paper build"
+
+	status "Downloading paper version $paper_version build $paper_build"
+	curl --progress-bar "https://papermc.io/api/v1/paper/$paper_version/$paper_build/download" \
+		-o paper.jar \
+		|| die "Could not download paper"
+}; export -f download_paper
+
+
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
@@ -12,13 +30,6 @@ status "Preparing temporary directory '$TMP_DIR'"
 pushd "$TMP_DIR" >/dev/null \
 	|| die "could not cd into '$TMP_DIR'"
 
-
-status "Cloning into https://github.com/oddlama/vane"
-git clone "https://github.com/oddlama/vane" \
-	|| die "Could not clone into vane"
-
-cd vane \
-	|| die "Could not cd into vane"
 
 TMP_SERVER="$TMP_DIR/tmp_server"
 status "Preparing temporary server in '$TMP_SERVER'"
@@ -47,25 +58,8 @@ mkdir -p "libs" \
 cp "$TMP_SERVER/cache/patched"*.jar "libs/" \
 	|| die "Could not copy targets to libs/"
 
-status "Compiling vane"
-if ! ./gradlew build; then
-	status "Gradle failed, retrying once."
-	./gradlew build \
-		|| die "Could not compile vane"
-fi
-
 popd >/dev/null \
 	|| die "could not popd out of '$TMP_DIR'"
-
-status "Copying targets"
-mkdir -p "build/vane" \
-	|| die "Could not create directory build/vane"
-mkdir -p "build/vane-waterfall" \
-	|| die "Could not create directory build/vane-waterfall"
-cp "$TMP_DIR/vane/target/"*.jar "build/vane/" \
-	|| die "Could not copy targets to build/vane/"
-cp "$TMP_DIR/vane/target-waterfall/"*.jar "build/vane-waterfall/" \
-	|| die "Could not copy targets to build/vane-waterfall/"
 
 [[ $TMP_DIR == /tmp/* ]] \
 	&& rm -rf "$TMP_DIR"
@@ -77,6 +71,3 @@ proxy/update.sh \
 status "Updating server"
 server/update.sh \
 	|| exit 1
-
-status "Cleaning up"
-rm -r build
