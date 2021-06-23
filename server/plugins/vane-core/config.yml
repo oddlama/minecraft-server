@@ -14,6 +14,11 @@ enabled: true
 # Default: true
 metrics_enabled: true
 
+command_customitem:
+  # Enable command customitem
+  # Default: true
+  enabled: true
+
 command_vane:
   # Enable command vane
   # Default: true
@@ -155,4 +160,4 @@ resource_pack:
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 2
+version: 3

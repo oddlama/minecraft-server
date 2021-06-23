@@ -62,9 +62,9 @@ fast_walking:
 
   # Materials on which players will walk faster.
   # Default:
-  #   - "minecraft:grass_path"
+  #   - "minecraft:dirt_path"
   materials:
-    - "minecraft:grass_path"
+    - "minecraft:dirt_path"
 
 item_empty_xp_bottle:
   # Enable item empty_xp_bottle
@@ -389,4 +389,4 @@ repair_cost_limiter:
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 2
+version: 3
