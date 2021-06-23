@@ -2,8 +2,8 @@
 
 set -uo pipefail
 
-export DYNMAP_VERSION="3.1-SNAPSHOT"
-export VANE_VERSION="1.1.3"
+export DYNMAP_VERSION="3.2-SNAPSHOT"
+export VANE_VERSION="1.1.6"
 
 
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
