@@ -32,7 +32,7 @@ cost_xz_base: 2.0
 # Default: 1.15
 cost_y_multiplicator: 1.15
 
-# The currency material for regions.
+# The currency material for regions. The alternative option to an economy plugin.
 # Default: "minecraft:diamond"
 currency: "minecraft:diamond"
 
@@ -75,6 +75,17 @@ dynmap:
   # Valid values: [1,)
   # Default: 2
   line_weight: 2
+
+# Use economy via VaultAPI as currency provider.
+# Default: false
+economy_as_currency: false
+
+# The amount of decimal places the costs will be rounded to. If set to -1, it will
+# round to the amount of decimal places specified by your economy plugin. If set
+# to 0, costs will simply be rounded up to the nearest integer.
+# Valid values: [-1,)
+# Default: 0
+economy_decimal_places: 0
 
 # Maximum region extent in x direction.
 # Valid values: [1,)
@@ -646,4 +657,4 @@ min_region_extent_z: 4
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 2
+version: 3

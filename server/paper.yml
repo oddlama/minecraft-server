@@ -14,6 +14,9 @@ settings:
     total-multiplier: 0.98
   bungee-online-mode: true
   chunk-tasks-per-tick: 1000
+  console:
+    enable-brigadier-completions: true
+    enable-brigadier-highlighting: true
   console-has-all-permissions: false
   enable-player-collisions: true
   fix-entity-position-desync: true

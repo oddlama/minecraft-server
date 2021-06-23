@@ -21,7 +21,7 @@ command_vane:
 
 hide_commands:
   # Hide error messages for all commands for which a player has no permission, by
-  # displaying the default "Unknown Command" message instead.
+  # displaying the default unknown command message instead.
   # Default: true
   enabled: true
 
@@ -122,12 +122,6 @@ menus:
       # Default: "minecraft:barrier"
       material: "minecraft:barrier"
 
-message_delaying:
-  # Enable delaying messages to players until their resource pack is fully loaded.
-  # This prevents display of untranslated chat messages.
-  # Default: true
-  enabled: true
-
 resource_pack:
   # Enable resource pack distribution.
   # Default: true
@@ -138,6 +132,12 @@ resource_pack:
   # 'vane.core.resource_pack.bypass'.
   # Default: true
   force: true
+
+  message_delaying:
+    # Enable delaying messages to players until their resource pack is fully
+    # loaded. This prevents display of untranslated chat messages.
+    # Default: true
+    enabled: true
 
   # Resource pack SHA-1 sum. Required to verify resource pack integrity.
   # Default: ""
@@ -155,4 +155,4 @@ resource_pack:
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
-version: 1
+version: 2

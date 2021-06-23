@@ -373,17 +373,19 @@ recipe_unlock:
   enabled: true
 
 repair_cost_limiter:
-  # Enables limited repair cost for all items. Can be used to remove too-expensive
-  # repairs.
+  # Removes the cost limit on the anvil for all recipes. This means even if the
+  # client shows 'Too Expensive' in the anvil, the result may still be crafted, as
+  # long as the player has the required amount of levels (which unfortunately will
+  # not be shown).
   # Default: true
   enabled: true
 
-  # Repair cost override for anvil-crafted items. Set < 39 to remove too-expensive
-  # for <item> + <material> crafting. Set < 20 to remove too-expensive for any
-  # item + item combination.
+  # Limit anvil crafting cost. Set < 40 to remove 'Too Expensive' altogether.
+  # (Costs greater than 40 will still be craftable, even if it shows 'Too
+  # Expensive')
   # Valid values: [0,)
-  # Default: 19
-  max_repair_cost: 12
+  # Default: 39
+  max_repair_cost: 39
 
 # DO NOT CHANGE! The version of this config file. Used to determine if the config
 # needs to be updated.
