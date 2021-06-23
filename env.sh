@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export PATH="/opt/oracle-jdk-bin-11.0.2/bin:$PATH"
-export JAVA_HOME="/opt/oracle-jdk-bin-11.0.2"
+export PATH="$HOME/openjdk-jre-16/bin:$PATH"
+export JAVA_HOME="$HOME/openjdk-jre-16"
 
 einfo() {
 	echo " [1;32m*[m $*"
