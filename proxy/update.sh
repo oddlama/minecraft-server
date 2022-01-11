@@ -9,13 +9,16 @@ source "../env.sh" || exit 1
 function download_waterfall() {
 	local waterfall_version
 	local waterfall_build
-	waterfall_version="$(curl -s -o - "https://papermc.io/api/v1/waterfall" | jq -r ".versions[0]")" \
+	local waterfall_download
+	waterfall_version="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall" | jq -r ".versions[-1]")" \
 		|| die "Error while retrieving waterfall version"
-	waterfall_build="$(curl -s -o - "https://papermc.io/api/v1/waterfall/$waterfall_version" | jq -r ".builds.latest")" \
-		|| die "Error while retrieving waterfall build"
+	waterfall_build="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version" | jq -r ".builds[-1]")" \
+		|| die "Error while retrieving waterfall builds"
+	waterfall_download="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build" | jq -r ".downloads.application.name")" \
+		|| die "Error while retrieving waterfall download name"
 
-	status "Downloading waterfall version $waterfall_version build $waterfall_build"
-	curl --progress-bar "https://papermc.io/api/v1/waterfall/$waterfall_version/$waterfall_build/download" \
+	status "Downloading waterfall version $waterfall_version build $waterfall_build ($waterfall_download)"
+	curl --progress-bar "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build/downloads/$waterfall_download" \
 		-o waterfall.jar \
 		|| die "Could not download waterfall"
 }
@@ -28,19 +31,23 @@ mkdir -p plugins \
 
 # Download and verify vane modules
 status "Downloading vane modules"
-for module in waterfall ; do
-	curl --progress-bar -L "https://github.com/oddlama/vane/releases/download/v$VANE_VERSION/vane-$module-$VANE_VERSION.jar" \
+latest_vane_version="$(curl -s "https://api.github.com/repos/oddlama/vane/releases/latest" | jq -r .tag_name)"
+latest_vane_version="${latest_vane_version:1}" # strip v
+for module in waterfall; do
+	curl --progress-bar -L "https://github.com/oddlama/vane/releases/download/v$latest_vane_version/vane-$module-$latest_vane_version.jar" \
 		-o plugins/vane-$module.jar \
-		|| die "Could not download vane-$module-$VANE_VERSION.jar"
+		|| die "Could not download vane-$module-$latest_vane_version.jar"
 
-	curl -s -L "https://github.com/oddlama/vane/releases/download/v$VANE_VERSION/vane-$module-$VANE_VERSION.jar.asc" \
+	curl -s -L "https://github.com/oddlama/vane/releases/download/v$latest_vane_version/vane-$module-$latest_vane_version.jar.asc" \
 		-o plugins/vane-$module.jar.asc \
-		|| die "Could not download vane-$module-$VANE_VERSION.jar.asc"
+		|| die "Could not download vane-$module-$latest_vane_version.jar.asc"
 done
 
-status "Verifying vane signatures"
-for jar in plugins/vane-*.jar; do
-	gpg --quiet --verify "$jar.asc" "$jar" \
-		|| die "Could not verify signature for '$jar'"
-	rm "$jar.asc"
-done
+if [[ "$1" != "noverify" ]]; then
+	status "Verifying vane signatures"
+	for jar in plugins/vane-*.jar; do
+		gpg --verify "$jar.asc" "$jar" \
+			|| die "Could not verify signature for '$jar'"
+		rm "$jar.asc"
+	done
+fi

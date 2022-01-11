@@ -2,10 +2,6 @@
 
 set -uo pipefail
 
-export DYNMAP_VERSION="3.2-SNAPSHOT"
-export VANE_VERSION="1.2.0"
-
-
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "env.sh" || exit 1
