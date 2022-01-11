@@ -43,7 +43,7 @@ for module in waterfall; do
 		|| die "Could not download vane-$module-$latest_vane_version.jar.asc"
 done
 
-if [[ "$1" != "noverify" ]]; then
+if [[ "${1-}" != "noverify" ]]; then
 	status "Verifying vane signatures"
 	for jar in plugins/vane-*.jar; do
 		gpg --verify "$jar.asc" "$jar" \
