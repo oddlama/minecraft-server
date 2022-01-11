@@ -7,9 +7,9 @@ cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 source "env.sh" || exit 1
 
 status "Updating proxy"
-proxy/update.sh \
+proxy/update.sh "$@" \
 	|| exit 1
 
 status "Updating server"
-server/update.sh \
+server/update.sh "$@" \
 	|| exit 1
