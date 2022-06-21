@@ -63,11 +63,11 @@ cd ~minecraft \
 
 if [[ -e deploy ]]; then
 	status "Updating deploy repository"
-	runuser -u minecraft git -C deploy pull \
+	runuser -u minecraft -- git -C deploy pull \
 		|| die "Could not pull repository"
 else
 	status "Cloning deploy repository"
-	runuser -u minecraft git clone "https://github.com/oddlama/minecraft-server" deploy \
+	runuser -u minecraft -- git clone "https://github.com/oddlama/minecraft-server" deploy \
 		|| die "Could not clone repository"
 fi
 
@@ -77,7 +77,7 @@ cd deploy \
 echo "eula=true" > server/eula.txt
 chown minecraft: server/eula.txt
 
-runuser -u minecraft ./update.sh \
+runuser -u minecraft -- ./update.sh \
 	|| die "Could not update server files"
 
 
