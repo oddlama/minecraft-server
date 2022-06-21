@@ -11,7 +11,7 @@ function status() { echo "[1m$*[m"; }
 # Ensure that all required tools are installed
 
 abort=0
-for cmd in jq git tmux rdiff-backup java; do
+for i in jq git tmux rdiff-backup java; do
 	if ! type "$i" &>/dev/null; then
 		echo "[1;31mmissing: [1;33m$i[m" >&2
 		abort=1
