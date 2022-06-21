@@ -82,7 +82,7 @@ function download_waterfall() {
 }
 
 # $1: repo, e.g. "oddlama/vane"
-LATEST_GITHUB_RELEASE_TAG_CACHE=()
+declare -A LATEST_GITHUB_RELEASE_TAG_CACHE
 function latest_github_release_tag() {
 	local repo=$1
 	if [[ -v "LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]" ]]; then
