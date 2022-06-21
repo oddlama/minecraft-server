@@ -86,12 +86,14 @@ declare -A LATEST_GITHUB_RELEASE_TAG_CACHE
 function latest_github_release_tag() {
 	local repo=$1
 	if [[ -v "LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]" ]]; then
+		echo "cached: ${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}" >&2
 		echo "${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}"
 	else
 		local tmp
 		tmp=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | jq -r .tag_name) \
 			|| die "Error while retrieving latest github release tag of $repo"
 		LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]="$tmp"
+		echo "new: $tmp -> store ${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}" >&2
 	fi
 }
 
