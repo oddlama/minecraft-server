@@ -100,27 +100,29 @@ systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
 ################################################################
 # Appendix
 
-echo "[1;32mInstallation successful![m"
-echo "Both the proxy and main server have successfully been enabled!"
-echo "The actual minecraft server will be started, when a player connects via the proxy."
-echo
-echo "Please make sure that port 25565 (and all multiplexer ports) are exposed"
-echo "to the internet via a port-foward or similar mechanism."
-echo "If you want to change your server configuration, please do so now."
-echo
-echo "To attach to the proxy or server console, use the following commands respectively:"
-echo "  \$ minecraft-attach proxy"
-echo "  \$ minecraft-attach server"
-echo "[1;31mDo NOT quit this tmux terminal![m It has to stay open in the background"
-echo "at all times. Instead, press 'C-b d' (Ctrl+b, then d) to detach again."
-echo "If you closed it accidentally, restart the respective server with:"
-echo "  systemctl restart minecraft-<whatever>"
-echo
-echo "To stop the server or proxy completely, you can use these commands respectively:"
-echo "  \$ systemctl stop minecraft-server"
-echo "  \$ systemctl stop minecraft-proxy"
-echo "This is just temporary until either your physical server is restarted or you execute:"
-echo "  \$ systemctl stop minecraft-server"
-echo "  \$ systemctl stop minecraft-proxy"
-echo
-echo "For more information, visit https://github.com/oddlama/minecraft-server"
+cat <<EOF
+===============================================================================
+[1;32mInstallation successful![m
+Both the proxy and main server have successfully been enabled! The actual
+minecraft server will be started, when a player connects via the proxy.
+
+Please make sure that port 25565 (and all multiplexer ports) are exposed to
+the internet via a port-foward or similar mechanism. If you want to change
+your server configuration, please do so now.
+
+To attach to the proxy or server console, please use the following command:
+
+    minecraft-attach <proxy|server>
+
+This will open the respective tmux (a terminal that is running on your server
+in the background for the specific server). [1;31mDo NOT close this terminal![m
+It has to stay open in the background at all times, as it is runs the server
+instance. Instead, press [32m'C-b d' (Ctrl+b, then d)[m to detach from it.
+
+If you did close it accidentally, please restart the respective server with:
+
+    systemctl restart minecraft-<proxy|server>
+
+For more information, visit https://github.com/oddlama/minecraft-server
+-------------------------------------------------------------------------------
+EOF
