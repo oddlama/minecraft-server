@@ -3,15 +3,26 @@
 set -o pipefail
 
 SERVER_NAME="$1"
-SERVER_DIR="/opt/minecraft/server/$SERVER_NAME"
+DEPLOY_DIR="/var/lib/minecraft/deploy"
+SERVER_DIR="$DEPLOY_DIR/$SERVER_NAME"
 SERVER_SERVICE_SCRIPT="$SERVER_DIR/service.sh"
+
+if [[ ! -e "$SERVER_DIR" ]]; then
+	echo "Unknown server name '$SERVER_NAME'" >&2
+	echo -n "Available servers: " >&2
+	for i in "$DEPLOY_DIR/"*"/service.sh"; do
+		echo -n "$(basename "$(dirname "$i")")" >&2
+	done
+	echo >&2
+	exit 1
+fi
 
 run_server() {
 	(
 		cd "$SERVER_DIR"
 		runuser -u minecraft -- \
 			env \
-				INITD=true \
+				CALLED_FROM_SERVICE=true \
 				SERVER_NAME="$SERVER_NAME" \
 				"$SERVER_SERVICE_SCRIPT" \
 				"$@"
