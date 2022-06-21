@@ -9,7 +9,8 @@ set -uo pipefail
 function print_error() { echo "[1;31merror:[m $*" >&2; }
 function die() { print_error "$@"; exit 1; }
 
-function status() { echo "[1m$*[m"; }
+function status() { echo "[1;33m$*[m"; }
+function substatus() { echo "[32m$*[m"; }
 function datetime() { date "+%Y-%m-%d %H:%M:%S"; }
 function status_time() { echo "[1;33m[$(datetime)] [1m$*[m"; }
 
@@ -56,7 +57,7 @@ function download_paper() {
 	paper_download="$(curl -s -o - "https://papermc.io/api/v2/projects/paper/versions/$paper_version/builds/$paper_build" | jq -r ".downloads.application.name")" \
 		|| die "Error while retrieving paper download name"
 
-	status "Downloading paper version $paper_version build $paper_build ($paper_download)"
+	substatus "Downloading paper version $paper_version build $paper_build ($paper_download)"
 	curl --progress-bar "https://papermc.io/api/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
 		-o "$1" \
 		|| die "Could not download paper"
@@ -74,7 +75,7 @@ function download_waterfall() {
 	waterfall_download="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build" | jq -r ".downloads.application.name")" \
 		|| die "Error while retrieving waterfall download name"
 
-	status "Downloading waterfall version $waterfall_version build $waterfall_build ($waterfall_download)"
+	substatus "Downloading waterfall version $waterfall_version build $waterfall_build ($waterfall_download)"
 	curl --progress-bar "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build/downloads/$waterfall_download" \
 		-o "$1" \
 		|| die "Could not download waterfall"
@@ -100,7 +101,7 @@ function latest_github_release_tag() {
 #     {VERSION} will be replaced with release tag excluding a leading v, if present
 # $3: output file name
 function download_latest_github_release() {
-	status "Downloading $remote_file from github repo $repo"
+	substatus "Downloading $remote_file from github repo $repo"
 
 	local repo=$1
 	local remote_file=$2
@@ -112,13 +113,13 @@ function download_latest_github_release() {
 	remote_file="${remote_file/"/{TAG}"/"$tag"}"
 	remote_file="${remote_file/"/{VERSION}"/"$version"}"
 
-	curl -L "https://github.com/$repo/releases/download/$tag/$remote_file" -o "$output" \
+	curl --progress-bar -L "https://github.com/$repo/releases/download/$tag/$remote_file" -o "$output" \
 		|| die "Could not download $remote_file from github repo $repo"
 }
 
 # $1: url
 # $2: output file name
 function download_file() {
-	status "Downloading $2"
-	curl -L "$1" -o "$2" || die "Could not download $1"
+	substatus "Downloading $2"
+	curl --progress-bar -L "$1" -o "$2" || die "Could not download $1"
 }
