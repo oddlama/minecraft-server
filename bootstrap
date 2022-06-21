@@ -77,7 +77,7 @@ cd deploy \
 echo "eula=true" > server/eula.txt
 chown minecraft: server/eula.txt
 
-runuser -u minecraft -- ./update.sh \
+runuser -u minecraft -- ./update.sh < "$TTY" \
 	|| die "Could not update server files"
 
 
@@ -85,12 +85,12 @@ runuser -u minecraft -- ./update.sh \
 # Install systemd services
 
 status "Installing service files"
-./contrib/install.sh \
+./contrib/install.sh < "$TTY" \
 	|| die "Error while installing service files"
 
 
 ################################################################
 # Enable and start services
 
-systemctl enable --now minecraft-server minecraft-proxy \
+systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
 	|| die "Error while enabling services"
