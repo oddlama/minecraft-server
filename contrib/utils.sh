@@ -14,6 +14,13 @@ function substatus() { echo "[32m$*[m"; }
 function datetime() { date "+%Y-%m-%d %H:%M:%S"; }
 function status_time() { echo "[1;33m[$(datetime)] [1m$*[m"; }
 
+function flush_stdin() {
+	local empty_stdin
+	# Unused variable is intentional.
+	# shellcheck disable=SC2034
+	while read -r -t 0.01 empty_stdin; do true; done
+}
+
 function ask() {
 	local response
 	while true; do
@@ -85,16 +92,13 @@ function download_waterfall() {
 declare -A LATEST_GITHUB_RELEASE_TAG_CACHE
 function latest_github_release_tag() {
 	local repo=$1
-	if [[ -v "LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]" ]]; then
-		echo "cached: ${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}" >&2
-		echo "${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}"
-	else
+	if [[ ! -v "LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]" ]]; then
 		local tmp
 		tmp=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | jq -r .tag_name) \
 			|| die "Error while retrieving latest github release tag of $repo"
 		LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]="$tmp"
-		echo "new: $tmp -> store ${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}" >&2
 	fi
+	echo "${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}"
 }
 
 # $1: repo, e.g. "oddlama/vane"
