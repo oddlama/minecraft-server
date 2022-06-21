@@ -13,7 +13,7 @@ BACKUP_DIRS=(
 
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
-source "../utils.sh" || exit 1
+source "../contrib/utils.sh" || exit 1
 
 status_time "Starting backup"
 
