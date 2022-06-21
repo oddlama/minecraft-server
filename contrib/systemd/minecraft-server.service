@@ -12,8 +12,8 @@ Environment="PIDFILE=/run/minecraft/server.pid"
 
 Type=forking
 PIDFile=/run/minecraft/server.pid
-ExecStart=/var/lib/minecraft/server/server/service.sh start
-ExecStop=/var/lib/minecraft/server/server/service.sh stop
+ExecStart=/var/lib/minecraft/deploy/server/service.sh start
+ExecStop=/var/lib/minecraft/deploy/server/service.sh stop
 
 PrivateTmp=true
 PrivateDevices=true
@@ -37,9 +37,8 @@ SystemCallFilter=@system-service
 AmbientCapabilities=CAP_KILL
 CapabilityBoundingSet=CAP_KILL
 
-WorkingDirectory=/var/lib/minecraft/server/server
+WorkingDirectory=/var/lib/minecraft/deploy/server
 RuntimeDirectory=minecraft
-LogsDirectory=minecraft/server
 
 ReadWriteDirectories=/var/lib/minecraft
 

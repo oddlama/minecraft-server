@@ -21,13 +21,13 @@ wait_for_pidfile_to_disappear() {
 
 # Prepare TMUX command
 TMUX_SOCKET="/var/lib/minecraft/tmux/$SERVER_NAME"
-TMUX_EXEC="/usr/bin/tmux -2 -f /etc/tmux.conf -S $TMUX_SOCKET set -g default-shell /bin/bash ; "
+TMUX_EXEC=("/usr/bin/tmux" "-2" "-f" "/etc/tmux.conf" "-S" "$TMUX_SOCKET" "set" "-g" "default-shell" "/bin/bash" ";")
 
 service_start() {
-	$TMUX_EXEC kill-server 2>/dev/null
+	"${TMUX_EXEC[@]}" kill-server 2>/dev/null
 	wait_for_pidfile_to_disappear
 
-	exec_fork $TMUX_EXEC new-session -d "$1"
+	exec_fork "${TMUX_EXEC[@]}" new-session -d "$1"
 }
 
 service_stop() {
@@ -35,7 +35,7 @@ service_stop() {
 
 	if ! [[ -e $PIDFILE ]]; then
 		# If there is no pidfile, simply force kill the tmux server
-		$TMUX_EXEC kill-server 2>/dev/null
+		"${TMUX_EXEC[@]}" kill-server 2>/dev/null
 		return
 	fi
 
@@ -49,9 +49,9 @@ service_stop() {
 
 	sleep 1
 	# Then exit tmux
-	$TMUX_EXEC kill-server 2>/dev/null
+	"${TMUX_EXEC[@]}" kill-server 2>/dev/null
 }
 
 service_attach() {
-	$TMUX_EXEC attach-session
+	"${TMUX_EXEC[@]}" attach-session
 }

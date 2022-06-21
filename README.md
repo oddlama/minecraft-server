@@ -25,10 +25,20 @@ Prerequisites:
 - systemd, >=python3.7, git, curl (all probably already installed)
 - jq, tmux, rdiff-backup
 
-- clone
-- create minecraft user
-- edit systemd service to allow access to paths
-- call install script
+```
+# Create new user for minecraft user
+useradd --system --home-dir /var/lib/minecraft --no-create-home minecraft
+
+#
+runuser -u minecraft /bin/bash
+
+# Go into home directory
+cd
+
+git clone ... deploy
+
+./install.sh
+```
 
 ## Usage
 
@@ -39,3 +49,8 @@ minec
 ## Committing your yaml files
 
 -
+
+## Useful tools
+
+- [Cubiomes Viewer](https://github.com/Cubitect/cubiomes-viewer) - To find a good world seed
+- [MCASelector](https://github.com/Querz/mcaselector) - To trim e.g. unpopulated chunks

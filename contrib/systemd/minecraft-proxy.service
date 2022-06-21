@@ -12,8 +12,8 @@ Environment="PIDFILE=/run/minecraft/proxy.pid"
 
 Type=forking
 PIDFile=/run/minecraft/proxy.pid
-ExecStart=/var/lib/minecraft/server/proxy/service.sh start
-ExecStop=/var/lib/minecraft/server/proxy/service.sh stop
+ExecStart=/var/lib/minecraft/deploy/proxy/service.sh start
+ExecStop=/var/lib/minecraft/deploy/proxy/service.sh stop
 
 PrivateTmp=true
 PrivateDevices=true
@@ -37,9 +37,8 @@ SystemCallFilter=@system-service
 AmbientCapabilities=CAP_KILL
 CapabilityBoundingSet=CAP_KILL
 
-WorkingDirectory=/var/lib/minecraft/server/proxy
+WorkingDirectory=/var/lib/minecraft/deploy/proxy
 RuntimeDirectory=minecraft
-LogsDirectory=minecraft/proxy
 
 ReadWriteDirectories=/var/lib/minecraft
 
