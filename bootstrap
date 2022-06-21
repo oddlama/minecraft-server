@@ -85,7 +85,7 @@ runuser -u minecraft ./update.sh \
 # Install systemd services
 
 status "Installing service files"
-./install.sh \
+./contrib/install.sh \
 	|| die "Error while installing service files"
 
 
