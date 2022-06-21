@@ -108,8 +108,8 @@ function download_latest_github_release() {
 	local tag=$(latest_github_release_tag "$repo")
 	local version="${tag#v}" # Always strip leading v in version.
 
-	remote_file="${remote_file/"/{TAG}"/"$tag"}"
-	remote_file="${remote_file/"/{VERSION}"/"$version"}"
+	remote_file="${remote_file//"{TAG}"/"$tag"}"
+	remote_file="${remote_file//"{VERSION}"/"$version"}"
 
 	substatus "Downloading $remote_file from github repo $repo"
 	curl --progress-bar -L "https://github.com/$repo/releases/download/$tag/$remote_file" -o "$output" \
