@@ -23,7 +23,7 @@ Prerequisites:
 
 - A linux server with Java 17 or higher
 - systemd, >=python3.7, git, curl (all probably already installed)
-- tmux, rdiff-backup
+- jq, tmux, rdiff-backup
 
 - clone
 - create minecraft user

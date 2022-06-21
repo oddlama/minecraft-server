@@ -1,4 +1,13 @@
 #!/bin/bash
 
+set -uo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
+	|| exit 1
+source "utils.sh" || exit 1
+
+
+################################################################
+# Sort keys in all configuration files
+
 contrib/sort_yaml.py server/*.yml proxy/*.yml
 contrib/sort_serverproperties.py server/server.properties

@@ -13,17 +13,14 @@ BACKUP_DIRS=(
 
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
-source "../env.sh" || exit 1
+source "../utils.sh" || exit 1
 
-# Backup world
 status_time "Starting backup"
 
 mkdir -p "$BACKUP_TO" &>/dev/null
 for i in "${!BACKUP_DIRS[@]}"; do
-	status_time "Backing up ${BACKUP_DIRS[$i]}"
-	echo "$(datetime) Backing up ${BACKUP_DIRS[$i]}" &>> "$BACKUP_LOG_FILE"
+	status_time "Backing up ${BACKUP_DIRS[$i]}" | tee -a "$BACKUP_LOG_FILE"
 	rdiff-backup "${BACKUP_DIRS[$i]}" "$BACKUP_TO/${BACKUP_DIRS[$i]}" &>> "$BACKUP_LOG_FILE"
 done
 
-status_time "Backup finished"
-echo "$(datetime) Backup finished" &>> "$BACKUP_LOG_FILE"
+status_time "Backup finished" | tee -a "$BACKUP_LOG_FILE"

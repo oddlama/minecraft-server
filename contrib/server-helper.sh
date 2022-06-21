@@ -31,7 +31,7 @@ service_start() {
 }
 
 service_stop() {
-	einfo "Please be patient, stopping the server can take some time (up to $MAX_SECONDS_WAIT seconds)."
+	status "Please be patient, stopping the server can take some time (up to $MAX_SECONDS_WAIT seconds)."
 
 	if ! [[ -e $PIDFILE ]]; then
 		# If there is no pidfile, simply force kill the tmux server
@@ -45,7 +45,7 @@ service_stop() {
 
 	# Wait until stopped
 	wait_for_pidfile_to_disappear \
-		|| eerror "Pidfile still existent after $MAX_SECONDS_WAIT seconds. Ignoring, server might be forcibly killed."
+		|| print_error "Pidfile still existent after $MAX_SECONDS_WAIT seconds. Ignoring, server might be forcibly killed."
 
 	sleep 1
 	# Then exit tmux
