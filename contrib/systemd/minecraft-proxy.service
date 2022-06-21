@@ -6,14 +6,10 @@ After=network.target
 User=minecraft
 Group=minecraft
 
-Environment="CALLED_FROM_SERVICE=true"
-Environment="SERVER_NAME=proxy"
-Environment="PIDFILE=/run/minecraft/proxy.pid"
-
-Type=forking
-PIDFile=/run/minecraft/proxy.pid
-ExecStart=/var/lib/minecraft/deploy/proxy/service.sh start
-ExecStop=/var/lib/minecraft/deploy/proxy/service.sh stop
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=tmux -S /var/lib/minecraft/tmux/proxy set -g default-shell /bin/bash ; new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
+ExecStop=tmux -S /var/lib/minecraft/tmux/proxy kill-server
 
 PrivateTmp=true
 PrivateDevices=true
@@ -38,8 +34,6 @@ AmbientCapabilities=CAP_KILL
 CapabilityBoundingSet=CAP_KILL
 
 WorkingDirectory=/var/lib/minecraft/deploy/proxy
-RuntimeDirectory=minecraft
-
 ReadWriteDirectories=/var/lib/minecraft
 
 [Install]

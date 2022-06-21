@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# Necessary env: PIDFILE (will be created and deleted)
 
 import os
 import signal
@@ -35,17 +34,6 @@ def main():
     except ValueError:
         pass
 
-    # Check and create pidfile
-    pid = str(os.getpid())
-    pidfile = Path(os.environ["PIDFILE"])
-
-    if pidfile.is_file():
-        print(f"Pidfile {pidfile} already exists, exiting")
-        sys.exit(1)
-
-    with open(pidfile, 'w') as f:
-        f.write(pid)
-
     # Global state
     shared_data = {
         "stop": False,
@@ -53,6 +41,8 @@ def main():
     }
 
     def block_start():
+        if not blockfile:
+            return
         print(f"Blocking on {blockfile}")
         blockfile.touch()
         while blockfile.exists() and not shared_data["stop"]:
@@ -80,12 +70,12 @@ def main():
             print(f"Starting post process {post} ...")
             subprocess.run(post, preexec_fn=os.setsid)
 
-    def signal_forward(sig, frame):
+    def signal_forward(sig, _):
         if shared_data["process"]:
             print(f"Passing signal {sig} to child ...")
             try:
                 shared_data["process"].send_signal(sig)
-            except OSError as e:
+            except OSError:
                 pass
 
     def signal_forward_and_stop(sig, frame):
@@ -94,19 +84,17 @@ def main():
 
     signal.signal(signal.SIGINT, signal_forward)
     signal.signal(signal.SIGTERM, signal_forward_and_stop)
+    signal.signal(signal.SIGHUP, signal_forward_and_stop)
 
     # Run until killed
     try:
         while not shared_data["stop"]:
-            if blockfile:
-                block_start()
+            block_start()
             run_server()
         print("Exiting.")
     finally:
         if blockfile and blockfile.exists():
             blockfile.unlink()
-        if pidfile.exists():
-            pidfile.unlink()
 
 if __name__ == '__main__':
     main()

@@ -2,29 +2,18 @@
 
 set -o pipefail
 
-SERVER_NAME="$1"
-DEPLOY_DIR="/var/lib/minecraft/deploy"
-SERVER_DIR="$DEPLOY_DIR/$SERVER_NAME"
-SERVER_SERVICE_SCRIPT="$SERVER_DIR/service.sh"
+SERVER_NAME=$1
+TMUX_SOCKET=/var/lib/minecraft/tmux/$1
 
-if [[ ! -e "$SERVER_DIR" ]]; then
-	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'. Available servers:" >&2
-	for i in "$DEPLOY_DIR/"*"/service.sh"; do
-		echo " - $(basename "$(dirname "$i")")" >&2
+if [[ ! -e "$TMUX_SOCKET" ]]; then
+	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'. Running servers:" >&2
+	any=0
+	for i in "/var/lib/minecraft/tmux/"*; do
+		echo " - $i" >&2
+		any=1
 	done
+	[[ $any == 1 ]] || echo " - (none)"
 	exit 1
 fi
 
-run_server() {
-	(
-		cd "$SERVER_DIR"
-		runuser -u minecraft -- \
-			env \
-				CALLED_FROM_SERVICE=true \
-				SERVER_NAME="$SERVER_NAME" \
-				"$SERVER_SERVICE_SCRIPT" \
-				"$@"
-	)
-}
-
-run_server attach
+exec runuser -u minecraft -- tmux -S "$TMUX_SOCKET" attach-session

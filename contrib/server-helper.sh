@@ -21,7 +21,7 @@ wait_for_pidfile_to_disappear() {
 
 # Prepare TMUX command
 TMUX_SOCKET="/var/lib/minecraft/tmux/$SERVER_NAME"
-TMUX_EXEC=("/usr/bin/tmux" "-2" "-f" "/etc/tmux.conf" "-S" "$TMUX_SOCKET" "set" "-g" "default-shell" "/bin/bash" ";")
+TMUX_EXEC=("/usr/bin/tmux" "-2" "-S" "$TMUX_SOCKET" "set" "-g" "default-shell" "/bin/bash" ";")
 
 service_start() {
 	"${TMUX_EXEC[@]}" kill-server 2>/dev/null
