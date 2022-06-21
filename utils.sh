@@ -34,7 +34,7 @@ function ask() {
 # $@: command to run as minecraft if user was changed.
 #     You want to pass path/to/curent/script.sh "$@".
 function become_minecaft() {
-	if [[ $(id -u) != "minecraft" ]]; then
+	if [[ $(id -un) != "minecraft" ]]; then
 		if [[ $EUID == 0 ]] && ask "This script must be executed as the minecraft user. Change user and continue?"; then
 			exec runuser -u minecraft "$@"
 			die "Could not change user!"
