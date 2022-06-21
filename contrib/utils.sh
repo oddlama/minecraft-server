@@ -101,11 +101,11 @@ function latest_github_release_tag() {
 #     {VERSION} will be replaced with release tag excluding a leading v, if present
 # $3: output file name
 function download_latest_github_release() {
-	substatus "Downloading $remote_file from github repo $repo"
-
 	local repo=$1
 	local remote_file=$2
 	local output=$3
+
+	substatus "Downloading $remote_file from github repo $repo"
 
 	local tag=$(latest_github_release_tag "$repo")
 	local version="${tag#v}" # Always strip leading v in version.
