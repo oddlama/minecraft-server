@@ -2,8 +2,7 @@
 
 set -uo pipefail
 
-LOG_DIR="/var/log/minecraft/server"
-BACKUP_LOG_FILE="$LOG_DIR/backup.log"
+BACKUP_LOG_FILE="logs/backup.log"
 BACKUP_TO="backups"
 BACKUP_DIRS=(
 	'plugins'

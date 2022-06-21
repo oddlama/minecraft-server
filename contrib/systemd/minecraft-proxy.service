@@ -6,14 +6,14 @@ After=network.target
 User=minecraft
 Group=minecraft
 
-Environment="INITD=true"
+Environment="CALLED_FROM_SERVICE=true"
 Environment="SERVER_NAME=proxy"
 Environment="PIDFILE=/run/minecraft/proxy.pid"
 
 Type=forking
 PIDFile=/run/minecraft/proxy.pid
-ExecStart=/opt/minecraft/server/proxy/service.sh start
-ExecStop=/opt/minecraft/server/proxy/service.sh stop
+ExecStart=/var/lib/minecraft/server/proxy/service.sh start
+ExecStop=/var/lib/minecraft/server/proxy/service.sh stop
 
 PrivateTmp=true
 PrivateDevices=true
@@ -37,11 +37,11 @@ SystemCallFilter=@system-service
 AmbientCapabilities=CAP_KILL
 CapabilityBoundingSet=CAP_KILL
 
-WorkingDirectory=/opt/minecraft/server/proxy
+WorkingDirectory=/var/lib/minecraft/server/proxy
 RuntimeDirectory=minecraft
 LogsDirectory=minecraft/proxy
 
-ReadWriteDirectories=/opt/minecraft
+ReadWriteDirectories=/var/lib/minecraft
 
 [Install]
 WantedBy=multi-user.target

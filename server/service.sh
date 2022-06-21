@@ -3,8 +3,8 @@
 # Arguments:
 # $1: action (start, stop, attach)
 
-# Neceessary environment variables:
-# INITD=true
+# Necessary environment variables:
+# CALLED_FROM_SERVICE=true
 # SERVER_NAME
 # PIDFILE
 
@@ -15,8 +15,8 @@ source "../env.sh" || exit 1
 source "../contrib/server-helper.sh" || die "Failed to source server-helper"
 
 # Invocation protection
-INITD="${INITD:-false}"
-[[ $INITD == true ]] \
+CALLED_FROM_SERVICE="${CALLED_FROM_SERVICE:-false}"
+[[ $CALLED_FROM_SERVICE == true ]] \
 	|| die "Do not call this script directly! Use the init.d wrapper!"
 
 mkdir -p "$(dirname "$TMUX_SOCKET")"  \

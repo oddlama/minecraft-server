@@ -2,17 +2,9 @@
 
 set -uo pipefail
 
-LOG_DIR="/var/log/minecraft/server"
-
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "../env.sh" || exit 1
-
-# Create logs directory link
-mkdir -p "$LOG_DIR" \
-	|| die "Could not create directory '$LOG_DIR'"
-
-link_dir "$LOG_DIR" "logs"
 
 # Start java
 status "Exec server"
@@ -38,16 +30,3 @@ exec java -Xms2G -Xmx2G \
 	-Dusing.aikars.flags=https://mcflags.emc.gs \
 	-Daikars.new.flags=true \
 	-jar paper.jar nogui
-
-# Backup world
-status_time "Starting backup"
-
-mkdir -p "$BACKUP_TO" &>/dev/null
-for i in "${!BACKUP_DIRS[@]}"; do
-	status_time "Backing up ${BACKUP_DIRS[$i]}"
-	echo "$(datetime) Backing up ${BACKUP_DIRS[$i]}" &>> "$BACKUP_LOG_FILE"
-	rdiff-backup "${BACKUP_DIRS[$i]}" "$BACKUP_TO/${BACKUP_DIRS[$i]}" &>> "$BACKUP_LOG_FILE"
-done
-
-status_time "Backup finished"
-echo "$(datetime) Backup finished" &>> "$BACKUP_LOG_FILE"

@@ -6,14 +6,14 @@ After=network.target
 User=minecraft
 Group=minecraft
 
-Environment="INITD=true"
+Environment="CALLED_FROM_SERVICE=true"
 Environment="SERVER_NAME=server"
 Environment="PIDFILE=/run/minecraft/server.pid"
 
 Type=forking
 PIDFile=/run/minecraft/server.pid
-ExecStart=/opt/minecraft/server/server/service.sh start
-ExecStop=/opt/minecraft/server/server/service.sh stop
+ExecStart=/var/lib/minecraft/server/server/service.sh start
+ExecStop=/var/lib/minecraft/server/server/service.sh stop
 
 PrivateTmp=true
 PrivateDevices=true
@@ -37,13 +37,11 @@ SystemCallFilter=@system-service
 AmbientCapabilities=CAP_KILL
 CapabilityBoundingSet=CAP_KILL
 
-WorkingDirectory=/opt/minecraft/server/server
+WorkingDirectory=/var/lib/minecraft/server/server
 RuntimeDirectory=minecraft
 LogsDirectory=minecraft/server
 
-# TODO manually with edit
-ReadWriteDirectories=/opt/minecraft
-ReadWriteDirectories=/media/hdd8t/minecraft
+ReadWriteDirectories=/var/lib/minecraft
 
 [Install]
 WantedBy=multi-user.target
