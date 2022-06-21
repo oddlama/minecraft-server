@@ -6,13 +6,13 @@ SERVER_NAME=$1
 TMUX_SOCKET="/run/minecraft/tmux-$1"
 
 if [[ ! -e "$TMUX_SOCKET" ]]; then
-	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'. Available servers:" >&2
-	any=0
-	for i in "/run/minecraft/tmux-"*; do
-		echo " - ${i#*tmux-}" >&2
-		any=1
-	done
-	[[ $any == 1 ]] || echo " - (none)"
+	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'" >&2
+	AVAILABLE=("/run/minecraft/tmux-"*)
+	if [[ "${#AVAILABLE[@]}" == 0 ]]; then
+		echo "There are currently no servers available." >&2
+	else
+		echo "Available servers: ${AVAILABLE[*]}" >&2
+	fi
 	exit 1
 fi
 
