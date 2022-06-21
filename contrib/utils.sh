@@ -117,7 +117,6 @@ function download_latest_github_release() {
 	remote_file="${remote_file//"{TAG}"/"$tag"}"
 	remote_file="${remote_file//"{VERSION}"/"$version"}"
 
-	substatus "Downloading $remote_file from github repo $repo"
 	wget -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
 		|| die "Could not download $remote_file from github repo $repo"
 }
@@ -125,6 +124,5 @@ function download_latest_github_release() {
 # $1: url
 # $2: output file name
 function download_file() {
-	substatus "Downloading $2"
 	wget -q --show-progress "$1" -O "$2" || die "Could not download $1"
 }

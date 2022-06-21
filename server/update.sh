@@ -23,6 +23,7 @@ mkdir -p plugins/optional \
 ################################################################
 # Download plugins
 
+substatus "Downloading plugins"
 for module in admin bedtime core enchantments permissions portals regions trifles; do
 	download_latest_github_release "oddlama/vane" "vane-$module-{VERSION}.jar" "plugins/vane-$module.jar"
 done

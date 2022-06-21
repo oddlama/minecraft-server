@@ -20,4 +20,5 @@ mkdir -p plugins \
 ################################################################
 # Download plugins
 
+substatus "Downloading plugins"
 download_latest_github_release "oddlama/vane" "vane-waterfall-{VERSION}.jar" "plugins/vane-waterfall.jar"
