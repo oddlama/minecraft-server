@@ -20,11 +20,11 @@ function install_file() {
 }
 
 for name in server proxy; do
-	install_file "contrib/systemd/minecraft-$name.service" \
+	install_file "systemd/minecraft-$name.service" \
 		"/lib/systemd/system/minecraft-$name.service" \
 		root: 644
 done
 
-install_file "contrib/systemd/minecraft-attach" \
+install_file "systemd/minecraft-attach" \
 	"/usr/bin/minecraft-attach" \
 	root: 755
