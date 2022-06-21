@@ -5,18 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "utils.sh" || exit 1
 
-[[ $EUID == 0 ]] \
-	|| die "Must be root for system-wide installation."
-
-
-################################################################
-# Create minecraft user if necessary
-
-if ! getent passwd minecraft; then
-	status "Creating minecraft user"
-	useradd --system --home-dir /var/lib/minecraft --no-create-home minecraft \
-		|| die "Could not create user 'minecraft'"
-fi
+[[ $EUID == 0 ]] || die "Must be root for system-wide installation."
 
 
 ################################################################
