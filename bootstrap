@@ -58,26 +58,30 @@ chown minecraft: /var/lib/minecraft
 ################################################################
 # Setup repository
 
-status "Cloning deploy repository"
 cd ~minecraft \
 	|| die "Could not change into ~minecraft"
-runuser -u minecraft git clone "https://github.com/oddlama/minecraft-server" deploy \
-	|| die "Could not clone repository"
 
-status "Updating server and plugins"
-runuser -u minecraft ./update.sh \
-	|| die "Could not update mincraft"
+if [[ ! -e deploy ]]; then
+	status "Cloning deploy repository"
+	runuser -u minecraft git clone "https://github.com/oddlama/minecraft-server" deploy \
+		|| die "Could not clone repository"
+fi
+
+cd deploy \
+	|| die "Could not change into deploy directory"
 
 echo "eula=true" > server/eula.txt
 chown minecraft: server/eula.txt
+
+status "Updating server and plugins"
+runuser -u minecraft ./update.sh \
+	|| die "Could not update server files"
 
 
 ################################################################
 # Install systemd services
 
 status "Installing service files"
-cd deploy \
-	|| die "Could not change into deploy directory"
 ./install.sh \
 	|| die "Error while installing service files"
 
