@@ -5,7 +5,7 @@ set -uo pipefail
 umask 077
 function die() { echo "[1;31merror:[m $*" >&2; exit 1; }
 function status() { echo "[1m$*[m"; }
-
+TTY="/dev/$(ps -p $$ -o tty=)"
 
 ################################################################
 # Ensure that all required tools are installed
@@ -18,7 +18,7 @@ for i in jq git tmux rdiff-backup java; do
 	fi
 done
 
-[[ "$abort" == "1" ]] \
+[[ "$abort" == "0" ]] \
 	|| die "Please install the missing tools first."
 
 
@@ -28,7 +28,7 @@ done
 status "Agree to Mojang EULA"
 echo "You have to agree to Mojang's EULA to use the server software."
 echo "It is available here: https://account.mojang.com/documents/minecraft_eula"
-read -r -p "Do you agree to the EULA? (Y/n)" response || die "Error in read"
+read -r -p "Do you agree to the EULA? (Y/n) " response < "$TTY" || die "Error in read"
 case "${response,,}" in
 	''|y|yes) ;;
 	*) die "Installation aborted. EULA must be accepted to continue." ;;
@@ -44,11 +44,15 @@ esac
 ################################################################
 # Create minecraft user if necessary
 
-if ! getent passwd minecraft; then
+if ! getent passwd minecraft &>/dev/null; then
 	status "Creating minecraft user"
 	useradd --system --home-dir /var/lib/minecraft --no-create-home minecraft \
 		|| die "Could not create user 'minecraft'"
 fi
+
+mkdir -p /var/lib/minecraft
+chmod 700 /var/lib/minecraft
+chown minecraft: /var/lib/minecraft
 
 
 ################################################################
