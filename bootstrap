@@ -92,5 +92,35 @@ status "Installing service files"
 ################################################################
 # Enable and start services
 
+status "Starting services ..."
 systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
 	|| die "Error while enabling services"
+
+
+################################################################
+# Appendix
+
+echo "[1;32mInstallation successful![m"
+echo "Both the proxy and main server have successfully been enabled!"
+echo "The actual minecraft server will be started, when a player connects via the proxy."
+echo
+echo "Please make sure that port 25565 (and all multiplexer ports) are exposed"
+echo "to the internet via a port-foward or similar mechanism."
+echo "If you want to change your server configuration, please do so now."
+echo
+echo "To attach to the proxy or server console, use the following commands respectively:"
+echo "  \$ minecraft-attach proxy"
+echo "  \$ minecraft-attach server"
+echo "[1;31mDo NOT quit this tmux terminal![m It has to stay open in the background"
+echo "at all times. Instead, press 'C-b d' (Ctrl+b, then d) to detach again."
+echo "If you closed it accidentally, restart the respective server with:"
+echo "  systemctl restart minecraft-<whatever>"
+echo
+echo "To stop the server or proxy completely, you can use these commands respectively:"
+echo "  \$ systemctl stop minecraft-server"
+echo "  \$ systemctl stop minecraft-proxy"
+echo "This is just temporary until either your physical server is restarted or you execute:"
+echo "  \$ systemctl stop minecraft-server"
+echo "  \$ systemctl stop minecraft-proxy"
+echo
+echo "For more information, visit https://github.com/oddlama/minecraft-server"
