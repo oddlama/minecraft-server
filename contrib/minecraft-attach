@@ -3,13 +3,13 @@
 set -o pipefail
 
 SERVER_NAME=$1
-TMUX_SOCKET=/var/lib/minecraft/tmux/$1
+TMUX_SOCKET="/run/minecraft/tmux-$1"
 
 if [[ ! -e "$TMUX_SOCKET" ]]; then
-	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'. Running servers:" >&2
+	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'. Available servers:" >&2
 	any=0
-	for i in "/var/lib/minecraft/tmux/"*; do
-		echo " - $i" >&2
+	for i in "/run/minecraft/tmux-"*; do
+		echo " - ${i#*tmux-}" >&2
 		any=1
 	done
 	[[ $any == 1 ]] || echo " - (none)"

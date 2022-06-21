@@ -8,8 +8,8 @@ Group=minecraft
 
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=tmux -S /var/lib/minecraft/tmux/proxy set -g default-shell /bin/bash ; new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
-ExecStop=tmux -S /var/lib/minecraft/tmux/proxy kill-server
+ExecStart=tmux -S /run/minecraft/tmux-proxy set -g default-shell /bin/bash ; new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
+ExecStop=tmux -S /run/minecraft/tmux-proxy kill-server
 
 PrivateTmp=true
 PrivateDevices=true
