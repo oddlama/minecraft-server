@@ -49,7 +49,7 @@ for module in admin bedtime core enchantments permissions portals regions trifle
 	fi
 done
 
-if [[ "${1-}" != "noverify" ]]; then
+if [[ "${1-}" == "--verify" ]]; then
 	status "Verifying vane signatures"
 	for jar in plugins/vane-*.jar; do
 		gpg --verify "$jar.asc" "$jar" \
@@ -71,10 +71,7 @@ curl -L "https://github.com/BlueMap-Minecraft/BlueMap/releases/download/$latest_
        -o plugins/bluemap.jar \
        || die "Could not download bluemap"
 
-# WorldBorder
-#status "Please manually update WorldBorder from here: https://github.com/PryPurity/WorldBorder"
-
-# WorldEdit?
+# WorldEdit into the optional folder, in case you need it.?
 status "Downloading worldedit"
 curl --progress-bar -L "https://dev.bukkit.org/projects/worldedit/files/latest" \
 	-o plugins/optional/worldedit.jar \

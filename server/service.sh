@@ -12,7 +12,7 @@ set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "../env.sh" || exit 1
-source "../scripts/server-helper.sh" || die "Failed to source server-helper"
+source "../contrib/server-helper.sh" || die "Failed to source server-helper"
 
 # Invocation protection
 INITD="${INITD:-false}"
@@ -24,7 +24,7 @@ mkdir -p "$(dirname "$TMUX_SOCKET")"  \
 
 case "$1" in
 	"start")
-		service_start "../scripts/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
+		service_start "../contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
 		;;
 
 	"stop")

@@ -45,7 +45,7 @@ for module in waterfall; do
 	fi
 done
 
-if [[ "${1-}" != "noverify" ]]; then
+if [[ "${1-}" == "--verify" ]]; then
 	status "Verifying vane signatures"
 	for jar in plugins/vane-*.jar; do
 		gpg --verify "$jar.asc" "$jar" \

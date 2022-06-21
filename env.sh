@@ -1,34 +1,17 @@
 #!/bin/bash
 
-export PATH="$HOME/openjdk-jre-16/bin:$PATH"
-export JAVA_HOME="$HOME/openjdk-jre-16"
+#export JAVA_HOME="$HOME/openjdk-jre-bin-17"
+#export PATH="$JAVA_HOME/bin:$PATH"
 
-einfo() {
-	echo " [1;32m*[m $*"
-}
+function einfo() { echo " [1;32m*[m $*"; }
+function eerror() { echo "[1;31merror:[m $*" >&2; }
+function die() { eerror "$@"; exit 1; }
 
-eerror() {
-	echo "[1;31merror:[m $*" >&2
-}
+function status() { echo "[1m[[1;32m+[m[1m][m $*"; }
+function datetime() { date "+%Y-%m-%d %H:%M:%S"; }
+function status_time() { status "[$(datetime)]" "$@"; }
 
-die() {
-	eerror "$@"
-	exit 1
-}
-
-status() {
-	echo "[1m[[1;32m+[m[1m][m $*"
-}
-
-datetime() {
-	date "+%Y-%m-%d %H:%M:%S"
-}
-
-status_time() {
-	status "[$(datetime)]" "$@"
-}
-
-link_dir() {
+function link_dir() {
 	local dst="$1"
 	local link="$2"
 	if [[ -h "$link" ]]; then

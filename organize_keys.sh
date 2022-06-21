@@ -1,4 +1,4 @@
 #!/bin/bash
 
-scripts/sort_yaml.py server/*.yml proxy/*.yml
-scripts/sort_serverproperties.py server/server.properties
+contrib/sort_yaml.py server/*.yml proxy/*.yml
+contrib/sort_serverproperties.py server/server.properties
