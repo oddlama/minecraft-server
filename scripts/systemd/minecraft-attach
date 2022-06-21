@@ -9,7 +9,7 @@ SERVER_SERVICE_SCRIPT="$SERVER_DIR/service.sh"
 run_server() {
 	(
 		cd "$SERVER_DIR"
-		sudo -u minecraft -- \
+		runuser -u minecraft -- \
 			env \
 				INITD=true \
 				SERVER_NAME="$SERVER_NAME" \

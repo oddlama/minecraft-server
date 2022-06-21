@@ -38,9 +38,11 @@ for module in waterfall; do
 		-o plugins/vane-$module.jar \
 		|| die "Could not download vane-$module-$latest_vane_version.jar"
 
-	curl -s -L "https://github.com/oddlama/vane/releases/download/v$latest_vane_version/vane-$module-$latest_vane_version.jar.asc" \
-		-o plugins/vane-$module.jar.asc \
-		|| die "Could not download vane-$module-$latest_vane_version.jar.asc"
+	if [[ "${1-}" != "noverify" ]]; then
+		curl -s -L "https://github.com/oddlama/vane/releases/download/v$latest_vane_version/vane-$module-$latest_vane_version.jar.asc" \
+			-o plugins/vane-$module.jar.asc \
+			|| die "Could not download vane-$module-$latest_vane_version.jar.asc"
+	fi
 done
 
 if [[ "${1-}" != "noverify" ]]; then
