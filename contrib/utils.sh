@@ -65,8 +65,8 @@ function download_paper() {
 		|| die "Error while retrieving paper download name"
 
 	substatus "Downloading paper version $paper_version build $paper_build ($paper_download)"
-	curl --progress-bar "https://papermc.io/api/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
-		-o "$1" \
+	wget -q --show-progress "https://papermc.io/api/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
+		-O "$1" \
 		|| die "Could not download paper"
 }
 
@@ -83,8 +83,8 @@ function download_waterfall() {
 		|| die "Error while retrieving waterfall download name"
 
 	substatus "Downloading waterfall version $waterfall_version build $waterfall_build ($waterfall_download)"
-	curl --progress-bar "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build/downloads/$waterfall_download" \
-		-o "$1" \
+	wget -q --show-progress "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build/downloads/$waterfall_download" \
+		-O "$1" \
 		|| die "Could not download waterfall"
 }
 
@@ -118,7 +118,7 @@ function download_latest_github_release() {
 	remote_file="${remote_file//"{VERSION}"/"$version"}"
 
 	substatus "Downloading $remote_file from github repo $repo"
-	curl --progress-bar -L "https://github.com/$repo/releases/download/$tag/$remote_file" -o "$output" \
+	wget -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
 		|| die "Could not download $remote_file from github repo $repo"
 }
 
@@ -126,5 +126,5 @@ function download_latest_github_release() {
 # $2: output file name
 function download_file() {
 	substatus "Downloading $2"
-	curl --progress-bar -L "$1" -o "$2" || die "Could not download $1"
+	wget -q --show-progress "$1" -O "$2" || die "Could not download $1"
 }
