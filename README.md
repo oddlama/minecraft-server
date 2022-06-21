@@ -40,6 +40,15 @@ By default
 
 ## Usage
 
+You can stop the server or proxy completely by temporarily stopping the service.
+This is useful if you want to do maintenance (updates) while nobody should be
+able to connect to the server or proxy. There also is a maintenance command
+in the proxy if you do maintenance on the actual server
+
+    systemctl stop <minecraft-proxy|minecraft-server>
+    systemctl start <minecraft-proxy|minecraft-server> # Start again afterwards
+
+
 #### Viewing the console
 
 minec
