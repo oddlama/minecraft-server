@@ -25,6 +25,6 @@ for name in server proxy; do
 		root: 644
 done
 
-install_file "systemd/minecraft-attach" \
+install_file "minecraft-attach" \
 	"/usr/bin/minecraft-attach" \
 	root: 755

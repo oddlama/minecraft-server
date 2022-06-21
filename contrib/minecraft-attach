@@ -8,12 +8,10 @@ SERVER_DIR="$DEPLOY_DIR/$SERVER_NAME"
 SERVER_SERVICE_SCRIPT="$SERVER_DIR/service.sh"
 
 if [[ ! -e "$SERVER_DIR" ]]; then
-	echo "Unknown server name '$SERVER_NAME'" >&2
-	echo -n "Available servers: " >&2
+	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'. Available servers:" >&2
 	for i in "$DEPLOY_DIR/"*"/service.sh"; do
-		echo -n "$(basename "$(dirname "$i")")" >&2
+		echo " - $(basename "$(dirname "$i")")" >&2
 	done
-	echo >&2
 	exit 1
 fi
 
