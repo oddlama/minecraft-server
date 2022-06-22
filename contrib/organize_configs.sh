@@ -11,4 +11,4 @@ source "utils.sh" || exit 1
 
 cd ..
 contrib/sort_yaml.py server/*.yml proxy/*.yml
-contrib/sort_serverproperties.py server/server.properties
+contrib/sort_server_properties.py server/server.properties
