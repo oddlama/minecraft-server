@@ -54,10 +54,12 @@ if [[ $total_ram_gibi -le 4 ]]; then
 	echo "[31mYour system has [33m${total_ram_gibi}GiB[31m of RAM, which probably is not enough to run minecraft"
 	echo "without issues. The recommended minimum amount is _at least_ [33m12GiB[31m.[m"
 	ask "Continue anyway?" || die "Installation aborted."
+	echo
 elif [[ $total_ram_gibi -lt 12 ]]; then
 	echo "[31mYour system has [33m${total_ram_gibi}GiB[31m of RAM, which less than the recommended amount of"
 	echo "_at least_ [33m12GiB[31m. This will hurt the server performance significantly.[m"
 	ask "Continue anyway?" || die "Installation aborted."
+	echo
 fi
 
 [[ $EUID == 0 ]] || die "Must be root for system-wide installation."
