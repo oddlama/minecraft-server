@@ -99,7 +99,7 @@ status "Configuring server"
 install_file <(echo "eula=true") server/eula.txt minecraft: 600
 
 for d in $(find contrib/default_config -type d -printf '%P\n'); do
-	mkdir -m700 "$d" || die "Could not create directory '$d'"
+	mkdir -p -m700 "$d" || die "Could not create directory '$d'"
 	chown minecraft: "$d" || die "Could not chown directory '$d'"
 done
 
