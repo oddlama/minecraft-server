@@ -50,7 +50,7 @@ When you are happy with your configuration, continue to the [Usage](#Usage) sect
 
 ### 🌱 Seed
 
-Before your server is started for the first time, you can can specify `level-seed=`
+Before your server is started for the first time, you can can specify a seed via `level-seed=`
 in `server.properties`. To find a good seed before generating your world, have a look
 at [Cubiomes Viewer](https://github.com/Cubitect/cubiomes-viewer).
 
