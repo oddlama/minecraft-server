@@ -51,12 +51,12 @@ done
 
 total_ram_gibi=$(free -g | grep -oP '\d+' | head -n1)
 if [[ $total_ram_gibi -le 4 ]]; then
-	echo "[31mYour system has [33m${total_ram_gibi}GiB[31m of RAM, which probably is not enough to run"
-	echo "minecraft without issues. The recommended minimum amount is _at least_ [33m12GiB[31m.[m"
+	echo "[31mYour system has [33m${total_ram_gibi}GiB[31m of RAM, which probably is not enough to run minecraft"
+	echo "without issues. The recommended minimum amount is _at least_ [33m12GiB[31m.[m"
 	ask "Continue anyway?" || die "Installation aborted."
 elif [[ $total_ram_gibi -lt 12 ]]; then
-	echo "[31mYour system has [33m${total_ram_gibi}GiB[31m of RAM, which less than the recommended amount"
-	echo "of _at least_ [33m12GiB[31m. This will hurt the server performance significantly.[m"
+	echo "[31mYour system has [33m${total_ram_gibi}GiB[31m of RAM, which less than the recommended amount of"
+	echo "_at least_ [33m12GiB[31m. This will hurt the server performance significantly.[m"
 	ask "Continue anyway?" || die "Installation aborted."
 fi
 
