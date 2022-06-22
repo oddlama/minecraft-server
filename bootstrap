@@ -200,8 +200,9 @@ cat <<EOF
 [1m================================================================================[m
                             [1;32mInstallation successful![m
 [1m================================================================================[m
-Both the proxy and main server have successfully been enabled! The actual
-minecraft server will be started when a player connects via the proxy.
+The server and proxy have been installed successfully! The PaperMC minecraft
+server will be started when a player connects via the proxy. Be aware that the
+first start may take a while due to world generation.
 
 Please make sure that TCP port [35m25565[m (server), [35m25566[m (multiplex 1) and [35m8100[m
 (bluemap webserver) are exposed to the internet via a port-foward or similar
