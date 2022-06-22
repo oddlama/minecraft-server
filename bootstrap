@@ -184,13 +184,11 @@ if ask "Enable and start system services now?"; then
 	systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
 		|| die "Error while enabling services"
 else
-	read -d '' postponed_service_message <<EOF
-
+	postponed_service_message="
 You have postponed enabling the system services. Make sure to execute the
 following command when you are ready to start the server:
 
-[1;32m    systemctl enable --now minecraft-server minecraft-proxy[m
-EOF
+[1;32m    systemctl enable --now minecraft-server minecraft-proxy[m"
 fi
 
 
