@@ -54,19 +54,26 @@ Before your server is started for the first time, you can can specify `level-see
 in `server.properties`. To find a good seed before generating your world, have a look
 at [Cubiomes Viewer](https://github.com/Cubitect/cubiomes-viewer).
 
-### 📜 Whitelist
+### 📜 Whitelist / Graylist
 
-By default there is no whitelist, but vane makes your server behave like it has a "graylist".
-This means anyone can connect to your server but in a *no touch, only look!* kind of way.
-To change the world, a player must either be opped (`op player_name` in the console),
-or you must be assigned to the user group (`perm add player_name user`) or a higher group.
+By default there is no protection enabled, everyone can join and play.
+You can enable a classic whitelist with `whitelist on`.
 
-If you assign a player to the verified group (`perm add player_name verified`), they may
-vouch for other users by using `/vouch other_player` to lift them into the `users` group.
+Another option that vane provides is a feature similar to a graylist.
+This allows anyone to connect to your server but in a *no touch, only look!* kind of way.
+To modify anything about the world, a player must either be opped,
+or be assigned to the user group with `perm add player_name user`, or any higher group.
+To enable the graylist, set the following option in `server/plugins/vane-admin/config.yml`.
+
+```yaml
+world_protection:
+  enabled: true
+```
+
+Additionally, if you assign a player to the verified group with `perm add player_name verified`,
+they may vouch for other users by using `/vouch other_player`. This will lift the other user into the `users` group.
 Useful to give your friends the permission to invite other people they know. It will
 be stored who vouched for whom.
-
-Of course you can also just enable a classic whitelist.
 
 ### 🗒️ Serverlist text & icon
 
