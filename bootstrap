@@ -9,7 +9,7 @@ TTY="/dev/$(ps -p $$ -o tty=)"
 # Helper functions
 
 function die() { echo "[1;31merror:[m $*" >&2; exit 1; }
-function status() { echo "[1;33m$*[m"; }
+function status() { echo "${had_status-\n}[1;33m$*[m"; had_status=1; }
 function flush_stdin() { while read -r -t 0.01 empty_stdin < "$TTY"; do true; done; }
 function ask() {
 	local response
@@ -107,13 +107,11 @@ for f in $(find contrib/default_config -type f -printf '%P\n'); do
 	install_file contrib/default_config/"$f" "$f" minecraft: 600
 done
 
-echo
 echo "Depending on your player base, you might want to allow certain gamplay"
 echo "exploits on your server. These are fixed by default in PaperMC, but would"
 echo "allow your players to build certain vanilla machines (TNT blast chambers,"
-echo "bedrock removal, ...)."
-echo
-echo "Our personal recommendation is to answer with yes to all of these questions."
+echo "bedrock removal, ...). My personal recommendation is to answer with yes"
+echo "to all of these questions."
 echo
 
 if ask "Allow headless pistons and bedrock breaking?"; then
