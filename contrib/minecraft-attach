@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -o pipefail
+shopt -s nullglob
 
 SERVER_NAME=$1
 TMUX_SOCKET="/run/minecraft/tmux-$1"
