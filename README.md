@@ -238,12 +238,7 @@ by default from a freshly generated configuration:
 - Set online mode to false (this is checked by the proxy)
 - Listen on port 25501 so proxy can connect (**do not** forward this port!)
 
-## 🛠️ Useful tools
-
-- [Cubiomes Viewer](https://github.com/Cubitect/cubiomes-viewer) - To find a good world seed
-- [MCASelector](https://github.com/Querz/mcaselector) - To trim e.g. unpopulated chunks
-
-## 🔴 Uninstalling
+## ⭕ Uninstalling
 
 If you want to uninstall this server, simply execute the following commands:
 
@@ -255,6 +250,11 @@ rm /lib/systemd/system/minecraft-{proxy,server}.service /usr/bin/minecraft_attac
 # Remove user and delete files in /var/lib/minecraft
 userdel -r minecraft
 ```
+
+## 🛠️ Useful tools
+
+- [Cubiomes Viewer](https://github.com/Cubitect/cubiomes-viewer) - To find a good world seed
+- [MCASelector](https://github.com/Querz/mcaselector) - To trim e.g. unpopulated chunks
 
 ## ❤️ Contributing
 
