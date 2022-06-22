@@ -188,7 +188,8 @@ else
 You have postponed enabling the system services. Make sure to execute the
 following command when you are ready to start the server:
 
-[1;32m    systemctl enable --now minecraft-server minecraft-proxy[m"
+[1;32m    systemctl enable --now minecraft-server minecraft-proxy[m
+"
 fi
 
 
@@ -206,7 +207,6 @@ Please make sure that TCP port [35m25565[m (server), [35m25566[m (multiplex 
 (bluemap webserver) are exposed to the internet via a port-foward or similar
 mechanism. If you want to change your server configuration, please do so now.
 $postponed_service_message
-
 For more information, visit [35mhttps://github.com/oddlama/minecraft-server[m
 [1m================================================================================[m
 EOF
