@@ -8,7 +8,7 @@ source "../contrib/utils.sh" || exit 1
 
 # Start java
 status "Exec server"
-exec java -Xms2G -Xmx2G \
+exec java -Xms10G -Xmx10G \
 	-XX:+UseG1GC \
 	-XX:+ParallelRefProcEnabled \
 	-XX:MaxGCPauseMillis=200 \
