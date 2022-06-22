@@ -1,7 +1,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-informational.svg)](./LICENSE)
 [![Join us on Discord](https://img.shields.io/discord/907277628816388106.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/RueJ6A59x2)
 
-# Minecraft Server Deploy
+# Minecraft Server Installer
 
 This is a simple but fully-featured minecraft server installer for linux.
 It should server as an example of how to properly(TM) deploy a personal minecraft server with the following features:
