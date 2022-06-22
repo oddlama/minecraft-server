@@ -29,8 +29,8 @@ or jump straight to the [Usage](#Usage) section if you are happy with the defaul
 sudo curl -sL https://oddlama.github.io/minecraft-server/bootstrap | bash
 # Connect to the console (Press Ctrl+b then d to detach again)
 minecraft-attach server
-# Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexed server) and 8100 (online map)
-# The online map will be available under https://your-server.example.com:8100
+# Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
+# and 8100 (online map). The online map will be available under http://<your-ip>:8100
 ```
 
 You may want to [review](https://github.com/oddlama/minecraft-server/blob/pages/bootstrap) the script before executing it.
