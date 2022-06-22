@@ -4,7 +4,7 @@
 # Minecraft Server Installer
 
 This is a simple but fully-featured minecraft server installer for linux.
-It should server as an example of how to properly(TM) deploy a personal minecraft server with the following features:
+It should serve as an example of how to properly(TM) deploy a personal minecraft server with the following features:
 
 - 🚀 Server starts automatically when players connect and shuts down when idle
 - ⏱️ Uses [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
