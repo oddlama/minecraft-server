@@ -52,8 +52,10 @@ done
 status "Agree to Mojang EULA"
 echo "You have to agree to Mojang's EULA to use the server software."
 echo "It is available here: https://account.mojang.com/documents/minecraft_eula"
-ask "Do you agree to the EULA?" \
-	|| die "Installation aborted. EULA must be accepted to continue."
+if ! ask "Do you agree to the EULA?"; then
+	# Cannot use short || syntax, would terminate script when piped into bash due to return (??)
+	die "Installation aborted. EULA must be accepted to continue."
+fi
 
 
 ################################################################
