@@ -3,7 +3,7 @@
 
 # Minecraft Server Deploy
 
-This is an example of how to properly(TM) deploy a minecraft server with the following features:
+This is both an installer and an example of how to properly(TM) deploy a minecraft server with the following features:
 
 - 🚀 Server starts automatically when players connect and shuts down when idle
 - ⏱️ Uses [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
