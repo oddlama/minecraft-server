@@ -10,7 +10,7 @@ if [[ ! -e "$TMUX_SOCKET" ]]; then
 	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'" >&2
 	AVAILABLE=("/run/minecraft/tmux-"*)
 	if [[ "${#AVAILABLE[@]}" == 0 ]]; then
-		echo "There are currently no servers available." >&2
+		echo "There are currently no servers available. Check your system services." >&2
 	else
 		echo "Available servers: ${AVAILABLE[*]#"/run/minecraft/tmux-"}" >&2
 	fi
