@@ -1,8 +1,0 @@
-disable_entity_metadata_rewrite: false
-disable_modern_tab_limiter: true
-disable_tab_list_rewrite: true
-game_version: ''
-log_initial_handler_connections: true
-throttling:
-  tab_complete: 200
-use_netty_dns_resolver: true
