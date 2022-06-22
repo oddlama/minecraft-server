@@ -3,9 +3,33 @@
 set -uo pipefail
 
 umask 077
+TTY="/dev/$(ps -p $$ -o tty=)"
+
+################################################################
+# Helper functions
+
 function die() { echo "[1;31merror:[m $*" >&2; exit 1; }
 function status() { echo "[1;33m$*[m"; }
-TTY="/dev/$(ps -p $$ -o tty=)"
+function flush_stdin() { while read -r -t 0.01 empty_stdin; do true; done; }
+function ask() {
+	local response
+	while true; do
+		flush_stdin
+		read -r -p "$* (Y/n) " response < "$TTY" || die "Error in read"
+		case "${response,,}" in
+			'') return 0 ;;
+			y|yes) return 0 ;;
+			n|no) return 1 ;;
+			*) continue ;;
+		esac
+	done
+}
+# $1 = src, $2 = dest, $3 = owner, $4 = mode
+function install_file() {
+	cp    "$1" "$2" || die "Could not copy '$1' to '$2'"
+	chown "$3" "$2" || die "Could not chown '$2'"
+	chmod "$4" "$2" || die "Could not chmod '$2'"
+}
 
 ################################################################
 # Ensure that all required tools are installed
@@ -28,11 +52,8 @@ done
 status "Agree to Mojang EULA"
 echo "You have to agree to Mojang's EULA to use the server software."
 echo "It is available here: https://account.mojang.com/documents/minecraft_eula"
-read -r -p "Do you agree to the EULA? (Y/n) " response < "$TTY" || die "Error in read"
-case "${response,,}" in
-	''|y|yes) ;;
-	*) die "Installation aborted. EULA must be accepted to continue." ;;
-esac
+ask "Do you agree to the EULA?" \
+	|| die "Installation aborted. EULA must be accepted to continue." ;;
 
 
 ################################################################
@@ -74,8 +95,62 @@ fi
 cd deploy \
 	|| die "Could not change into deploy directory"
 
-echo "eula=true" > server/eula.txt
-chown minecraft: server/eula.txt
+status "Configuring server"
+install_file <(echo "eula=true") server/eula.txt minecraft: 600
+
+for d in $(find contrib/default_config -type d -printf '%P\n'); do
+	mkdir -m700 "$d" || die "Could not create directory '$d'"
+	chown minecraft: "$d" || die "Could not chown directory '$d'"
+done
+
+for f in $(find contrib/default_config -type f -printf '%P\n'); do
+	install_file contrib/default_config/"$f" "$f" minecraft: 600
+done
+
+echo
+echo "Depending on your player base, you might want to allow certain gamplay"
+echo "exploits on your server. These are fixed by default in PaperMC, but would"
+echo "allow your players to build certain vanilla machines (TNT blast chambers,"
+echo "bedrock removal, ...)."
+echo
+echo "Our personal recommendation is to answer with yes to all of these questions."
+echo
+
+if ask "Allow headless pistons and bedrock breaking?"; then
+	sed -i 's|allow-headless-pistons: false|allow-headless-pistons: true|' server/config/paper-global.yml \
+		|| die "Could not replace allow-headless-pistons config"
+	sed -i 's|allow-permanent-block-break-exploits: false|allow-permanent-block-break-exploits: true|' server/config/paper-global.yml \
+		|| die "Could not replace allow-permanent-block-break-exploits config"
+fi
+
+if ask "Allow piston TNT duping?"; then
+	sed -i 's|allow-piston-duplication: false|allow-piston-duplication: true|' server/config/paper-global.yml \
+		|| die "Could not replace allow-piston-duplication config"
+fi
+
+if ask "Enable Anti-XRAY?"; then
+	sed -i 's|false # ANTI_XRAY|true|' server/config/paper-world-defaults.yml \
+		|| die "Could not replace ANTI_XRAY config"
+else
+	sed -i 's|false # ANTI_XRAY|false|' server/config/paper-world-defaults.yml \
+		|| die "Could not replace ANTI_XRAY config"
+fi
+
+if ask "Replenish loot in loot chests after 1-2 realtime days?"; then
+	sed -i 's|auto-replenish: false|auto-replenish: true|' server/config/paper-world-defaults.yml \
+		|| die "Could not replace auto-replenish config"
+fi
+
+if ask "Disable hopper item move event to reduce lag?"; then
+	sed -i 's|disable-move-event: false|disable-move-event: true|' server/config/paper-world-defaults.yml \
+		|| die "Could not replace disable-move-event config"
+fi
+
+if ask "Increase view-distance to 15 chunks?"; then
+	sed -i 's|view-distance=10|view-distance=15|' server/server.properties \
+		|| die "Could not replace view-distance config"
+fi
+
 
 runuser -u minecraft -- ./update.sh < "$TTY" \
 	|| die "Could not update server files"
@@ -92,32 +167,34 @@ status "Installing service files"
 ################################################################
 # Enable and start services
 
-status "Starting services ..."
-systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
-	|| die "Error while enabling services"
+echo "[33mThe script would now enable and start the system services. If you want to"
+echo "adjust any proxy related configuration, you may want to start them manually"
+echo "at a later point in time.[m"
+if ask "Enable and start system services?"; then
+	status "Starting services ..."
+	systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
+		|| die "Error while enabling services"
+else
+	echo "[1m===============================================================================[m"
+	echo "[1;33mMake sure to later execute the following command:"
+	echo "[1;32m    systemctl enable --now minecraft-server minecraft-proxy[m"
+	echo "[1m===============================================================================[m"
+fi
 
 
 ################################################################
 # Appendix
 
 cat <<EOF
-===============================================================================
+[1m===============================================================================[m
 [1;32mInstallation successful![m
 Both the proxy and main server have successfully been enabled! The actual
 minecraft server will be started, when a player connects via the proxy.
 
-Please make sure that port 25565 (and all multiplexer ports) are exposed to
-the internet via a port-foward or similar mechanism. If you want to change
-your server configuration, please do so now.
-
-To attach to the proxy or server console, please use the following command:
-
-    minecraft-attach <proxy|server>
-
-This will open a tmux terminal, which is a a background terminal running on
-your server that holds the actual server console. To detach from the console,
-press [32m'C-b d' (Ctrl+b, then d)[m.
+Please make sure that TCP port 25565 (server), 25566 (multiplex 1) and 8100
+(bluemap webserver) are exposed to the internet via a port-foward or similar
+mechanism. If you want to change your server configuration, please do so now.
 
 For more information, visit https://github.com/oddlama/minecraft-server
--------------------------------------------------------------------------------
+[1m===============================================================================[m
 EOF
