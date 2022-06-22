@@ -43,7 +43,8 @@ In summary, the script will perform the following steps:
 
 At this point, your proxy server is already running and the actual
 server will be started once you connect to it. Now is the time to
-review or change the server configuration. Here is a list of things you
+review or change the server configuration. The main directory of your server
+is `/var/lib/minecraft/deploy`. Here is a list of things you
 might want to configure now. All settings that were changed by this script
 compared to the minecraft default, are listed in [Default Settings](#Default-Settings).
 When you are happy with your configuration, continue to the [Usage](#Usage) section.
