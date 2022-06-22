@@ -243,6 +243,19 @@ by default from a freshly generated configuration:
 - [Cubiomes Viewer](https://github.com/Cubitect/cubiomes-viewer) - To find a good world seed
 - [MCASelector](https://github.com/Querz/mcaselector) - To trim e.g. unpopulated chunks
 
+## 🔴 Uninstalling
+
+If you want to uninstall this server, simply execute the following commands:
+
+```bash
+# Disable & stop services
+systemctl disable --now minecraft-{proxy,server}
+# Remove service files and attach script
+rm /lib/systemd/system/minecraft-{proxy,server}.service /usr/bin/minecraft_attach
+# Remove user and delete files in /var/lib/minecraft
+userdel -r minecraft
+```
+
 ## ❤️ Contributing
 
 Do you want to suggest a feature or extend this deploy?
