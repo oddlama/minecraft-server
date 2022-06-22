@@ -3,7 +3,8 @@
 
 # Minecraft Server Deploy
 
-This is both an installer and an example of how to properly(TM) deploy a minecraft server with the following features:
+This is a simple but fully-featured minecraft server installer for linux.
+It should server as an example of how to properly(TM) deploy a personal minecraft server with the following features:
 
 - 🚀 Server starts automatically when players connect and shuts down when idle
 - ⏱️ Uses [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
@@ -13,12 +14,8 @@ This is both an installer and an example of how to properly(TM) deploy a minecra
 - 🔢 Account multiplexing allows a single account to have two or more player characters
 - 🗺️ Awesome 3D online map using [BlueMap](https://bluemap.bluecolored.de/)
 - 🔋 Single-command scripts to update server and plugins
-- 🐙 Ready for configuration file tracking via gi
-
-#### Default plugins
-
-- [vane](https://github.com/oddlama/vane) - Immersive and lore friendly enhancements for vanilla Minecraft
-- [bluemap](https://bluemap.bluecolored.de/) - Live online 3D world viewer and minimap
+- 🐙 Ready for configuration file tracking via git
+- <img width="auto" height="20px" src="https://github.com/oddlama/vane/blob/main/docs/vane.png"> Includes vanilla enhancements by [vane](https://github.com/oddlama/vane)
 
 ## 🛠 Installation
 
