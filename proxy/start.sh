@@ -6,7 +6,6 @@ cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "../contrib/utils.sh" || exit 1
 
-# Start java
-status "Exec server"
+status "Executing proxy server"
 exec java -Xms1G -Xmx1G \
 	-jar waterfall.jar nogui

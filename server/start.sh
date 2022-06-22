@@ -6,9 +6,14 @@ cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
 source "../contrib/utils.sh" || exit 1
 
-# Start java
-status "Exec server"
-exec java -Xms10G -Xmx10G \
+# Use 80% of RAM, but not more than 12GiB and not less than 1GiB
+total_ram_gibi=$(free -g | grep -oP '\d+' | head -n1)
+ram="$((total_ram_gibi * 8 / 10))"
+[[ "$ram" -le 12 ]] || ram=12
+[[ "$ram" -ge 1 ]] || ram=1
+
+status "Executing server using ${ram}GiB of RAM"
+exec java -Xms${ram}G -Xmx${ram}G \
 	-XX:+UseG1GC \
 	-XX:+ParallelRefProcEnabled \
 	-XX:MaxGCPauseMillis=200 \
