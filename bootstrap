@@ -114,14 +114,9 @@ To attach to the proxy or server console, please use the following command:
 
     minecraft-attach <proxy|server>
 
-This will open the respective tmux (a terminal that is running on your server
-in the background for the specific server). [1;31mDo NOT close this terminal![m
-It has to stay open in the background at all times, as it is runs the server
-instance. Instead, press [32m'C-b d' (Ctrl+b, then d)[m to detach from it.
-
-If you did close it accidentally, please restart the respective server with:
-
-    systemctl restart minecraft-<proxy|server>
+This will open a tmux terminal, which is a a background terminal running on
+your server that holds the actual server console. To detach from the console,
+press [32m'C-b d' (Ctrl+b, then d)[m.
 
 For more information, visit https://github.com/oddlama/minecraft-server
 -------------------------------------------------------------------------------
