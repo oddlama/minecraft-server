@@ -191,10 +191,10 @@ cat <<EOF
 Both the proxy and main server have successfully been enabled! The actual
 minecraft server will be started, when a player connects via the proxy.
 
-Please make sure that TCP port 25565 (server), 25566 (multiplex 1) and 8100
+Please make sure that TCP port [35m25565[m (server), [35m25566[m (multiplex 1) and [35m8100[m
 (bluemap webserver) are exposed to the internet via a port-foward or similar
 mechanism. If you want to change your server configuration, please do so now.
 
-For more information, visit https://github.com/oddlama/minecraft-server
+For more information, visit [35mhttps://github.com/oddlama/minecraft-server[m
 [1m===============================================================================[m
 EOF
