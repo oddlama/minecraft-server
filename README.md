@@ -77,6 +77,92 @@ set different texts based on whether the server is currently started or not.
 To set a server icon, simply drop a file name `server-icon.png` in your `server/` directory,
 next to where the `paper.jar` is.
 
+## 🚀 Usage
+
+In the following you will learn how to use the features of this deploy
+to access the console, update your server among other things.
+
+### 🔑 Accessing the server/proxy console
+
+Access to your server console is crucial. The services keep both the proxy and server
+console in the background at all times, so you can access them from any
+terminal on your server (also remotely via ssh!).
+
+```bash
+minecraft-attach server # Open the server console
+minecraft-attach proxy  # Open the proxy console
+```
+
+Once you execute one of the commands above, you will be presented
+with the respective console. If that command fails, make sure the
+system services are running! Press <kbd>Ctrl</kbd> + <kbd>b</kbd> followed by <kbd>d</kbd>
+to leave the console. This will put it in the background again.
+
+### 🔄 Updating the server
+
+To update the server jars and all plugins, we first stop all services,
+run the updater and then start them again. To do this, execute the
+following commands as root:
+
+```bash
+systemctl stop minecraft-proxy minecraft-server    # Stop services
+cd /var/lib/minecraft/deploy                       # Change into deploy directory
+./update.sh                                        # Run update script
+systemctl start minecraft-proxy minecraft-server   # Start services again
+```
+
+### 🔌 Installing and removing plugins
+
+Plugins are installed and updated by the `update.sh` scripts.
+To add a new plugin, find a download link that always points to the latest version
+and add an entry at the end of the respective script, similar to those that are already present.
+
+For example to add worldguard, you add the following at the end of `server/update.sh`:
+```bash
+download_file "https://dev.bukkit.org/projects/worldguard/files/latest" plugins/worldguard.jar
+```
+
+To remove plugins, simply delete the jar file and remove the corresponding line in the
+script. To remove a vane module, remove it from the list in the for loop.
+
+### 🔐 Changing permissions plugin
+
+By default, this setup uses a very lightweight permission plugin called `vane-permissions`.
+If you want to use a different permission plugin, be sure remove `vane-permissions` from the
+plugins as shown above and follow [this guide](https://github.com/oddlama/vane/wiki/Installation-Guide#3-give-permissions-to-players)
+in order not to break vane with your new plugin.
+
+### 💾 Changing or disabling backups
+
+The `server/backup.sh` file is called automatically each time the server stops.
+Feel free to adjust this script to your liking. To completely disable backups,
+replace the script's content with:
+
+```bash
+#/bin/bash
+exit 0
+```
+
+### 🐙 Tracking configuration with git
+
+This project include a utility script called `contrib/organize_configs.sh`. If you execute it,
+it will sort the keys in all your configuration files alphabetically so they can be tracked by git properly.
+This is necessary as the server will rewrite the configuration files each time the server is started,
+causing the entries to shift around unpredictably.
+
+The `.gitignore` files are already setup so you will not accidentally commit your whole world
+or some cache files. Only configuration files are considered by default.
+To actually commit your configs, you should fork this project and update your git remote:
+
+```bash
+# Fork on github first, then replace the remote url:
+cd deploy
+git remote set-url origin git@github.com:youruser/minecraft-server.git
+git add .
+git commit -m "Initial configuration commit"
+git push
+```
+
 ## 🔧 Default settings
 
 This project comes with a reasonable default configuration for paper (main server)
@@ -116,84 +202,6 @@ by default from a freshly generated configuration:
 - Disable spawn protection (use better setting from vane-admin if you want this)
 - Set online mode to false (this is checked by the proxy)
 - Listen on port 25501 so proxy can connect (**do not** forward this port!)
-
-## 🚀 Usage
-
-In the following you will learn how to use the features of this deploy
-to access the console, update your server among other things.
-
-### 🔑 Accessing the server/proxy console
-
-Access to your server console is crucial. The services keep both the proxy and server
-console in the background at all times, so you can access them from any
-terminal on your server (also remotely via ssh!).
-
-```bash
-minecraft-attach server # Open the server console
-minecraft-attach proxy  # Open the proxy console
-```
-
-Once you execute one of the commands above, you will be presented
-with the respective console. If that command fails, make sure the
-system services are running! Press <kbd>Ctrl</kbd> + <kbd>b</kbd> followed by <kbd>d</kbd>
-to leave the console. This will put it in the background again.
-
-### 🔄 Updating the server
-
-To update the server jars and all plugins, we first stop all services,
-run the updater and then start them again. To do this, execute the
-following commands as root:
-
-```bash
-systemctl stop minecraft-proxy minecraft-server    # Stop services
-cd /var/lib/minecraft/deploy                       # Change into deploy directory
-./update.sh                                        # Run update script
-systemctl start minecraft-proxy minecraft-server   # Start services again
-```
-
-### 🔌 Installing / Removing plugins
-
-Plugins are installed and updated by the `update.sh` scripts.
-To add a new plugin, find a download link that always points to the latest version
-and add an entry at the end of the respective script, similar to those that are already present.
-
-For example to add worldguard, you add the following at the end of `server/update.sh`:
-```bash
-download_file "https://dev.bukkit.org/projects/worldguard/files/latest" plugins/worldguard.jar
-```
-
-To remove plugins, simply delete the jar file and remove the corresponding line in the
-script. To remove a vane module, remove it from the list in the for loop.
-
-### 🔐 Changing permissions plugin
-
-By default, this setup uses a very lightweight permission plugin called `vane-permissions`.
-If you want to use a different permission plugin, be sure remove `vane-permissions` from the
-plugins as shown above and follow [this guide](https://github.com/oddlama/vane/wiki/Installation-Guide#3-give-permissions-to-players)
-in order not to break vane with your new plugin.
-
-### 💾 Changing / Disabling backups
-
-
-### 🐙 Tracking configuration with git
-
-This project include a utility script called `contrib/organize_configs.sh`. If you execute it,
-it will sort the keys in all your configuration files alphabetically so they can be tracked by git properly.
-This is necessary as the server will rewrite the configuration files each time the server is started,
-causing the entries to shift around unpredictably.
-
-The `.gitignore` files are already setup so you will not accidentally commit your whole world
-or some cache files. Only configuration files are considered by default.
-To actually commit your configs, you should fork this project and update your git remote:
-
-```bash
-# Fork on github first, then replace the remote url:
-cd deploy
-git remote set-url origin git@github.com:youruser/minecraft-server.git
-git add .
-git commit -m "Initial configuration commit"
-git push
-```
 
 ## 🛠️ Useful tools
 
