@@ -7,7 +7,7 @@ SERVER_NAME=$1
 TMUX_SOCKET="/run/minecraft/tmux-$1"
 
 if [[ ! -e "$TMUX_SOCKET" ]]; then
-	echo "[1;31merror:[m Unknown server name '$SERVER_NAME'" >&2
+	echo "[1;31merror:[m Unknown server name '$SERVER_NAME', or service not started." >&2
 	AVAILABLE=("/run/minecraft/tmux-"*)
 	if [[ "${#AVAILABLE[@]}" == 0 ]]; then
 		echo "There are currently no servers available. Check your system services." >&2

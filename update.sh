@@ -13,5 +13,6 @@ become_minecaft "./update.sh"
 status "Updating proxy"
 proxy/update.sh "$@" || exit 1
 
+echo
 status "Updating server"
 server/update.sh "$@" || exit 1
