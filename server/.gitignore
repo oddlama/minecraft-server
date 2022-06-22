@@ -1,11 +1,12 @@
-/backups
-/logs
-/plugins/ProtocolLib/lastupdate
-/plugins/vane-*/storage.json
-/version_history.json
-/world*/
+backups
+logs
+plugins/ProtocolLib/lastupdate
+plugins/vane-*/storage.json
+version_history.json
+world*/
+bluemap
+*.log
 
-/.console_history
-/ops.json
-/start.block
-/usercache.json
+.console_history
+start.block
+usercache.json
