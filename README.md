@@ -5,14 +5,15 @@
 
 This is an example of how to properly(TM) deploy a minecraft server with the following features:
 
-- 🚀 Server starts automatically when players connect and shuts down when idle.
-- ⏱️ Uses [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance.
-- 🔒 Sandboxed execution with systemd, no docker.
-- 💾 Creates incremental world backups after each server stop.
+- 🚀 Server starts automatically when players connect and shuts down when idle
+- ⏱️ Uses [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
+- 🔒 Sandboxed execution with systemd, no docker
+- 💾 Creates incremental world backups after each server stop
 - 🖥️ Background console access via tmux (also removetly via ssh)
-- 🔋 Includes scripts for automatic server & plugin updates.
-- 🐙 Can sort yaml files & server.properties to allow git tracking.
-- 🔢 Account multiplexing. Allows a single account to have two or more player characters.
+- 🔢 Account multiplexing allows a single account to have two or more player characters
+- 🗺️ Awesome 3D online map using [BlueMap](https://bluemap.bluecolored.de/)
+- 🔋 Single-command scripts to update server and plugins
+- 🐙 Ready for configuration file tracking via gi
 
 #### Default plugins
 
@@ -30,7 +31,7 @@ sudo curl -sL https://oddlama.github.io/minecraft-server/bootstrap | bash
 # Connect to the console (Press Ctrl+b then d to detach again)
 minecraft-attach server
 # Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
-# and 8100 (online map). The online map will be available under http://<your-ip>:8100
+# and 8100 (online map). The map will be available under http://<your-ip>:8100
 ```
 
 You may want to [review](https://github.com/oddlama/minecraft-server/blob/pages/bootstrap) the script before executing it.
@@ -99,6 +100,32 @@ Once you execute one of the commands above, you will be presented
 with the respective console. If that command fails, make sure the
 system services are running! Press <kbd>Ctrl</kbd> + <kbd>b</kbd> followed by <kbd>d</kbd>
 to leave the console. This will put it in the background again.
+
+### 🗺️ 3D Online map (BlueMap)
+
+The awesome 3D online map comes fully preconfigured. All you need to
+do is open `http://<your-server-address>:8100` in your favourite browser,
+when your server is online. Replace your-server-address with the IP or domain name
+you use to connect in minecraft.
+
+If you have an external webserver, BlueMap can be configured to be always available.
+
+### 🔢 Account multiplexing
+
+A multiplexer is an additional port for your server. When someone connects
+via this port, they will be logged into a secondary player character. This also
+works while being logged in on the main server. Very useful for account sharing or
+to hand out spectator accounts. Just add a new serverlist entry for the multiplexer
+and enjoy having multiple accounts!
+
+Two accounts is not enough? Adding additional multiplexers is simple:
+
+1. Forward or expose a new port. (e.g. 25567)
+2. Copy and add an additional listener entry in `proxy/config.yml`. Copy one of the existing ones and just change the port to whatever you chose.
+3. Finally add `- 25567: 2` to the multiplexer config in `proxy/plugins/vane-waterfall/config.yml`.
+4. (Repeat for each additional multiplexer you want to add)
+
+To disable this feature altogether, simply remove the second listener (with port 25566) from `proxy/config.yml`.
 
 ### 🔄 Updating the server
 
