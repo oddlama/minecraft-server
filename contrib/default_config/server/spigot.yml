@@ -1,0 +1,33 @@
+# This is the main configuration file for Spigot.
+# As you can see, there's tons to configure. Some options may impact gameplay, so use
+# with caution, and make sure you know what each option does before configuring.
+# For a reference for any variable inside this file, check out the Spigot wiki at
+# http://www.spigotmc.org/wiki/spigot-configuration/
+#
+# If you need help with the configuration or have any questions related to Spigot,
+# join us at the Discord or drop by our forums and leave a post.
+#
+# Discord: https://www.spigotmc.org/go/discord
+# Forums: http://www.spigotmc.org/
+
+config-version: 12
+settings:
+  bungeecord: true
+  moved-too-quickly-multiplier: 100.0
+  moved-wrongly-threshold: 1.625
+  restart-on-crash: false
+  restart-script: invalid
+world-settings:
+  default:
+    dragon-death-sound-radius: 256
+    end-portal-sound-radius: 256
+    entity-tracking-range:
+      animals: 512
+      misc: 512
+      monsters: 512
+      other: 512
+      players: 512
+    merge-radius:
+      exp: 0.2
+      item: 0.2
+    wither-spawn-sound-radius: 256
