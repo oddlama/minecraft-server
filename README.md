@@ -1,4 +1,4 @@
-<img align="center" width="auto" height="90" src="https://github.com/oddlama/minecraft-server/blob/pages/logo.png">
+<p align="center"><img width="auto" height="90" src="https://github.com/oddlama/minecraft-server/blob/pages/logo.png"></p>
 
 <div align="center">
 
