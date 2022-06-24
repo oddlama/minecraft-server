@@ -13,10 +13,10 @@ This is a simple but fully-featured minecraft server installer for linux.
 It should serve as an example of how to properly(TM) deploy a personal minecraft server with the following features:
 
 - 🚀 Server starts automatically when players connect and shuts down when idle
-- ⏱️ Uses [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
+- ⏱️ Utilizes [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
 - 🔒 Sandboxed execution with systemd, no docker
 - 💾 Creates incremental world backups after each server stop
-- 🖥️ Background console access via tmux (also removetly via ssh)
+- 🖥️ Background console access via tmux (also remotely via ssh)
 - 🔢 Account multiplexing allows a single account to have two or more player characters
 - 🗺️ Awesome 3D online map using [BlueMap](https://bluemap.bluecolored.de/)
 - 🔋 Single-command scripts to update server and plugins
@@ -30,7 +30,7 @@ Afterwards you can continue [configuring your server](#Server-Configuration),
 or jump straight to the [Usage](#Usage) section if you are happy with the defaults.
 
 ```bash
-sudo curl -sL https://oddlama.github.io/minecraft-server/bootstrap | bash
+curl -sL https://oddlama.github.io/minecraft-server/bootstrap | sudo bash
 # Connect to the console (Press Ctrl+b then d to detach again)
 minecraft-attach server
 # Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
