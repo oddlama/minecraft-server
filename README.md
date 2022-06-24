@@ -1,7 +1,8 @@
-<p align="center"><img width="auto" height="90" src="https://github.com/oddlama/minecraft-server/blob/pages/logo.png"></p>
+<p align="center"><img width="auto" height="90" src="https://github.com/oddlama/minecraft-server/blob/pages/docs/logo.png"></p>
 
 <div align="center">
 
+[![Landing Page](https://img.shields.io/badge/Landing_Page-informational.svg)](https://oddlama.github.io/minecraft-server)
 [![MIT License](https://img.shields.io/badge/license-MIT-informational.svg)](./LICENSE)
 [![Join us on Discord](https://img.shields.io/discord/907277628816388106.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/RueJ6A59x2)
 
