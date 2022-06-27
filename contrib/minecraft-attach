@@ -3,6 +3,8 @@
 set -o pipefail
 shopt -s nullglob
 
+[[ $EUID == 0 ]] || { echo "You have to be root (or use sudo) to attach to the console." >&2; exit 1; }
+
 SERVER_NAME=$1
 TMUX_SOCKET="/run/minecraft/tmux-$1"
 
