@@ -33,7 +33,7 @@ or jump straight to the [Usage](#Usage) section if you are happy with the defaul
 ```bash
 curl -sL https://oddlama.github.io/minecraft-server/bootstrap | sudo bash
 # Connect to the console (Press Ctrl+b then d to detach again)
-minecraft-attach server
+sudo minecraft-attach server
 # Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
 # and 8100 (online map). The map will be available under http://<your-ip>:8100
 ```
@@ -105,8 +105,8 @@ console in the background at all times, so you can access them from any
 terminal on your server (also remotely via ssh!).
 
 ```bash
-minecraft-attach server # Open the server console
-minecraft-attach proxy  # Open the proxy console
+sudo minecraft-attach server # Open the server console
+sudo minecraft-attach proxy  # Open the proxy console
 ```
 
 Once you execute one of the commands above, you will be presented
