@@ -51,9 +51,16 @@ In summary, the script will perform the following steps:
 At this point, your proxy server is already running and the actual
 server will be started once you connect to it. Now is the time to
 review or change the server configuration. The main directory of your server
-is `/var/lib/minecraft/deploy`. Here is a list of things you
-might want to configure now. All settings that were changed by this script
-compared to the minecraft default, are listed in [Default Settings](#Default-Settings).
+is `/var/lib/minecraft/deploy`.
+
+All files in that directory must be accessible to the `minecraft` user,
+so before changing anything it is a good idea to open a terminal as the
+minecraft user by executing `sudo runuser -u minecraft bash`.
+
+The following sections are dedicated to things that you might want to configure now.
+All other settings that were already changed by this script compared to the minecraft default
+are listed in [Default Settings](#Default-Settings).
+
 When you are happy with your configuration, continue to the [Usage](#Usage) section.
 
 ### 🌱 Seed
@@ -150,6 +157,24 @@ following commands as root:
 systemctl stop minecraft-proxy minecraft-server    # Stop services
 cd /var/lib/minecraft/deploy                       # Change into deploy directory
 ./update.sh                                        # Run update script
+systemctl start minecraft-proxy minecraft-server   # Start services again
+```
+
+### 🔄 Updating the deploy script
+
+Generally you shouldn't need to update the deploy script.
+The only time it might be necessary is when one the included plugins changes
+its download location. You will notice when that happens, as `./update.sh` will fail.
+Other updates to this repository will most likely be minor changes.
+
+To update, execute the following commands as root:
+
+```bash
+systemctl stop minecraft-proxy minecraft-server    # Stop services
+cd /var/lib/minecraft/deploy                       # Change into deploy directory
+git pull                                           # Get updates from upstream
+./contrib/install.sh                               # Re-install the service files
+systemctl daemon-reload                            # Reload system service files
 systemctl start minecraft-proxy minecraft-server   # Start services again
 ```
 
