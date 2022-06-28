@@ -16,7 +16,7 @@ It should serve as an example of how to properly(TM) deploy a personal minecraft
 - 🚀 Server starts automatically when players connect and shuts down when idle
 - ⏱️ Utilizes [PaperMC](https://papermc.io) and [Aikar's JVM flags](https://aikar.co/mcflags.html) for maximum performance
 - 🔒 Sandboxed execution with systemd, no docker
-- 💾 Creates incremental world backups after each server stop
+- 💾 Creates proper incremental world backups after each server stop
 - 🖥️ Background console access via tmux (also remotely via ssh)
 - 🔢 Account multiplexing allows a single account to have two or more player characters
 - 🗺️ Awesome 3D online map using [BlueMap](https://bluemap.bluecolored.de/)
@@ -197,11 +197,39 @@ If you want to use a different permission plugin, be sure remove `vane-permissio
 plugins as shown above and follow [this guide](https://github.com/oddlama/vane/wiki/Installation-Guide#3-give-permissions-to-players)
 in order not to break vane with your new plugin.
 
+### 💾 Restoring backups
+
+Your server will automatically create an incremental backup of all three worlds and the plugin folder everytime the server is stopped.
+You can view all the backups that have been created until now by executing the following commands as root:
+
+```bash
+cd deploy/server
+rdiff-backup -l backups/world
+```
+
+Now if anything happens on your server and you want to revert to an older version,
+you can do so by simply executing the following commands as root:
+
+```bash
+cd deploy/server
+rm -rf world  # First delete what you want to restore
+rdiff-backup -r 1B backups/world world # Restore state from the last backup.
+# Repeat analogously for any other folders that you want to restore:
+# You can restore world, world_nether, world_the_end, and plugins
+```
+
+The `1B` just refers to the last backup, `2B` would be the second last.
+You can also pick any of the times listed by `rdiff-backup -l` from before (like
+`2022-06-22T20:21:42+02:00`) or pick a relative time like `2D` (2 days ago).
+
+If you want to reduce the size of your backups, try `rdiff-backup --remove-older-than 6M` to delete
+any backups older than six months. You can also do a lot more specific things with rdiff-backup.
+Visit [their website](http://rdiff-backup.nongnu.org/examples.html) for more information.
+
 ### 💾 Changing or disabling backups
 
-The `server/backup.sh` file is called automatically each time the server stops.
-Feel free to adjust this script to your liking. To completely disable backups,
-replace the script's content with:
+To create backups, the service calls the `server/backup.sh` file automatically each time the server stops.
+Feel free to adjust this script to your liking. To completely disable backups, replace the script's content with:
 
 ```bash
 #!/bin/bash
