@@ -15,7 +15,7 @@ if [[ ! -e "$TMUX_SOCKET" ]]; then
 		echo "There are currently no servers available. Check your system services." >&2
 	else
 		avail=(${AVAILABLE[@]#"/run/minecraft-"})
-		avail=(${AVAILABLE[@]%"/tmux"})
+		avail=(${avail[@]%"/tmux"})
 		echo "Available servers: ${avail[*]}" >&2
 	fi
 	exit 1
