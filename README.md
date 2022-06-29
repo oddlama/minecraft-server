@@ -172,7 +172,6 @@ systemctl stop minecraft-proxy minecraft-server    # Stop services
 cd /var/lib/minecraft/deploy                       # Change into deploy directory
 git pull                                           # Get updates from upstream
 ./contrib/install.sh                               # Re-install the service files
-systemctl daemon-reload                            # Reload system service files
 systemctl start minecraft-proxy minecraft-server   # Start services again
 ```
 

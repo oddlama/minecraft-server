@@ -28,3 +28,6 @@ done
 install_file "minecraft-attach" \
 	"/usr/bin/minecraft-attach" \
 	root: 755
+
+echo "Reloading service files..."
+systemctl daemon-reload
