@@ -6,15 +6,17 @@ shopt -s nullglob
 [[ $EUID == 0 ]] || { echo "You have to be root (or use sudo) to attach to the console." >&2; exit 1; }
 
 SERVER_NAME=$1
-TMUX_SOCKET="/run/minecraft/tmux-$1"
+TMUX_SOCKET="/run/minecraft-$1/tmux"
 
 if [[ ! -e "$TMUX_SOCKET" ]]; then
 	echo "[1;31merror:[m Unknown server name '$SERVER_NAME', or service not started." >&2
-	AVAILABLE=("/run/minecraft/tmux-"*)
+	AVAILABLE=("/run/minecraft-"*"/tmux")
 	if [[ "${#AVAILABLE[@]}" == 0 ]]; then
 		echo "There are currently no servers available. Check your system services." >&2
 	else
-		echo "Available servers: ${AVAILABLE[*]#"/run/minecraft/tmux-"}" >&2
+		avail=(${AVAILABLE[@]#"/run/minecraft-"})
+		avail=(${AVAILABLE[@]%"/tmux"})
+		echo "Available servers: ${avail[*]}" >&2
 	fi
 	exit 1
 fi
