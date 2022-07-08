@@ -38,7 +38,7 @@ sudo minecraft-attach server
 # and 8100 (online map). The map will be available under http://<your-ip>:8100
 ```
 
-You may want to [review](https://github.com/oddlama/minecraft-server/blob/pages/bootstrap) the script before executing it.
+You may want to [review](https://github.com/oddlama/minecraft-server/blob/pages/docs/bootstrap) the script before executing it.
 In summary, the script will perform the following steps:
 
 - Check whether all required tools are installed
