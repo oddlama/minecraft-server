@@ -100,8 +100,8 @@ if [[ -e /var/lib/minecraft/deploy ]]; then
 		|| die "Installation aborted."
 fi
 
-cd ~minecraft \
-	|| die "Could not change into ~minecraft"
+cd /var/lib/minecraft \
+	|| die "Could not change into /var/lib/minecraft"
 
 if [[ -e deploy ]]; then
 	status "Updating deploy repository"
