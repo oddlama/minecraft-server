@@ -30,4 +30,4 @@ done
 
 download_file "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/target/ProtocolLib.jar" plugins/ProtocolLib.jar
 download_latest_github_release "BlueMap-Minecraft/BlueMap" "BlueMap-{VERSION}-spigot.jar" plugins/bluemap.jar
-download_file "https://dev.bukkit.org/projects/worldedit/files/latest" plugins/optional/worldedit.jar
+
