@@ -39,8 +39,8 @@ online_mode: true
 permissions:
   default:
     - bungeecord.command.server
-    - vane_waterfall.command.ping
-    - vane_waterfall.auth_multiplexer.1
+    - vane_proxy.start_server.*
+    - vane_proxy.command.ping
 player_limit: -1
 prevent_proxy_connections: false
 remote_ping_cache: -1
