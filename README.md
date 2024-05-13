@@ -92,7 +92,7 @@ be stored who vouched for whom.
 ### 🗒️ Serverlist text & icon
 
 The text and icon in your server list now controlled by the proxy instead of your `server.properties`.
-Edit `proxy/plugins/vane-waterfall/config.yml` to change the text to your liking. You can also
+Edit `proxy/plugins/vane-velocity/config.toml` to change the text to your liking. You can also
 set different texts based on whether the server is currently started or not.
 
 To set a server icon, simply drop a file name `server-icon.png` in your `server/` directory,
@@ -139,11 +139,15 @@ and enjoy having multiple accounts!
 Two accounts is not enough? Adding additional multiplexers is simple:
 
 1. Forward or expose a new port. (e.g. 25567)
-2. Copy and add an additional listener entry in `proxy/config.yml`. Copy one of the existing ones and just change the port to whatever you chose.
-3. Finally add `- 25567: 2` to the multiplexer config in `proxy/plugins/vane-waterfall/config.yml`.
-4. (Repeat for each additional multiplexer you want to add)
+2. Add a new config for the multiplexer in `proxy/plugins/vane-velocity/config.toml`:
+   ```
+   [auth_multiplex.2]
+   port = 25567
+   allowed_uuids = [] # anyone may use this multiplexer
+   ```
+3. (Repeat for each additional multiplexer you want to add)
 
-To disable this feature altogether, simply remove the second listener (with port 25566) from `proxy/config.yml`.
+To disable this feature altogether, just remove all `auth_multiplex.*` sections from the config.
 
 ### 🔄 Updating the server
 
@@ -258,7 +262,7 @@ git push
 ## 🔧 Default settings
 
 This project comes with a reasonable default configuration for paper (main server)
-and waterfall (proxy server). This ensures that autostarting and account multiplexing
+and velocity (proxy server). This ensures that autostarting and account multiplexing
 work out of the box. Some of these configs depend on your choices in the bootstrap script,
 denoted below by the *(asks)* prefix. These are the configuration defaults that differ
 by default from a freshly generated configuration:

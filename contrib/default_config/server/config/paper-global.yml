@@ -17,3 +17,8 @@ unsupported-settings:
   allow-headless-pistons: false
   allow-permanent-block-break-exploits: false
   allow-piston-duplication: false
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: '{{VELOCITYSECRET}}'

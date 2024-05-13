@@ -71,21 +71,21 @@ function download_paper() {
 }
 
 # $1: output file name
-function download_waterfall() {
-	local waterfall_version
-	local waterfall_build
-	local waterfall_download
-	waterfall_version="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall" | jq -r ".versions[-1]")" \
-		|| die "Error while retrieving waterfall version"
-	waterfall_build="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version" | jq -r ".builds[-1]")" \
-		|| die "Error while retrieving waterfall builds"
-	waterfall_download="$(curl -s -o - "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build" | jq -r ".downloads.application.name")" \
-		|| die "Error while retrieving waterfall download name"
+function download_velocity() {
+	local velocity_version
+	local velocity_build
+	local velocity_download
+	velocity_version="$(curl -s -o - "https://papermc.io/api/v2/projects/velocity" | jq -r ".versions[-1]")" \
+		|| die "Error while retrieving velocity version"
+	velocity_build="$(curl -s -o - "https://papermc.io/api/v2/projects/velocity/versions/$velocity_version" | jq -r ".builds[-1]")" \
+		|| die "Error while retrieving velocity builds"
+	velocity_download="$(curl -s -o - "https://papermc.io/api/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build" | jq -r ".downloads.application.name")" \
+		|| die "Error while retrieving velocity download name"
 
-	substatus "Downloading waterfall version $waterfall_version build $waterfall_build ($waterfall_download)"
-	wget -q --show-progress "https://papermc.io/api/v2/projects/waterfall/versions/$waterfall_version/builds/$waterfall_build/downloads/$waterfall_download" \
+	substatus "Downloading velocity version $velocity_version build $velocity_build ($velocity_download)"
+	wget -q --show-progress "https://papermc.io/api/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build/downloads/$velocity_download" \
 		-O "$1" \
-		|| die "Could not download waterfall"
+		|| die "Could not download velocity"
 }
 
 # $1: repo, e.g. "oddlama/vane"

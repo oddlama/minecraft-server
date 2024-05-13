@@ -8,9 +8,9 @@ become_minecaft "./update.sh"
 
 
 ################################################################
-# Download waterfall and prepare plugins
+# Download velocity and prepare plugins
 
-download_waterfall waterfall.jar
+download_velocity velocity.jar
 
 # Create plugins directory
 mkdir -p plugins \
@@ -21,4 +21,4 @@ mkdir -p plugins \
 # Download plugins
 
 substatus "Downloading plugins"
-download_latest_github_release "oddlama/vane" "vane-waterfall-{VERSION}.jar" "plugins/vane-waterfall.jar"
+download_latest_github_release "oddlama/vane" "vane-velocity-{VERSION}.jar" "plugins/vane-velocity.jar"
