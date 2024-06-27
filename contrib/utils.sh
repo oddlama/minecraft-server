@@ -126,3 +126,18 @@ function download_latest_github_release() {
 function download_file() {
 	wget -q --show-progress "$1" -O "$2" || die "Could not download $1"
 }
+
+function download_luckperms_velocity() {
+	local luckperms_velocity_version
+	local luckperms_velocity_download
+	luckperms_velocity_version="$(curl -s -o - "https://metadata.luckperms.net/data/all" | jq -r ".version")" \
+		|| die "Error while retrieving LuckPerms version"
+		
+	luckperms_velocity_download="$(curl -s -o - "https://metadata.luckperms.net/data/all" | jq -r ".downloads.velocity")" \
+		|| die "Error while retrieving LuckPerms version"
+
+	substatus "Downloading LuckPerms version $luckperms_velocity_version"
+	wget -q --show-progress "$luckperms_velocity_download" \
+		-O "$1" \
+		|| die "Could not download LuckPerms"
+}
