@@ -137,3 +137,25 @@ function download_luckperms_velocity() {
 		-O "$1" \
 		|| die "Could not download LuckPerms"
 }
+
+function download_spark_velocity() {
+	local spark_velocity_download
+		
+	spark_velocity_download="$(curl -s -o - "https://metadata.luckperms.net/data/all" | jq -r ".downloads.velocity")" \
+		|| die "Error while retrieving Spark version"
+
+	wget -q --show-progress "$spark_velocity_download" \
+		-O "$1" \
+		|| die "Could not download Spark"
+}
+
+function download_spark_bukkit() {
+	local spark_bukkit_download
+		
+	spark_bukkit_download="$(curl -s -o - "https://sparkapi.lucko.me/download" | jq -r ".bukkit.url")" \
+		|| die "Error while retrieving Spark version"
+
+	wget -q --show-progress "$spark_bukkit_download" \
+		-O "$1" \
+		|| die "Could not download Spark"
+}
