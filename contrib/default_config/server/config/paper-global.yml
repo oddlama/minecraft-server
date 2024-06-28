@@ -22,3 +22,5 @@ proxies:
     enabled: true
     online-mode: true
     secret: '{{VELOCITYSECRET}}'
+timings:
+  enabled: false

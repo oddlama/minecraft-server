@@ -126,3 +126,36 @@ function download_latest_github_release() {
 function download_file() {
 	wget -q --show-progress "$1" -O "$2" || die "Could not download $1"
 }
+
+function download_luckperms_velocity() {
+	local luckperms_velocity_download
+		
+	luckperms_velocity_download="$(curl -s -o - "https://metadata.luckperms.net/data/all" | jq -r ".downloads.velocity")" \
+		|| die "Error while retrieving LuckPerms Velocity version"
+
+	wget -q --show-progress "$luckperms_velocity_download" \
+		-O "$1" \
+		|| die "Could not download LuckPerms Velocity"
+}
+
+function download_spark_velocity() {
+	local spark_velocity_download
+		
+	spark_velocity_download="$(curl -s -o - "https://sparkapi.lucko.me/download" | jq -r ".velocity.url")" \
+		|| die "Error while retrieving Spark Velocity download link"
+
+	wget -q --show-progress "$spark_velocity_download" \
+		-O "$1" \
+		|| die "Could not download Spark Velocity"
+}
+
+function download_spark_bukkit() {
+	local spark_bukkit_download
+		
+	spark_bukkit_download="$(curl -s -o - "https://sparkapi.lucko.me/download" | jq -r ".bukkit.url")" \
+		|| die "Error while retrieving Spark Bukkit download link"
+
+	wget -q --show-progress "$spark_bukkit_download" \
+		-O "$1" \
+		|| die "Could not download Spark Bukkit"
+}

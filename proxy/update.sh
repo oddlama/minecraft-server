@@ -22,3 +22,5 @@ mkdir -p plugins \
 
 substatus "Downloading plugins"
 download_latest_github_release "oddlama/vane" "vane-velocity-{VERSION}.jar" "plugins/vane-velocity.jar"
+download_luckperms_velocity "plugins/LuckPerms-Velocity.jar"
+download_spark_velocity "plugins/Spark-Velocity.jar"
