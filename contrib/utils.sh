@@ -53,12 +53,19 @@ function become_minecaft() {
 }
 
 # $1: output file name
+# $2: OPTIONAL - paper minecraft version (eg. 1.20.4)
 function download_paper() {
 	local paper_version
 	local paper_build
 	local paper_download
-	paper_version="$(curl -s -o - "https://api.papermc.io/v2/projects/paper" | jq -r ".versions[-1]")" \
-		|| die "Error while retrieving paper version"
+	if [ $# -eq 1 ]; then
+		paper_version="$(curl -s -o - "https://api.papermc.io/v2/projects/paper" | jq -r ".versions[-1]")" \
+			|| die "Error while retrieving latest paper version"
+	elif [ $# -eq 2 ]; then
+		paper_version="$2"
+	elif [ $# -gt 2 ]; then
+		die "Too many arguments passed to download_paper"
+	fi
 	paper_build="$(curl -s -o - "https://api.papermc.io/v2/projects/paper/versions/$paper_version" | jq -r ".builds[-1]")" \
 		|| die "Error while retrieving paper builds"
 	paper_download="$(curl -s -o - "https://api.papermc.io/v2/projects/paper/versions/$paper_version/builds/$paper_build" | jq -r ".downloads.application.name")" \
@@ -117,12 +124,26 @@ function download_latest_github_release() {
 	remote_file="${remote_file//"{TAG}"/"$tag"}"
 	remote_file="${remote_file//"{VERSION}"/"$version"}"
 
-	wget -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
+	wget -L -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
 		|| die "Could not download $remote_file from github repo $repo"
 }
 
 # $1: url
 # $2: output file name
 function download_file() {
-	wget -q --show-progress "$1" -O "$2" || die "Could not download $1"
+	wget -L -q --show-progress "$1" -O "$2" || die "Could not download $1"
+}
+
+# $1: Feed URL
+# $2: json location
+# $3: output file name
+function download_from_json_feed() {
+        local download_url
+
+        download_url="$(curl -s -o - "$1" | jq -r "$2")" \
+                || die "Error while retrieving url of type $2 from feed $1"
+
+        wget -L -q --show-progress "$download_url" \
+                -O "$3" \
+                || die "Could not download $download_url"
 }
