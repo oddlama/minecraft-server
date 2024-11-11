@@ -14,5 +14,10 @@ status "Updating proxy"
 proxy/update.sh "$@" || exit 1
 
 echo
-status "Updating server"
-server/update.sh "$@" || exit 1
+status "Updating servers"
+for dir in servers/*/; do
+	if [ -d "$dir" ]; then
+		status "Updating $(basename "$dir") server"
+		"$dir"update.sh "$@" || exit 1
+	fi
+done

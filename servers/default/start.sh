@@ -4,7 +4,7 @@ set -uo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
-source "../contrib/utils.sh" || exit 1
+source "../../contrib/utils.sh" || exit 1
 
 # Use 80% of RAM, but not more than 12GiB and not less than 1GiB
 total_ram_gibi=$(free -g | grep -oP '\d+' | head -n1)

@@ -5,7 +5,7 @@ set -uo pipefail
 BACKUP_LOG_FILE="logs/backup.log"
 BACKUP_TO="backups"
 BACKUP_DIRS=(
-	'plugins'
+	'plugins/'
 	'world'
 	'world_nether'
 	'world_the_end'
@@ -13,7 +13,7 @@ BACKUP_DIRS=(
 
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
-source "../contrib/utils.sh" || exit 1
+source "../../contrib/utils.sh" || exit 1
 
 status_time "Starting backup"
 

@@ -1,16 +1,16 @@
 [Unit]
-Description=Minecraft server
+Description=%I' Minecraft server
 After=network.target
 
 [Service]
 User=minecraft
 Group=minecraft
 
-RuntimeDirectory=minecraft-server
+RuntimeDirectory=minecraft-server-%i
 
 Type=forking
-ExecStart=tmux -S /run/minecraft-server/tmux set -g default-shell /bin/bash ";" new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
-ExecStop=tmux -S /run/minecraft-server/tmux kill-server
+ExecStart=tmux -S /run/minecraft-server-%i/tmux set -g default-shell /bin/bash ";" new-session -d "/var/lib/minecraft/deploy/contrib/server_loop.py --block start.block ./start.sh :POST: ./backup.sh"
+ExecStop=tmux -S /run/minecraft-server-%i/tmux kill-server
 
 PrivateTmp=true
 PrivateDevices=true
@@ -34,7 +34,7 @@ SystemCallFilter=@system-service
 AmbientCapabilities=CAP_KILL
 CapabilityBoundingSet=CAP_KILL
 
-WorkingDirectory=/var/lib/minecraft/deploy/server
+WorkingDirectory=/var/lib/minecraft/deploy/servers/%i
 ReadWriteDirectories=/var/lib/minecraft
 
 [Install]

@@ -19,15 +19,21 @@ function install_file() {
 	chmod "$4" "$2" || die "Could not chmod '$2'"
 }
 
-for name in server proxy; do
-	install_file "systemd/minecraft-$name.service" \
-		"/lib/systemd/system/minecraft-$name.service" \
-		root: 644
-done
+# install proxy service file
+install_file "systemd/minecraft-proxy.service" \
+	"/lib/systemd/system/minecraft-proxy.service" \
+	root: 644
 
-install_file "minecraft-attach" \
-	"/usr/bin/minecraft-attach" \
-	root: 755
+# install multi-minecraft server service file
+install_file "systemd/minecraft-server@.service" \
+	"/lib/systemd/system/minecraft-server@.service" \
+	root: 644
 
 echo "Reloading service files..."
 systemctl daemon-reload
+
+###############################################################
+# Install minecraft-attach util to attach to server console
+install_file "minecraft-attach" \
+	"/usr/bin/minecraft-attach" \
+	root: 755
