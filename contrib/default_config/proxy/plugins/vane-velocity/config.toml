@@ -26,7 +26,7 @@ allowed_uuids = []
 display_name = "§6◊ §6§lMY SERVER§6 ◊"
 
 [managed_servers.server.online]
-favicon = "../{SERVER}/server-icon.png"
+favicon = "../proxy/server-icon.png"
 motd = "{SERVER_DISPLAY_NAME}\n§a\\(^-^)/§7 | {QUOTE}"
 quotes = ["Yay, already online!"]
 
