@@ -130,19 +130,52 @@ function download_velocity() {
 }
 
 # $1: repo, e.g. "oddlama/vane"
-declare -A LATEST_GITHUB_RELEASE_TAG_CACHE
 function latest_github_release_tag() {
 	local repo=$1
-	if [[ ! -v "LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]" ]]; then
-		local tmp
-		tmp=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | jq -r .tag_name) \
-			|| die "Error while retrieving latest github release tag of $repo"
-		if [[ "$tmp" == "null" ]]; then
-			die 'Exceeded Github ratelimit, try again later'
-		fi
-		LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]="$tmp"
+	local cache=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+	cache+="/cache/github/$repo.txt"
+	##### :( github limits suck!
+	##### thankfully, we can check if there were modifications
+	##### with the last_modified header, and it doesn't count
+	##### towards the limit
+	## stored in files named cache/github/user_name/repo_name.txt
+	## cache format:
+	## line #1: version info
+	## line #2: latest time checked
+	local last_modified
+	# first, check if cache file exists
+	if [[ -f "$cache" ]]; then
+		# if it does, great! we can store it into last_modified
+		last_modified=$(cat "$cache" | tail -n 1)
+	else
+		# I wonder, did the internet exist in times of Christ?
+		last_modified='Sun, 25 Dec 0000 07:18:26 GMT'
 	fi
-	echo "${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}"
+
+	# send the request
+	local response=$(curl -i -s "https://api.github.com/repos/$repo/releases/latest" \
+		--include --header "if-modified-since: $last_modified")
+	local response_code=$(echo "$response" | head -n 1 | sed 's/^[^ ]* //')
+	# echos the response, sed only the headers, grep the header we want, and extract the contents with sed once more. Beautiful!
+	local response_last_modified=$(echo "$response" | sed '/^\r$/q' | grep 'last-modified: ' | sed 's/^[^:]*: //')
+	local response_requests_left=$(echo "$response" | sed '/^\r$/q' | grep 'x-ratelimit-remaining: ' | sed 's/^[^:]*: //')
+	local response_body=$(echo "$response" | sed '1,/^\r$/d')
+
+	if [[ "$response_requests_left" == "0" && ( "$response_code" == "403" || "$response_code" == "429" ) ]]; then
+		die 'Exceeded Github ratelimit, try again later'
+	elif [[ "$last_modified" == "$response_last_modified" && "$response_body" == "" ]]; then
+		# wasn't modified, we can use cache
+		cat "$cache" | head -n 1
+	elif [[ "$last_modified" != "$response_last_modified" && "$response_body" != "" ]]; then
+		# was modified, need to overwrite cache
+		local tag=$(echo "$response_body" | jq -r '.tag_name')
+		mkdir -p "$(dirname "$cache")"
+		echo "$tag" > "$cache"
+		echo "$response_last_modified" >> "$cache"
+		echo "$tag"
+	else
+		die "Unreachable in latest_github_release_tag"
+	fi
 }
 
 # $1: repo, e.g. "oddlama/vane"
