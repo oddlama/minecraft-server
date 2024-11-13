@@ -147,3 +147,28 @@ function download_from_json_feed() {
                 -O "$3" \
                 || die "Could not download $download_url"
 }
+
+# $1: mod ID / name
+# $2: platform (paper, folia, etc)
+# $3: output file name
+# $4: (optional) minecraft game version
+function download_from_modrinth() {
+	local feed
+	local jq_filter
+	local download_url
+	if [[ "$#" -lt 3 ]]; then
+		die "Not enough args for download_from_modrinth to download $2"
+	fi
+	feed=$(curl -s -o - "https://api.modrinth.com/v2/project/$1/version") \
+		|| die "Error while fetching modrinth api for $1"
+	jq_filter="first(.[] | {versions: .game_versions, platforms: .loaders, url: .files[0].url} | select(.platforms[] | contains(\"$2\"))"
+	if [[ "$#" -gt 3 ]]; then
+		jq_filter+=" | select(.versions[] | contains(\"$4\"))"
+	fi
+	jq_filter+=').url'
+	download_url=$(echo "$feed" | jq -r "$jq_filter") \
+		|| die "jq filter $jq_filter is invalid"
+	wget -L -q --show-progress "$download_url" \
+		-O "$3" \
+		|| die "Could not download $download_url"
+}
