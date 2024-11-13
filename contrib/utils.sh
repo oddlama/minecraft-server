@@ -52,6 +52,19 @@ function become_minecaft() {
 	fi
 }
 
+# $1: url
+# $2: output file name
+# $3: failure message (optional)
+function download_file() {
+	local failure_message
+	if [[ "$#" == "3" ]]; then
+		failure_message="$3"
+	else
+		failure_message="Could not download $2 from $1"
+	fi
+	wget -L -q --show-progress "$1" -O "$2" || die "$failure_message"
+}
+
 # $1: output file name
 # $2: OPTIONAL - paper minecraft version (eg. 1.20.4)
 function download_paper() {
@@ -126,12 +139,6 @@ function download_latest_github_release() {
 
 	wget -L -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
 		|| die "Could not download $remote_file from github repo $repo"
-}
-
-# $1: url
-# $2: output file name
-function download_file() {
-	wget -L -q --show-progress "$1" -O "$2" || die "Could not download $1"
 }
 
 # $1: Feed URL
