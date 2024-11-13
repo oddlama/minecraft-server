@@ -170,7 +170,7 @@ function latest_github_release_tag() {
 		# was modified, need to overwrite cache
 		local tag=$(echo "$response_body" | jq -r '.tag_name')
 		mkdir -p "$(dirname "$cache")"
-		if [[ "$tag" == "null" ]]; then
+		if [[ "$tag" == "null" || "$response_last_modified" == "" ]]; then
 			die 'Incorrect tags, have you hit a ratelimit?'
 		fi
 		echo "$tag" > "$cache"
