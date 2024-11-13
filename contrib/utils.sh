@@ -161,7 +161,7 @@ function latest_github_release_tag() {
 	local response_requests_left=$(echo "$response" | sed '/^\r$/q' | grep 'x-ratelimit-remaining: ' | sed 's/^[^:]*: //')
 	local response_body=$(echo "$response" | sed '1,/^\r$/d')
 
-	if [[ "$response_requests_left" == "0" && ( "$response_code" == "403" || "$response_code" == "429" ) ]]; then
+	if [[ "$response_requests_left" == "0" || ( "$response_code" == "403" || "$response_code" == "429" ) ]]; then
 		die 'Exceeded Github ratelimit, try again later'
 	elif [[ "$last_modified" == "$response_last_modified" && "$response_body" == "" ]]; then
 		# wasn't modified, we can use cache
@@ -170,6 +170,9 @@ function latest_github_release_tag() {
 		# was modified, need to overwrite cache
 		local tag=$(echo "$response_body" | jq -r '.tag_name')
 		mkdir -p "$(dirname "$cache")"
+		if [[ "$tag" == "null" ]]; then
+			die 'Incorrect tags, have you hit a ratelimit?'
+		fi
 		echo "$tag" > "$cache"
 		echo "$response_last_modified" >> "$cache"
 		echo "$tag"
