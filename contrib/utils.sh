@@ -137,6 +137,9 @@ function latest_github_release_tag() {
 		local tmp
 		tmp=$(curl -s "https://api.github.com/repos/$repo/releases/latest" | jq -r .tag_name) \
 			|| die "Error while retrieving latest github release tag of $repo"
+		if [[ "$tmp" == "null" ]]; then
+			die 'Exceeded Github ratelimit, try again later'
+		fi
 		LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]="$tmp"
 	fi
 	echo "${LATEST_GITHUB_RELEASE_TAG_CACHE[$repo]}"
