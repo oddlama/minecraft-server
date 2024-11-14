@@ -19,9 +19,10 @@ It should serve as an example of how to properly(TM) deploy a personal minecraft
 - 💾 Creates proper incremental world backups after each server stop
 - 🖥️ Background console access via tmux (also remotely via ssh)
 - 🔢 Account multiplexing allows a single account to have two or more player characters
-- 🗺️ Awesome 3D online map using [BlueMap](https://bluemap.bluecolored.de/)
+- 🗺️ Awesome performant online map using [squaremap](https://github.com/jpenilla/squaremap)
 - 🔋 Single-command scripts to update server and plugins
 - 🐙 Ready for configuration file tracking via git
+- 🔑 Uses [LuckPerms](https://luckperms.net/) for cross-network permission settings
 - <img width="auto" height="20px" src="https://github.com/oddlama/vane/blob/main/docs/vane.png"> Includes vanilla enhancements by [vane](https://github.com/oddlama/vane)
 
 ## 🛠 Installation
@@ -31,29 +32,32 @@ Afterwards you can continue [configuring your server](#Server-Configuration),
 or jump straight to the [Usage](#Usage) section if you are happy with the defaults.
 
 ```bash
-curl -sL https://oddlama.github.io/minecraft-server/bootstrap | sudo bash
+curl -sL https://dan-megabyte.github.io/minecraft-server-bootstrap/bootstrap | sudo bash
 # Connect to the console (Press Ctrl+b then d to detach again)
 sudo minecraft-attach server
 # Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
 # and 8100 (online map). The map will be available under http://<your-ip>:8100
 ```
 
-You may want to [review](https://github.com/oddlama/minecraft-server/blob/pages/docs/bootstrap) the script before executing it.
+You may want to [review](https://github.com/Dan-megabyte/minecraft-bootstrap/blob/pages/docs/bootstrap) the script before executing it.
 In summary, the script will perform the following steps:
 
 - Check whether all required tools are installed
 - Create a new `minecraft` user for the server (if not existing)
-- Update the server jars and download all plugins
+- Ask you for the names of the servers you want to use
+- Ask you how you want your server to look like
+- Ask you for permission to update the server jars and download all plugins
 - Install, enable and start the systemd services
 
 ## ⚙️ Server configuration
 
 At this point, your proxy server is already running and the actual
 server will be started once you connect to it. Now is the time to
-review or change the server configuration. The main directory of your server
-is `/var/lib/minecraft/deploy`. All files in that directory must be accessible to the `minecraft` user,
-so before changing anything it is a good idea to open a terminal as the
-minecraft user by executing `sudo runuser -u minecraft bash`.
+review or change the server configuration. The default main directory of your server
+is `/srv/minecraft/deploy`, but can be configurable on installation. All files in that 
+directory must be accessible to the `minecraft` user, so before changing anything 
+it is a good idea to open a terminal as the minecraft user by executing 
+`sudo runuser -u minecraft bash`.
 
 The following sections are dedicated to things that you might want to configure now.
 All other settings that were already changed by this script compared to the minecraft default
@@ -110,23 +114,30 @@ console in the background at all times, so you can access them from any
 terminal on your server (also remotely via ssh!).
 
 ```bash
-sudo minecraft-attach server # Open the server console
 sudo minecraft-attach proxy  # Open the proxy console
+# Open the server console, where {servername} is the name of your backend server
+sudo minecraft-attach server-{servername}
 ```
 
 Once you execute one of the commands above, you will be presented
 with the respective console. If that command fails, make sure the
-system services are running! Press <kbd>Ctrl</kbd> + <kbd>b</kbd> followed by <kbd>d</kbd>
+system services are running! 
+
+#### Tmux Controls:
+ - Press <kbd>Ctrl</kbd> + <kbd>b</kbd> followed by <kbd>d</kbd>
 to leave the console. This will put it in the background again.
+ - Press <kbd>Ctrl</kbd> + <kbd>b</kbd> followed by <kbd>[</kbd>
+to enter a "copy" mode where you can scroll up using the arrow keys.
+Press <kbd>Esc</kbd> to return to normal mode.
 
-### 🗺️ 3D Online map (BlueMap)
+### 🗺️ Performant Online map (squaremap)
 
-The awesome 3D online map comes fully preconfigured. All you need to
+The awesome fast online map comes fully preconfigured. All you need to
 do is open `http://<your-server-address>:8100` in your favourite browser,
 when your server is online. Replace your-server-address with the IP or domain name
 you use to connect in minecraft.
 
-If you have an external webserver, BlueMap can be configured to be always available.
+If you have an external webserver, squaremap can be configured to be always available.
 
 ### 🔢 Account multiplexing
 
@@ -156,10 +167,10 @@ run the updater and then start them again. To do this, execute the
 following commands as root:
 
 ```bash
-systemctl stop minecraft-proxy minecraft-server    # Stop services
-cd /var/lib/minecraft/deploy                       # Change into deploy directory
+systemctl stop minecraft-proxy minecraft-server@{servername}    # Stop services
+cd /srv/minecraft/deploy                       # Change into deploy directory
 ./update.sh                                        # Run update script
-systemctl start minecraft-proxy minecraft-server   # Start services again
+systemctl start minecraft-proxy minecraft-server@{servername}   # Start services again
 ```
 
 ### 🔄 Updating the deploy script
@@ -172,26 +183,40 @@ Other updates to this repository will most likely be minor changes.
 To update, execute the following commands as root:
 
 ```bash
-systemctl stop minecraft-proxy minecraft-server    # Stop services
-cd /var/lib/minecraft/deploy                       # Change into deploy directory
+systemctl stop minecraft-proxy minecraft-server@{servername}    # Stop services
+cd /srv/minecraft/deploy                       # Change into deploy directory
 git pull                                           # Get updates from upstream
 ./contrib/install.sh                               # Re-install the service files
-systemctl start minecraft-proxy minecraft-server   # Start services again
+systemctl start minecraft-proxy minecraft-server@{servername}   # Start services again
 ```
 
 ### 🔌 Installing and removing plugins
 
-Plugins are installed and updated by the `update.sh` scripts.
+Plugins are installed and updated by the `update.sh` script in each server folder.
 To add a new plugin, find a download link that always points to the latest version
 and add an entry at the end of the respective script, similar to those that are already present.
 
-For example to add worldguard, you add the following at the end of `server/update.sh`:
+For example to add worldguard, you add the following at the end of `servers/{SERVERNAME}/update.sh`:
 ```bash
 download_file "https://dev.bukkit.org/projects/worldguard/files/latest" plugins/worldguard.jar
 ```
 
+Other select plugin hosting services are implemented, see them in `contrib/utils.sh`
+
 To remove plugins, simply delete the jar file and remove the corresponding line in the
 script. To remove a vane module, remove it from the list in the for loop.
+
+#### Clearing plugin cache
+
+To avoid ratelimits, conserve bandwidth, and save space, downloaded plugins and latest github
+tags are stored in `cache/` directory in the same folder as update.sh. To clear the entire 
+plugin cache, just delete the folders:
+```bash
+cd deploy/
+rm -r cache
+# DONT FORGET TO UPDATE! or else all your plugins will be disabled...
+./update.sh
+```
 
 ### 🔐 Changing permissions plugin
 
@@ -206,7 +231,7 @@ Your server will automatically create an incremental backup of all three worlds 
 You can view all the backups that have been created until now by executing the following commands as root:
 
 ```bash
-cd deploy/server
+cd deploy/servers/{SERVERNAME} # Replace {SERVERNAME} with the server name
 rdiff-backup -l backups/world
 ```
 
@@ -214,7 +239,7 @@ Now if anything happens on your server and you want to revert to an older versio
 you can do so by simply executing the following commands as root:
 
 ```bash
-cd deploy/server
+cd deploy/servers/{SERVERNAME} # Replace {SERVERNAME} with the server name
 rm -rf world  # First delete what you want to restore
 rdiff-backup -r 1B backups/world world # Restore state from the last backup.
 # Repeat analogously for any other folders that you want to restore:
@@ -231,7 +256,7 @@ Visit [their website](http://rdiff-backup.nongnu.org/examples.html) for more inf
 
 ### 💾 Changing or disabling backups
 
-To create backups, the service calls the `server/backup.sh` file automatically each time the server stops.
+To create backups, the service calls the `./backup.sh` file in the server directory automatically each time any server stops.
 Feel free to adjust this script to your liking. To completely disable backups, replace the script's content with:
 
 ```bash
@@ -297,7 +322,7 @@ by default from a freshly generated configuration:
 - Increase entity broadcast range (allow players to see entities far away)
 - Disable spawn protection (use better setting from vane-admin if you want this)
 - Set online mode to false (this is checked by the proxy)
-- Listen on port 25501 so proxy can connect (**do not** forward this port!)
+- Listen on port 25501+ so proxy can connect (**do not** forward this port!)
 
 ## ⭕ Uninstalling
 
@@ -305,10 +330,10 @@ If you want to uninstall this server, simply execute the following commands:
 
 ```bash
 # Disable & stop services
-systemctl disable --now minecraft-{proxy,server}
+systemctl disable --now minecraft-{proxy,server-*}
 # Remove service files and attach script
-rm /lib/systemd/system/minecraft-{proxy,server}.service /usr/bin/minecraft-attach
-# Remove user and delete files in /var/lib/minecraft
+rm /lib/systemd/system/minecraft-{proxy,server@}.service /usr/bin/minecraft-attach
+# Remove user and delete all files in home directory
 userdel -r minecraft
 ```
 
