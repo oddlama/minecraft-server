@@ -197,6 +197,10 @@ function download_latest_github_release() {
 	remote_file="${remote_file//"{TAG}"/"$tag"}"
 	remote_file="${remote_file//"{VERSION}"/"$version"}"
 
+	if [[ "$tag" == "" ]]; then
+		die "Tag fetching failed for $remote_file in $repo"
+	fi
+
 	download_file "https://github.com/$repo/releases/download/$tag/$remote_file" "$output" "Could not download $remote_file from github repo $repo"
 }
 
