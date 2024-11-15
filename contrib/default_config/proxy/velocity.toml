@@ -70,13 +70,13 @@ ping-passthrough = "DISABLED"
 enable-player-address-logging = true
 
 [servers]
+# Add more servers to the proxy below here
 # Configure your servers here. Each key represents the server's name, and the value
 # represents the IP address of the server to connect to.
-server = "127.0.0.1:25501"
 
 # In what order we shoulid try servers when a player logs in or is kicked from a server.
 try = [
-    "server"
+    "default"
 ]
 
 [forced-hosts]
