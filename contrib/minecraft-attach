@@ -6,7 +6,12 @@ shopt -s nullglob
 [[ $EUID == 0 ]] || { echo "You have to be root (or use sudo) to attach to the console." >&2; exit 1; }
 
 SERVER_NAME=$1
-TMUX_SOCKET="/run/minecraft-$1/tmux"
+
+if [[ "$SERVER_NAME" == 'proxy' ]]; then
+	TMUX_SOCKET="/run/minecraft-$1/tmux"
+else
+	TMUX_SOCKET="/run/minecraft-server-$1/tmux"
+fi
 
 if [[ ! -e "$TMUX_SOCKET" ]]; then
 	echo "[1;31merror:[m Unknown server name '$SERVER_NAME', or service not started." >&2
