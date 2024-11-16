@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# REMEMBER:
+# $1: DEPLOY directory WITHOUT end slash
+
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
@@ -28,6 +31,16 @@ install_file "systemd/minecraft-proxy.service" \
 install_file "systemd/minecraft-server@.service" \
 	"/lib/systemd/system/minecraft-server@.service" \
 	root: 644
+
+# fill deply directory placeholders
+
+sed -i "s|{{DEPLOY_DIRECTORY}}|$1|" \
+	'/lib/systemd/system/minecraft-proxy.service' \
+	|| die "Could not fill proxy directory placeholder"
+
+sed -i "s|{{DEPLOY_DIRECTORY}}|$1|" \
+	'/lib/systemd/system/minecraft-server@.service' \
+	|| die "Could not fill proxy directory placeholder"
 
 echo "Reloading service files..."
 systemctl daemon-reload
