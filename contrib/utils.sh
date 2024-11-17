@@ -235,9 +235,9 @@ function latest_hangar_release_version() {
 		die "Incorrect argument count for fetching hangar release version for project $project"
 	fi
 	
-	local response_code=$(echo "$response" | head -n 1 | sed 's/^[^ ]* //')
+	local response_code=$(echo "$response" | head -n 1 | sed 's/^[^ ]* //' | xargs)
 	local response_body=$(echo "$response" | sed '1,/^\r$/d')
-	if [[ "$response_code" != "200" ]]; then
+	if [[ ! "$response_code" == "200" ]]; then
 		die "Failure fetching hangar release version for project $project, status code $response_code"
 	elif [[ "$response_body" == "" ]]; then
 		die "Failure fetching hangar release version for project $project, response body empty"
