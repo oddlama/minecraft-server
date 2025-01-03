@@ -57,15 +57,15 @@ function download_paper() {
 	local paper_version
 	local paper_build
 	local paper_download
-	paper_version="$(curl -s -o - "https://papermc.io/api/v2/projects/paper" | jq -r ".versions[-1]")" \
+	paper_version="$(curl -s -o - "https://api.papermc.io/v2/projects/paper" | jq -r ".versions[-1]")" \
 		|| die "Error while retrieving paper version"
-	paper_build="$(curl -s -o - "https://papermc.io/api/v2/projects/paper/versions/$paper_version" | jq -r ".builds[-1]")" \
+	paper_build="$(curl -s -o - "https://api.papermc.io/v2/projects/paper/versions/$paper_version" | jq -r ".builds[-1]")" \
 		|| die "Error while retrieving paper builds"
-	paper_download="$(curl -s -o - "https://papermc.io/api/v2/projects/paper/versions/$paper_version/builds/$paper_build" | jq -r ".downloads.application.name")" \
+	paper_download="$(curl -s -o - "https://api.papermc.io/v2/projects/paper/versions/$paper_version/builds/$paper_build" | jq -r ".downloads.application.name")" \
 		|| die "Error while retrieving paper download name"
 
 	substatus "Downloading paper version $paper_version build $paper_build ($paper_download)"
-	wget -q --show-progress "https://papermc.io/api/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
+	wget -q --show-progress "https://api.papermc.io/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
 		-O "$1" \
 		|| die "Could not download paper"
 }
@@ -75,15 +75,15 @@ function download_velocity() {
 	local velocity_version
 	local velocity_build
 	local velocity_download
-	velocity_version="$(curl -s -o - "https://papermc.io/api/v2/projects/velocity" | jq -r ".versions[-1]")" \
+	velocity_version="$(curl -s -o - "https://api.papermc.io/v2/projects/velocity" | jq -r ".versions[-1]")" \
 		|| die "Error while retrieving velocity version"
-	velocity_build="$(curl -s -o - "https://papermc.io/api/v2/projects/velocity/versions/$velocity_version" | jq -r ".builds[-1]")" \
+	velocity_build="$(curl -s -o - "https://api.papermc.io/v2/projects/velocity/versions/$velocity_version" | jq -r ".builds[-1]")" \
 		|| die "Error while retrieving velocity builds"
-	velocity_download="$(curl -s -o - "https://papermc.io/api/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build" | jq -r ".downloads.application.name")" \
+	velocity_download="$(curl -s -o - "https://api.papermc.io/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build" | jq -r ".downloads.application.name")" \
 		|| die "Error while retrieving velocity download name"
 
 	substatus "Downloading velocity version $velocity_version build $velocity_build ($velocity_download)"
-	wget -q --show-progress "https://papermc.io/api/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build/downloads/$velocity_download" \
+	wget -q --show-progress "https://api.papermc.io/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build/downloads/$velocity_download" \
 		-O "$1" \
 		|| die "Could not download velocity"
 }
