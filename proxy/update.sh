@@ -19,6 +19,15 @@ mkdir -p plugins \
 
 ################################################################
 # Download plugins
+# Can use the following util functions to add plugins to the autoupdater:
+# syntax: command (required argument) [optional argument]
+# - download_file (url) (output file) [failure message]
+# - download_latest_github_release (repo) (remote filename) (output file)
+#  -> {TAG} will be replaced with the release tag
+#  -> {VERSION} will be replaced with release tag excluding a leading v, if present
+# - download_from_json_feed (feed url) (jq parser) (output file)
+# - download_from_hangar (project) (platform) (output file)
+# - download_from_modrinth (mod ID/name) (platform) (output file) [minecraft version]
 
 substatus "Downloading plugins"
 download_latest_github_release "oddlama/vane" "vane-velocity-{VERSION}.jar" "plugins/vane-velocity.jar"
