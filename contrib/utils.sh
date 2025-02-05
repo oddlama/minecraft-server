@@ -211,3 +211,56 @@ function download_from_json_feed() {
 
 	download_file "$download_url" "$3"
 }
+
+# $1: Project slug, eg. "ViaVersion"
+# $2: (optional) release channel eg. Alpha, Experimental, Snapshot, Release...
+#     defaults to "release"
+# returns the hangar release version string in stdout
+function latest_hangar_release_version() {
+	local project=$1
+	# no caching latest version...
+	# but yes error handling
+	local response=''
+	local channel=''
+	if [[ "$#" == "1" ]]; then
+		response=$(curl -X GET "https://hangar.papermc.io/api/v1/projects/$project/latestrelease" -i -H 'accept: text/plain')
+	elif [[ "$#" == "2" ]]; then
+		channel=$2
+		response=$(curl -X GET "https://hangar.papermc.io/api/v1/projects/$project/latest?channel=$channel" -i -H 'accept: text/plain')
+	else
+		die "Incorrect argument count for fetching hangar release version for project $project: $#"
+	fi
+	
+	local response_code=$(echo "$response" | head -n 1 | sed 's/^[^ ]* //' | xargs)
+	local response_body=$(echo "$response" | sed '1,/^\r$/d')
+	if [[ ! "$response_code" == "200" ]]; then
+		die "Failure fetching hangar release version for project $project, status code $response_code"
+	elif [[ "$response_body" == "" ]]; then
+		die "Failure fetching hangar release version for project $project, response body empty"
+	fi
+
+	echo "$response_body"
+}
+
+# $1: Project slug, eg. "ViaVersion"
+# $2: Platform (one from:['PAPER', 'WATERFALL', 'VELOCITY'])
+# $3: Output file
+# $4: (optional) release channel eg. Alpha, Experimental, Snapshot, Release...
+#     defaults to "release"
+function download_from_hangar() {
+	local project=$1
+	local platform=$2
+	local output_file=$3
+	# first, find version
+	local version=''
+	if [[ "$#" == "3" ]]; then
+		version=$(latest_hangar_release_version "$project")
+	elif [[ "$#" == "4" ]]; then
+		version=$(latest_hangar_release_version "$project" "$4")
+	else
+		die "Wrong number of arguments for download_from_hangar: $#"
+	fi
+
+	download_file "https://hangar.papermc.io/api/v1/projects/$project/versions/$version/$platform/download" \
+		"$output_file" "Error downloading $project $version from hangar for $platform, does it exist?"
+}
