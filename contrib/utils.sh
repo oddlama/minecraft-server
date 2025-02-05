@@ -91,12 +91,21 @@ function download_file() {
 }
 
 # $1: output file name
+# $2: OPTIONAL - paper minecraft version (eg. 1.20.4), if left empty
 function download_paper() {
 	local paper_version
 	local paper_build
 	local paper_download
-	paper_version="$(curl -s -o - "https://api.papermc.io/v2/projects/paper" | jq -r ".versions[-1]")" \
-		|| die "Error while retrieving paper version"
+	if [ $# -eq 0 ]; then
+		die "Not enough arguments passed to download_paper"
+	elif [ $# -eq 1 ]; then
+		paper_version="$(curl -s -o - "https://api.papermc.io/v2/projects/paper" | jq -r ".versions[-1]")" \
+			|| die "Error while retrieving latest paper version"
+	elif [ $# -eq 2 ]; then
+		paper_version="$2"
+	elif [ $# -gt 2 ]; then
+		die "Too many arguments passed to download_paper"
+	fi
 	paper_build="$(curl -s -o - "https://api.papermc.io/v2/projects/paper/versions/$paper_version" | jq -r ".builds[-1]")" \
 		|| die "Error while retrieving paper builds"
 	paper_download="$(curl -s -o - "https://api.papermc.io/v2/projects/paper/versions/$paper_version/builds/$paper_build" | jq -r ".downloads.application.name")" \
