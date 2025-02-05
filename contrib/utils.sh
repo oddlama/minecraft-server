@@ -103,9 +103,8 @@ function download_paper() {
 		|| die "Error while retrieving paper download name"
 
 	substatus "Downloading paper version $paper_version build $paper_build ($paper_download)"
-	wget -q --show-progress "https://api.papermc.io/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
-		-O "$1" \
-		|| die "Could not download paper"
+	download_file "https://api.papermc.io/v2/projects/paper/versions/$paper_version/builds/$paper_build/downloads/$paper_download" \
+		"$1" "Could not download paper"
 }
 
 # $1: output file name
@@ -121,9 +120,8 @@ function download_velocity() {
 		|| die "Error while retrieving velocity download name"
 
 	substatus "Downloading velocity version $velocity_version build $velocity_build ($velocity_download)"
-	wget -q --show-progress "https://api.papermc.io/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build/downloads/$velocity_download" \
-		-O "$1" \
-		|| die "Could not download velocity"
+	download_file "https://api.papermc.io/v2/projects/velocity/versions/$velocity_version/builds/$velocity_build/downloads/$velocity_download" \
+		"$1" "Could not download velocity"
 }
 
 # $1: repo, e.g. "oddlama/vane"
@@ -155,6 +153,6 @@ function download_latest_github_release() {
 	remote_file="${remote_file//"{TAG}"/"$tag"}"
 	remote_file="${remote_file//"{VERSION}"/"$version"}"
 
-	wget -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
-		|| die "Could not download $remote_file from github repo $repo"
+	download_file "https://github.com/$repo/releases/download/$tag/$remote_file" \
+		"$output" "Could not download $remote_file from github repo $repo"
 }
