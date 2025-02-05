@@ -52,6 +52,44 @@ function become_minecaft() {
 	fi
 }
 
+# $1: url
+# $2: output file name
+# $3: failure message (optional)
+function download_file() {
+	local failure_message
+	local domain
+	local middle_path
+	local last_part
+	local cache_path
+	# decide error message
+	if [[ "$#" -gt "3" ]]; then
+		die "Incorrect argument count for download_file"
+	elif [[ "$#" -eq "3" ]]; then
+		failure_message="$3"
+	else
+		failure_message="Could not download $2 from $1"
+	fi
+
+	# parse the url
+	domain=$(     echo "$1" | sed -E 's#^https?://([^/]+).*#\1#')
+	middle_path=$(echo "$1" | sed -E 's#^https?://[^/]+/##; s#/[^/]+$##')
+	last_part=$(  echo "$1" | sed -E 's#^.*/([^/?]+).*#\1#')
+	# where in the world is this file in the cache??????????
+	cache_path=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
+	cache_path+="/cache/$domain/$middle_path/$last_part"
+	# is it not in cache?
+	if [[ ! -f "$cache_path" ]]; then
+		mkdir -p "$(dirname "$cache_path")" # just in case
+		# fetch it
+		wget -L -q --show-progress "$1" -O "$cache_path" || die "$failure_message"
+	else
+		touch -c -a "$cache_path"
+	fi
+	# link to conserve space
+	mkdir -p "$(dirname "$2")"
+	ln -sf "$cache_path" "$2"
+}
+
 # $1: output file name
 function download_paper() {
 	local paper_version
@@ -119,10 +157,4 @@ function download_latest_github_release() {
 
 	wget -q --show-progress "https://github.com/$repo/releases/download/$tag/$remote_file" -O "$output" \
 		|| die "Could not download $remote_file from github repo $repo"
-}
-
-# $1: url
-# $2: output file name
-function download_file() {
-	wget -q --show-progress "$1" -O "$2" || die "Could not download $1"
 }
