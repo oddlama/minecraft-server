@@ -199,3 +199,15 @@ function download_latest_github_release() {
 	download_file "https://github.com/$repo/releases/download/$tag/$remote_file" \
 		"$output" "Could not download $remote_file from github repo $repo"
 }
+
+# $1: Feed URL
+# $2: json location
+# $3: output file name
+function download_from_json_feed() {
+	local download_url
+
+	download_url="$(curl -s -o - "$1" | jq -r "$2")" \
+			|| die "Error while retrieving url of type $2 from feed $1"
+
+	download_file "$download_url" "$3"
+}
