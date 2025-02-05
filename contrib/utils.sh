@@ -264,3 +264,34 @@ function download_from_hangar() {
 	download_file "https://hangar.papermc.io/api/v1/projects/$project/versions/$version/$platform/download" \
 		"$output_file" "Error downloading $project $version from hangar for $platform, does it exist?"
 }
+
+# $1: mod ID / name
+# $2: platform (paper, folia, etc)
+# $3: output file name
+# $4: (optional) minecraft game version
+function download_from_modrinth() {
+	local feed
+	local jq_filter
+	local download_url
+	if [[ "$#" -lt 3 ]]; then
+		die "Not enough args for download_from_modrinth to download $2"
+	fi
+	feed=$(curl -s -o - "https://api.modrinth.com/v2/project/$1/version") \
+		|| die "Error while fetching modrinth api for $1"
+	# selects the first element of the list of versions
+	jq_filter="first(.[]"
+	# remap the versions, platforms, and url to a simple json object
+	jq_filter+= " | {versions: .game_versions, platforms: .loaders, url: .files[0].url}"
+	# and select those that contain $2 in their platform list
+	jq_filter+=" | select(.platforms[] | contains(\"$2\"))"
+	if [[ "$#" -gt 3 ]]; then
+		# if version is also specified, select that too...
+		jq_filter+=" | select(.versions[] | contains(\"$4\"))"
+	fi
+	# of the first item, get and return the url
+	jq_filter+=').url'
+	download_url=$(echo "$feed" | jq -r "$jq_filter") \
+		|| die "jq filter $jq_filter is invalid"
+	
+	download_file "$download_url" "$3"
+}
