@@ -74,9 +74,10 @@ function download_file() {
 	domain=$(     echo "$1" | sed -E 's#^https?://([^/]+).*#\1#')
 	middle_path=$(echo "$1" | sed -E 's#^https?://[^/]+/##; s#/[^/]+$##')
 	last_part=$(  echo "$1" | sed -E 's#^.*/([^/?]+).*#\1#')
-	# where in the world is this file in the cache??????????
-	cache_path=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
-	cache_path+="/cache/$domain/$middle_path/$last_part"
+
+	# where should the plugin file be stored?
+	cache_path=${XDG_DATA_HOME:-$HOME/.local/share}/minecraft-server/cache
+	cache_path+="/$domain/$middle_path/$last_part"
 	# is it not in cache?
 	if [[ ! -f "$cache_path" ]]; then
 		mkdir -p "$(dirname "$cache_path")" # just in case
