@@ -136,8 +136,8 @@ function download_velocity() {
 # $1: repo, e.g. "oddlama/vane"
 function latest_github_release_tag() {
 	local repo=$1
-	local cache=$(realpath "$(dirname "${BASH_SOURCE[0]}")/..")
-	cache+="/cache/github/$repo.txt"
+	local cache=${XDG_CACHE_HOME:-$HOME/.cache}/minecraft-server
+	cache+="/github/$repo.txt"
 	##### :( github rate limits suck!
 	##### thankfully, we can check if there were modifications
 	##### with the last_modified header, and it doesn't count
