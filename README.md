@@ -31,14 +31,14 @@ Afterwards you can continue [configuring your server](#Server-Configuration),
 or jump straight to the [Usage](#Usage) section if you are happy with the defaults.
 
 ```bash
-curl -sL https://oddlama.github.io/minecraft-server/bootstrap | sudo bash
+curl -sL https://github.com/oddlama/minecraft-server/raw/refs/heads/main/installer/bootstrap | sudo bash
 # Connect to the console (Press Ctrl+b then d to detach again)
 sudo minecraft-attach server
 # Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
 # and 8100 (online map). The map will be available under http://<your-ip>:8100
 ```
 
-You may want to [review](https://github.com/oddlama/minecraft-server/blob/pages/docs/bootstrap) the script before executing it.
+You may want to [review](https://github.com/oddlama/minecraft-server/blob/main/installer/bootstrap) the script before executing it.
 In summary, the script will perform the following steps:
 
 - Check whether all required tools are installed
