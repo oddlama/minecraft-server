@@ -39,4 +39,9 @@ done
 
 download_file "https://ci.dmulloy2.net/job/ProtocolLib/lastSuccessfulBuild/artifact/build/libs/ProtocolLib.jar" plugins/ProtocolLib.jar
 download_latest_github_release "BlueMap-Minecraft/BlueMap" "BlueMap-{VERSION}-spigot.jar" plugins/bluemap.jar
-
+download_from_json_feed \
+  "https://ci.lucko.me/job/spark/lastSuccessfulBuild/api/json" \
+  '.artifacts[]
+   | select(.fileName | test("^spark-.*-bukkit\\.jar$"))
+   | "https://ci.lucko.me/job/spark/lastSuccessfulBuild/artifact/"+.relativePath' \
+  "plugins/Spark.jar"
