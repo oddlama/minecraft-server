@@ -31,3 +31,9 @@ mkdir -p plugins \
 
 substatus "Downloading plugins"
 download_latest_github_release "oddlama/vane" "vane-velocity-{VERSION}.jar" "plugins/vane-velocity.jar"
+download_from_json_feed \
+  "https://ci.lucko.me/job/spark/lastSuccessfulBuild/api/json" \
+  '.artifacts[]
+   | select(.fileName | test("^spark-.*-velocity\\.jar$"))
+   | "https://ci.lucko.me/job/spark/lastSuccessfulBuild/artifact/"+.relativePath' \
+  "plugins/Spark.jar"

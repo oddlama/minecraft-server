@@ -34,4 +34,5 @@ exec java -Xms${ram}G -Xmx${ram}G \
 	-XX:MaxTenuringThreshold=1 \
 	-Dusing.aikars.flags=https://mcflags.emc.gs \
 	-Daikars.new.flags=true \
+	-DpreferSparkPlugin=true \
 	-jar paper.jar nogui

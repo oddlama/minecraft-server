@@ -22,3 +22,5 @@ proxies:
     enabled: true
     online-mode: true
     secret: '{{VELOCITYSECRET}}'
+spark:
+  enable-immediately: true
