@@ -3,7 +3,9 @@
 set -uo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null \
 	|| exit 1
-source "utils.sh" || exit 1
+
+function print_error() { echo "[1;31merror:[m $*" >&2; }
+function die() { print_error "$@"; exit 1; }
 
 [[ $EUID == 0 ]] || die "Must be root for system-wide installation."
 
@@ -19,15 +21,11 @@ function install_file() {
 	chmod "$4" "$2" || die "Could not chmod '$2'"
 }
 
-for name in server proxy; do
-	install_file "systemd/minecraft-$name.service" \
+for name in server@ proxy; do
+	install_file "./minecraft-$name.service" \
 		"/lib/systemd/system/minecraft-$name.service" \
 		root: 644
 done
-
-install_file "minecraft-attach" \
-	"/usr/bin/minecraft-attach" \
-	root: 755
 
 echo "Reloading service files..."
 systemctl daemon-reload

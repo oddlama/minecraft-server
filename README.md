@@ -43,7 +43,7 @@ In summary, the script will perform the following steps:
 
 - Check whether all required tools are installed
 - Create a new `minecraft` user for the server (if not existing)
-- Update the server jars and download all plugins
+- Update the server jars and download all plugins (if requested)
 - Install, enable and start the systemd services
 
 ## ⚙️ Server configuration
@@ -79,7 +79,7 @@ or be assigned to the user group with `perm add player_name user`, or any higher
 To enable the graylist, set the following option:
 
 ```yaml
-# server/plugins/vane-admin/config.yml
+# servers/backend/plugins/vane-admin/config.yml
 world_protection:
   enabled: true
 ```
@@ -95,7 +95,7 @@ The text and icon in your server list now controlled by the proxy instead of you
 Edit `proxy/plugins/vane-velocity/config.toml` to change the text to your liking. You can also
 set different texts based on whether the server is currently started or not.
 
-To set a server icon, simply drop a file name `server-icon.png` in your `server/` directory,
+To set a server icon, simply drop a file name `server-icon.png` in your `servers/backend/` directory,
 next to where the `paper.jar` is.
 
 ## 🚀 Usage
@@ -110,7 +110,7 @@ console in the background at all times, so you can access them from any
 terminal on your server (also remotely via ssh!).
 
 ```bash
-sudo minecraft-attach server # Open the server console
+sudo minecraft-attach server-backend # Open the server console
 sudo minecraft-attach proxy  # Open the proxy console
 ```
 
@@ -156,10 +156,10 @@ run the updater and then start them again. To do this, execute the
 following commands as root:
 
 ```bash
-systemctl stop minecraft-proxy minecraft-server    # Stop services
+systemctl stop minecraft-proxy minecraft-server@backend    # Stop services
 cd /var/lib/minecraft/deploy                       # Change into deploy directory
 ./update.sh                                        # Run update script
-systemctl start minecraft-proxy minecraft-server   # Start services again
+systemctl start minecraft-proxy minecraft-server@backend   # Start services again
 ```
 
 ### 🔄 Updating the deploy script
@@ -172,11 +172,11 @@ Other updates to this repository will most likely be minor changes.
 To update, execute the following commands as root:
 
 ```bash
-systemctl stop minecraft-proxy minecraft-server    # Stop services
+systemctl stop minecraft-proxy minecraft-server@backend    # Stop services
 cd /var/lib/minecraft/deploy                       # Change into deploy directory
 git pull                                           # Get updates from upstream
 ./contrib/install.sh                               # Re-install the service files
-systemctl start minecraft-proxy minecraft-server   # Start services again
+systemctl start minecraft-proxy minecraft-server@backend   # Start services again
 ```
 
 ### 🔌 Installing and removing plugins
@@ -185,7 +185,7 @@ Plugins are installed and updated by the `update.sh` scripts.
 To add a new plugin, find a download link that always points to the latest version
 and add an entry at the end of the respective script, similar to those that are already present.
 
-For example to add worldguard, you add the following at the end of `server/update.sh`:
+For example to add worldguard, you add the following at the end of `servers/backup/update.sh`:
 ```bash
 download_file "https://dev.bukkit.org/projects/worldguard/files/latest" plugins/worldguard.jar
 ```
@@ -206,7 +206,7 @@ Your server will automatically create an incremental backup of all three worlds 
 You can view all the backups that have been created until now by executing the following commands as root:
 
 ```bash
-cd deploy/server
+cd deploy/servers/backend
 rdiff-backup -l backups/world
 ```
 
@@ -214,7 +214,7 @@ Now if anything happens on your server and you want to revert to an older versio
 you can do so by simply executing the following commands as root:
 
 ```bash
-cd deploy/server
+cd deploy/servers/backend
 rm -rf world  # First delete what you want to restore
 rdiff-backup -r 1B backups/world world # Restore state from the last backup.
 # Repeat analogously for any other folders that you want to restore:
@@ -231,7 +231,7 @@ Visit [their website](http://rdiff-backup.nongnu.org/examples.html) for more inf
 
 ### 💾 Changing or disabling backups
 
-To create backups, the service calls the `server/backup.sh` file automatically each time the server stops.
+To create backups, the service calls the `servers/backend/backup.sh` file automatically each time the server stops.
 Feel free to adjust this script to your liking. To completely disable backups, replace the script's content with:
 
 ```bash
@@ -305,9 +305,9 @@ If you want to uninstall this server, simply execute the following commands:
 
 ```bash
 # Disable & stop services
-systemctl disable --now minecraft-{proxy,server}
+systemctl disable --now minecraft-{proxy,server@backend}
 # Remove service files and attach script
-rm /lib/systemd/system/minecraft-{proxy,server}.service /usr/bin/minecraft-attach
+rm /lib/systemd/system/minecraft-{proxy,server@}.service /usr/bin/minecraft-attach
 # Remove user and delete files in /var/lib/minecraft
 userdel -r minecraft
 ```

@@ -22,20 +22,20 @@ allowed_uuids = []
 #
 # It is *not* possible to have multiple multiplexers on the same port.
 
-[managed_servers.server]
+[managed_servers.backend]
 display_name = "§6◊ §6§lMY SERVER§6 ◊"
 
-[managed_servers.server.online]
-favicon = "../{SERVER}/server-icon.png"
+[managed_servers.backend.online]
+favicon = "../servers/{SERVER}/server-icon.png"
 motd = "{SERVER_DISPLAY_NAME}\n§a\\(^-^)/§7 | {QUOTE}"
 quotes = ["Yay, already online!"]
 
-[managed_servers.server.offline]
+[managed_servers.backend.offline]
 quotes = [ "Simply connect to start the server!", "Nobody here yet." ]
 motd = "{SERVER_DISPLAY_NAME}\n§c~(°·°)~§7 | {QUOTE}"
 
-[managed_servers.server.start]
-cmd = ["rm", "../{SERVER}/start.block"]
+[managed_servers.backend.start]
+cmd = ["rm", "../servers/{SERVER}/start.block"]
 kick_msg = "{SERVER_DISPLAY_NAME} §7is being started.\n§7Try again in §b10 Seconds§7 \\(^-^)/"
 # If this is not set, you must individually grant players the permission to start this server
 # by using an external permission plugin to assign one of `vane_proxy.start_server`, `vane_proxy.start_server.*` or `vane_proxy.start_server.<server_name>`
@@ -60,7 +60,7 @@ allow_anyone = true
 # [managed_servers.my_server.online]
 #
 # # The server favicon (absolute path or relative to proxy directory)
-# favicon = "../{SERVER}/server-icon.png"
+# favicon = "../servers/{SERVER}/server-icon.png"
 #
 # # The motd for the server list (up to two lines)
 # motd = "{SERVER_DISPLAY_NAME}\n§aowo§7 | {QUOTE}"
