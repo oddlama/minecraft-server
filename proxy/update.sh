@@ -37,3 +37,5 @@ download_from_json_feed \
    | select(.fileName | test("^spark-.*-velocity\\.jar$"))
    | "https://ci.lucko.me/job/spark/lastSuccessfulBuild/artifact/"+.relativePath' \
   "plugins/Spark.jar"
+download_file "https://download.geysermc.org/v2/projects/geyser/versions/latest/builds/latest/downloads/velocity" "plugins/Geyser-Velocity.jar"
+download_file "https://download.geysermc.org/v2/projects/floodgate/versions/latest/builds/latest/downloads/velocity" "plugins/floodgate.jar"

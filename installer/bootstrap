@@ -134,6 +134,23 @@ install_file <(echo -n "$VELOCITYSECRET") proxy/forwarding.secret minecraft: 600
 sed -i 's|{{VELOCITYSECRET}}|'"$VELOCITYSECRET"'|' server/config/paper-global.yml \
 	|| die "Could not insert velocity secret in paper-global.yml"
 
+# Floodgate on the proxy and the server must share the same AES key
+FLOODGATEKEY=$(mktemp) \
+	|| die "Could not create temporary file for floodgate key"
+openssl rand -out "$FLOODGATEKEY" 16 \
+	|| die "Could not generate floodgate key"
+for d in proxy/plugins/floodgate server/plugins/floodgate; do
+	mkdir -p -m700 "$d" || die "Could not create directory '$d'"
+	chown minecraft: "$d" "$(dirname "$d")" || die "Could not chown directory '$d'"
+	install_file "$FLOODGATEKEY" "$d/key.pem" minecraft: 600
+done
+rm -f "$FLOODGATEKEY"
+
+FLOODGATEMETRICSUUID=$(cat /proc/sys/kernel/random/uuid) \
+	|| die "Could not generate floodgate metrics uuid"
+sed -i 's|{{FLOODGATEMETRICSUUID}}|'"$FLOODGATEMETRICSUUID"'|' proxy/plugins/floodgate/config.yml \
+	|| die "Could not insert metrics uuid in floodgate config.yml"
+
 echo "Depending on your player base, you might want to allow certain gamplay"
 echo "exploits on your server. These are fixed by default in PaperMC, but would"
 echo "allow your players to build certain vanilla machines (TNT blast chambers,"

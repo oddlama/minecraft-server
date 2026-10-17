@@ -10,3 +10,4 @@ bluemap
 .console_history
 start.block
 usercache.json
+plugins/floodgate/key.pem
