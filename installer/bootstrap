@@ -34,16 +34,194 @@ function install_file() {
 ################################################################
 # Ensure that all required tools are installed
 
-abort=0
-for i in jq git tmux rdiff-backup java openssl; do
-	if ! type "$i" &>/dev/null; then
-		echo "[1;31mmissing: [1;33m$i[m" >&2
-		abort=1
-	fi
-done
+REQUIRED_TOOLS=(jq git tmux rdiff-backup java openssl)
+AUR_HELPERS=(yay paru pikaur trizen)
 
-[[ "$abort" == "0" ]] \
-	|| die "Please install the missing tools first."
+REQUIRED_JAVA_VERSION=25
+
+function java_major_version() {
+	java -version 2>&1 | grep -oP 'version "\K\d+' | head -n1
+}
+
+function missing_tools() {
+	local i
+	for i in "${REQUIRED_TOOLS[@]}"; do
+		type "$i" &>/dev/null || { echo "$i"; continue; }
+		if [[ "$i" == java && "$(java_major_version)" -lt "$REQUIRED_JAVA_VERSION" ]]; then
+			echo "$i"
+		fi
+	done
+}
+
+# Prints the distribution family: arch, debian, fedora, suse or nothing if unknown
+function os_family() {
+	local ids
+	ids=" $(. /etc/os-release 2>/dev/null && echo "${ID-} ${ID_LIKE-}") "
+	case "$ids" in
+		*" arch "*) echo arch ;;
+		*" debian "*|*" ubuntu "*) echo debian ;;
+		*" fedora "*|*" rhel "*) echo fedora ;;
+		*" suse "*|*" opensuse "*) echo suse ;;
+	esac
+}
+
+# Java packages follow https://docs.papermc.io/misc/java-install/ (Amazon Corretto, no headless variants).
+# The guide has no instructions for Arch, so the official OpenJDK package is used there.
+# $1 = os family, $2 = tool
+function package_name() {
+	case "$2" in
+		java)
+			case "$1" in
+				arch) echo "jre$REQUIRED_JAVA_VERSION-openjdk" ;;
+				debian) echo "java-$REQUIRED_JAVA_VERSION-amazon-corretto-jdk libxi6 libxtst6 libxrender1" ;;
+				fedora|suse) echo "java-$REQUIRED_JAVA_VERSION-amazon-corretto-devel" ;;
+			esac ;;
+		*) echo "$2" ;;
+	esac
+}
+
+# $1 = os family
+function setup_corretto_repository() {
+	case "$1" in
+		debian)
+			apt-get update < "$TTY" \
+				&& apt-get install -y ca-certificates apt-transport-https gnupg wget < "$TTY" \
+				|| die "Could not install prerequisites for the Corretto repository"
+			wget -O - https://apt.corretto.aws/corretto.key | gpg --dearmor --yes -o /usr/share/keyrings/corretto-keyring.gpg \
+				|| die "Could not import the Corretto key"
+			echo "deb [signed-by=/usr/share/keyrings/corretto-keyring.gpg] https://apt.corretto.aws stable main" > /etc/apt/sources.list.d/corretto.list \
+				|| die "Could not add the Corretto repository"
+			;;
+		fedora)
+			rpm --import https://yum.corretto.aws/corretto.key \
+				&& curl -Lo /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo \
+				|| die "Could not add the Corretto repository"
+			;;
+		suse)
+			zypper --non-interactive addrepo https://yum.corretto.aws/corretto.repo < "$TTY" \
+				&& zypper --non-interactive --gpg-auto-import-keys refresh < "$TTY" \
+				|| die "Could not add the Corretto repository"
+			;;
+	esac
+}
+
+# Fallback for unknown distributions, see https://docs.aws.amazon.com/corretto/latest/corretto-25-ug/downloads-list.html
+function install_corretto_tarball() {
+	local cpu name dir tmp checksum
+	case "$(uname -m)" in
+		x86_64) cpu=x64 ;;
+		aarch64) cpu=aarch64 ;;
+		*) die "There is no Corretto build for $(uname -m), please install Java $REQUIRED_JAVA_VERSION manually." ;;
+	esac
+	name="amazon-corretto-$REQUIRED_JAVA_VERSION-$cpu-linux-jdk.tar.gz"
+	dir="/usr/lib/jvm/java-$REQUIRED_JAVA_VERSION-amazon-corretto"
+	[[ ! -e "$dir" ]] \
+		|| die "$dir already exists, please check your Java installation manually."
+
+	tmp=$(mktemp -d) \
+		|| die "Could not create temporary directory"
+	curl -fL -o "$tmp/$name" "https://corretto.aws/downloads/latest/$name" \
+		|| die "Could not download $name"
+	checksum=$(curl -fsSL "https://corretto.aws/downloads/latest_sha256/$name") \
+		|| die "Could not download the checksum of $name"
+	echo "$checksum  $tmp/$name" | sha256sum -c --quiet \
+		|| die "Checksum mismatch for $name (a new release may have been published meanwhile, try again)"
+
+	mkdir -p "$dir" \
+		&& tar -xzf "$tmp/$name" -C "$dir" --strip-components=1 \
+		|| die "Could not extract $name to $dir"
+	rm -rf "$tmp"
+	# /usr/local/bin is part of the default PATH of systemd services
+	ln -sf "$dir/bin/java" /usr/local/bin/java \
+		|| die "Could not link java to /usr/local/bin/java"
+}
+
+# rdiff-backup is only available in the AUR, which must not be built as root
+function install_aur_packages() {
+	local helper user
+	for helper in "${AUR_HELPERS[@]}"; do
+		type "$helper" &>/dev/null && break
+		helper=""
+	done
+	[[ -n "$helper" ]] \
+		|| die "Installing $* requires an AUR helper (e.g. ${AUR_HELPERS[*]}). Install one or install $* manually."
+	user="${SUDO_USER-}"
+	[[ -n "$user" && "$user" != root ]] \
+		|| die "AUR packages cannot be built as root. Run the installer via sudo from a regular user, or install $* manually."
+	runuser -u "$user" -- "$helper" -S --needed "$@" < "$TTY" \
+		|| die "Could not install $* with $helper"
+}
+
+mapfile -t missing < <(missing_tools)
+if [[ ${#missing[@]} -gt 0 ]]; then
+	for i in "${missing[@]}"; do
+		echo "[1;31mmissing: [1;33m$i[m" >&2
+	done
+
+	family=$(os_family)
+	[[ $EUID == 0 ]] \
+		|| die "Must be root to install the missing tools."
+	if [[ -z "$family" ]]; then
+		[[ "${missing[*]}" == java ]] \
+			|| die "Unknown distribution, please install the missing tools first."
+		ask "Unknown distribution. Install Java $REQUIRED_JAVA_VERSION from the generic Amazon Corretto tarball?" \
+			|| die "Please install Java $REQUIRED_JAVA_VERSION first."
+		install_corretto_tarball
+	else
+		packages=()
+		for i in "${missing[@]}"; do
+			read -ra pkgs <<< "$(package_name "$family" "$i")"
+			packages+=("${pkgs[@]}")
+		done
+		installs_java=0
+		[[ " ${missing[*]} " == *" java "* ]] && installs_java=1
+		if [[ "$installs_java" == 1 && "$family" != arch ]]; then
+			echo "Java $REQUIRED_JAVA_VERSION will be installed from the Amazon Corretto repository, as recommended by PaperMC."
+		fi
+		ask "Install ${packages[*]} using the $family package manager?" \
+			|| die "Please install the missing tools first."
+		[[ "$installs_java" == 1 ]] && setup_corretto_repository "$family"
+
+		case "$family" in
+			arch)
+				repo_packages=() aur_packages=()
+				for p in "${packages[@]}"; do
+					if [[ "$p" == rdiff-backup ]]; then
+						aur_packages+=("$p")
+					else
+						repo_packages+=("$p")
+					fi
+				done
+				if [[ ${#repo_packages[@]} -gt 0 ]]; then
+					pacman -S --needed --noconfirm "${repo_packages[@]}" < "$TTY" \
+						|| die "Could not install ${repo_packages[*]}"
+				fi
+				[[ ${#aur_packages[@]} -eq 0 ]] || install_aur_packages "${aur_packages[@]}"
+				# Installing a new JRE doesn't change the default if another one is already set
+				if [[ "$installs_java" == 1 ]]; then
+					archlinux-java set "java-$REQUIRED_JAVA_VERSION-openjdk" \
+						|| die "Could not set java-$REQUIRED_JAVA_VERSION-openjdk as default java"
+				fi
+				;;
+			debian)
+				apt-get update < "$TTY" && apt-get install -y "${packages[@]}" < "$TTY" \
+					|| die "Could not install ${packages[*]}"
+				;;
+			fedora)
+				dnf install -y "${packages[@]}" < "$TTY" \
+					|| die "Could not install ${packages[*]}"
+				;;
+			suse)
+				zypper --non-interactive install "${packages[@]}" < "$TTY" \
+					|| die "Could not install ${packages[*]}"
+				;;
+		esac
+	fi
+
+	mapfile -t missing < <(missing_tools)
+	[[ ${#missing[@]} -eq 0 ]] \
+		|| die "Still missing after installation: ${missing[*]}"
+fi
 
 
 ################################################################
@@ -207,6 +385,94 @@ status "Installing service files"
 
 
 ################################################################
+# Optional domain for Bedrock players
+
+status "Bedrock domain"
+echo "Bedrock players can always join via the address that Geyser registers with"
+echo "Warden (shown in the proxy log). If you have a domain (e.g. a DDNS name) pointing"
+echo "to this server, players can also connect with it. This requires Caddy to obtain"
+echo "a certificate, and TCP ports 80 and 19132 must be exposed to the internet."
+echo
+
+while true; do
+	flush_stdin
+	read -r -p "Domain for Bedrock players (leave empty to skip): " BEDROCK_DOMAIN < "$TTY" \
+		|| die "Error in read"
+	BEDROCK_DOMAIN="${BEDROCK_DOMAIN,,}"
+	[[ -z "$BEDROCK_DOMAIN" || "$BEDROCK_DOMAIN" =~ ^([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+[a-z]{2,}$ ]] && break
+	echo "Invalid domain name '$BEDROCK_DOMAIN'"
+done
+
+C_HL=$'\e[35m' C_CMD=$'\e[1;32m' C_RESET=$'\e[m'
+bedrock_domain_message=""
+if [[ -n "$BEDROCK_DOMAIN" ]]; then
+	install_caddyfile=1
+	if [[ -e /etc/caddy/Caddyfile ]] && ! grep -q "^$BEDROCK_DOMAIN:19132 {" /etc/caddy/Caddyfile; then
+		echo "/etc/caddy/Caddyfile already exists and will be replaced."
+		ask "Replace /etc/caddy/Caddyfile?" || install_caddyfile=0
+	fi
+	if [[ "$install_caddyfile" == 1 ]]; then
+		mkdir -p /etc/caddy \
+			|| die "Could not create /etc/caddy"
+		install_file <(sed 's|play\.example\.com|'"$BEDROCK_DOMAIN"'|' contrib/caddy/Caddyfile) /etc/caddy/Caddyfile root: 644
+	fi
+	bedrock_domain_message="
+Bedrock players can connect via ${C_HL}${BEDROCK_DOMAIN}${C_RESET} on port ${C_HL}19132${C_RESET}. Make sure that TCP
+ports ${C_HL}80${C_RESET} and ${C_HL}19132${C_RESET} are exposed to the internet as well.
+"
+fi
+
+
+################################################################
+# Open ports in the host firewall
+
+FIREWALL_PORTS=(25565/tcp 25566/tcp 8100/tcp 19132/udp)
+[[ -n "$BEDROCK_DOMAIN" ]] && FIREWALL_PORTS+=(80/tcp 19132/tcp)
+
+if systemctl is-active --quiet firewalld && type firewall-cmd &>/dev/null; then
+	# Use the zone of the interface with the default route, it may differ from the default zone
+	iface=$(ip route show default | awk '{ print $5; exit }')
+	zone=$(firewall-cmd --get-zone-of-interface="$iface" 2>/dev/null) \
+		|| zone=$(firewall-cmd --get-default-zone) \
+		|| die "Could not determine firewalld zone"
+	status "Detected firewalld (zone $zone)"
+	if ask "Open ports ${FIREWALL_PORTS[*]} in firewalld zone $zone?"; then
+		for p in "${FIREWALL_PORTS[@]}"; do
+			firewall-cmd --permanent --zone="$zone" --add-port="$p" >/dev/null \
+				|| die "Could not open port $p in firewalld"
+		done
+		firewall-cmd --reload >/dev/null \
+			|| die "Could not reload firewalld"
+	fi
+elif type ufw &>/dev/null && ufw status 2>/dev/null | grep -q "Status: active"; then
+	status "Detected ufw"
+	if ask "Open ports ${FIREWALL_PORTS[*]} in ufw?"; then
+		for p in "${FIREWALL_PORTS[@]}"; do
+			ufw allow "$p" >/dev/null \
+				|| die "Could not open port $p in ufw"
+		done
+	fi
+fi
+
+# Caddy needs the firewall ports to obtain its certificate, so start it afterwards
+if [[ -n "$BEDROCK_DOMAIN" ]]; then
+	if type caddy &>/dev/null; then
+		if ask "Enable and (re)start caddy now?"; then
+			systemctl enable caddy < "$TTY" \
+				&& systemctl restart caddy < "$TTY" \
+				|| die "Error while starting caddy"
+		fi
+	else
+		bedrock_domain_message+="
+Caddy is not installed. Install it (${C_HL}https://caddyserver.com/docs/install${C_RESET}) and run:
+
+${C_CMD}    systemctl enable --now caddy${C_RESET}
+"
+	fi
+fi
+
+
+################################################################
 # Enable and start services
 
 status "Starting services ..."
@@ -240,10 +506,11 @@ The server and proxy have been installed successfully! The PaperMC minecraft
 server will be started when a player connects via the proxy. Be aware that the
 first start may take a while due to world generation.
 
-Please make sure that TCP port [35m25565[m (server), [35m25566[m (multiplex 1) and [35m8100[m
-(bluemap webserver) are exposed to the internet via a port-foward or similar
-mechanism. If you want to change your server configuration, please do so now.
-$postponed_service_message
+Please make sure that TCP port [35m25565[m (server), [35m25566[m (multiplex 1), [35m8100[m
+(bluemap webserver) and UDP port [35m19132[m (bedrock) are exposed to the internet via
+a port-foward or similar mechanism. If you want to change your server configuration,
+please do so now.
+$bedrock_domain_message$postponed_service_message
 For more information, visit [35mhttps://github.com/oddlama/minecraft-server[m
 [1m================================================================================[m
 EOF

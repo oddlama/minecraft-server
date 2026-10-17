@@ -26,6 +26,20 @@ It should serve as an example of how to properly(TM) deploy a personal minecraft
 
 ## 🛠 Installation
 
+The installer requires systemd and a GNU userland, as found on most distributions.
+It needs `jq`, `git`, `tmux`, `rdiff-backup`, `java` (25) and `openssl`. If any of them
+are missing, it offers to install them on Arch, Debian/Ubuntu, Fedora and openSUSE
+based systems. On other distributions, install them with your package manager beforehand.
+If only Java is missing there, the installer can set up the generic Corretto tarball
+in `/usr/lib/jvm` instead.
+Java is installed from the Amazon Corretto repository as described in the
+[PaperMC Java guide](https://docs.papermc.io/misc/java-install/), except on Arch where
+the official `jre25-openjdk` package is used and set as the default.
+
+On Arch Linux, `rdiff-backup` is only available in the AUR, so the installer builds it
+with an AUR helper (`yay`, `paru`, `pikaur` or `trizen`) as the user who invoked `sudo`.
+If you have none of them, install `rdiff-backup` yourself first.
+
 To begin the automatic installation, simply run the provided bootstrap script.
 Afterwards you can continue [configuring your server](#Server-Configuration),
 or jump straight to the [Usage](#Usage) section if you are happy with the defaults.
@@ -34,16 +48,18 @@ or jump straight to the [Usage](#Usage) section if you are happy with the defaul
 curl -sL https://github.com/oddlama/minecraft-server/raw/refs/heads/main/installer/bootstrap | sudo bash
 # Connect to the console (Press Ctrl+b then d to detach again)
 sudo minecraft-attach server
-# Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1)
-# and 8100 (online map). The map will be available under http://<your-ip>:8100
+# Don't forget to foward or expose TCP ports 25565 (server), 25566 (multiplexer 1),
+# 8100 (online map) and UDP port 19132 (bedrock). The map will be available under http://<your-ip>:8100
 ```
 
 You may want to [review](https://github.com/oddlama/minecraft-server/blob/main/installer/bootstrap) the script before executing it.
 In summary, the script will perform the following steps:
 
-- Check whether all required tools are installed
+- Check whether all required tools are installed, and offer to install missing ones
 - Create a new `minecraft` user for the server (if not existing)
 - Update the server jars and download all plugins
+- Optionally set up Caddy for a Bedrock domain (see [Bedrock players](#-bedrock-players-geyser))
+- Open the required ports if firewalld or ufw is active
 - Install, enable and start the systemd services
 
 ## ⚙️ Server configuration
@@ -127,6 +143,40 @@ when your server is online. Replace your-server-address with the IP or domain na
 you use to connect in minecraft.
 
 If you have an external webserver, BlueMap can be configured to be always available.
+
+### 📱 Bedrock players (Geyser)
+
+Bedrock players connect through Geyser and Floodgate on the proxy. Forward or expose
+UDP port 19132 (gameplay). If the installer detects firewalld or ufw, it offers to open
+this and the other server ports for you.
+
+By default Geyser registers your server with the external signaling service
+[Warden](https://warden.cloud), which works without further setup, also behind a
+home router with a changing IP. On startup the proxy log shows the address players
+should use:
+
+```
+Registered with the external signaling service. Players can join at https://<name>.wdn.gg
+```
+
+This address stays the same as long as you keep `proxy/plugins/Geyser-Velocity/nethernet/`,
+so include it in your backups. The log also prints a claim link for the Warden panel,
+keep it private since it grants control over your registration.
+
+Optionally, you can let players connect with your own domain. Geyser's built-in
+signaling should be served over HTTPS, otherwise players get asked whether to
+trust the server. The default config expects [Caddy](https://caddyserver.com/docs/install)
+in front of it to handle the certificate:
+
+1. Point a domain at your server and forward TCP 80 (certificates) and TCP 19132 (signaling).
+   **Do not** forward TCP 19133, Geyser only uses it locally.
+2. Copy `contrib/caddy/Caddyfile` to `/etc/caddy/Caddyfile` and replace `play.example.com` with your domain.
+3. Run `systemctl enable --now caddy`.
+
+Players then connect with the domain name on port 19132, not the IP. If you don't want
+to use Warden at all, set `bedrock.signaling.mode` to `builtin` in
+`proxy/plugins/Geyser-Velocity/config.yml`. Behind a home router you then also have
+to list your public IP under `bedrock.signaling.builtin.advertise-addresses`.
 
 ### 🔢 Account multiplexing
 

@@ -1,0 +1,13 @@
+# HTTPS for Geyser's built-in NetherNet signaling.
+# Replace play.example.com with your domain, then copy this file to /etc/caddy/Caddyfile.
+# See https://geysermc.org/wiki/geyser/nethernet-https/
+{
+	servers {
+		# Caddy would otherwise use UDP 19132 for HTTP/3, which Geyser needs for playing
+		protocols h1 h2
+	}
+}
+
+play.example.com:19132 {
+	reverse_proxy 127.0.0.1:19133
+}
