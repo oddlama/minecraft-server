@@ -53,6 +53,12 @@ sudo minecraft-attach server
 ```
 
 You may want to [review](https://github.com/oddlama/minecraft-server/blob/main/installer/bootstrap) the script before executing it.
+To install from a fork or another branch, set `MINECRAFT_SERVER_REPO` or `MINECRAFT_SERVER_BRANCH`:
+
+```bash
+curl -sL https://github.com/oddlama/minecraft-server/raw/refs/heads/development/installer/bootstrap | sudo env MINECRAFT_SERVER_BRANCH=development bash
+```
+
 In summary, the script will perform the following steps:
 
 - Check whether all required tools are installed, and offer to install missing ones

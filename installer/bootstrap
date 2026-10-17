@@ -281,13 +281,23 @@ fi
 cd /var/lib/minecraft \
 	|| die "Could not change into /var/lib/minecraft"
 
+# Can be overridden to test a fork or a development branch, e.g.
+# curl -sL <url of bootstrap> | sudo env MINECRAFT_SERVER_BRANCH=development bash
+REPO_URL="${MINECRAFT_SERVER_REPO:-https://github.com/oddlama/minecraft-server}"
+REPO_BRANCH="${MINECRAFT_SERVER_BRANCH:-main}"
+
 if [[ -e deploy ]]; then
 	status "Updating deploy repository"
+	if [[ -n "${MINECRAFT_SERVER_BRANCH-}" ]]; then
+		runuser -u minecraft -- git -C deploy fetch origin "$REPO_BRANCH" \
+			&& runuser -u minecraft -- git -C deploy switch "$REPO_BRANCH" \
+			|| die "Could not switch to branch $REPO_BRANCH"
+	fi
 	runuser -u minecraft -- git -C deploy pull \
 		|| die "Could not pull repository"
 else
-	status "Cloning deploy repository"
-	runuser -u minecraft -- git clone "https://github.com/oddlama/minecraft-server" deploy \
+	status "Cloning deploy repository ($REPO_URL, branch $REPO_BRANCH)"
+	runuser -u minecraft -- git clone --branch "$REPO_BRANCH" "$REPO_URL" deploy \
 		|| die "Could not clone repository"
 fi
 
