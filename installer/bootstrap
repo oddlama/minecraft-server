@@ -518,7 +518,7 @@ function wait_for_warden_address() {
 	echo "Waiting for Geyser to register with Warden ..." >&2
 	for (( i = 0; i < 90; ++i )); do
 		# The provider state persists across restarts, the log line only appears on startup
-		address=$(jq -r '.publicAddress // empty' proxy/plugins/Geyser-Velocity/nethernet/provider-state/provider-state.json 2>/dev/null)
+		address=$(jq -r '.registration.publicAddress // empty' proxy/plugins/Geyser-Velocity/nethernet/provider-state/provider-state.json 2>/dev/null)
 		[[ -n "$address" ]] \
 			|| address=$(grep -oP 'Players can join at https://\K[^\s()]+' proxy/logs/latest.log 2>/dev/null | tail -n1)
 		address="${address#*://}"
