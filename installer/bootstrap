@@ -286,6 +286,22 @@ cd /var/lib/minecraft \
 REPO_URL="${MINECRAFT_SERVER_REPO:-https://github.com/oddlama/minecraft-server}"
 REPO_BRANCH="${MINECRAFT_SERVER_BRANCH:-main}"
 
+# $1 = message
+function die_with_local_changes_hint() {
+	local changes
+	changes=$(runuser -u minecraft -- git -C deploy status --porcelain --untracked-files=no 2>/dev/null)
+	if [[ -n "$changes" ]]; then
+		echo "The deploy directory contains local changes that would be overwritten:" >&2
+		echo "$changes" >&2
+		echo "Save them with the following command, then run the installer again:" >&2
+		echo >&2
+		echo "    sudo runuser -u minecraft -- git -C /var/lib/minecraft/deploy stash push -m \"before installer update\"" >&2
+		echo >&2
+		echo "You can restore them later with 'git stash pop' (run as the minecraft user)." >&2
+	fi
+	die "$1"
+}
+
 if [[ -e deploy ]]; then
 	status "Updating deploy repository"
 	if [[ -n "${MINECRAFT_SERVER_REPO-}" ]]; then
@@ -295,10 +311,10 @@ if [[ -e deploy ]]; then
 	if [[ -n "${MINECRAFT_SERVER_BRANCH-}" ]]; then
 		runuser -u minecraft -- git -C deploy fetch origin "$REPO_BRANCH" \
 			&& runuser -u minecraft -- git -C deploy switch "$REPO_BRANCH" \
-			|| die "Could not switch to branch $REPO_BRANCH"
+			|| die_with_local_changes_hint "Could not switch to branch $REPO_BRANCH"
 	fi
 	runuser -u minecraft -- git -C deploy pull \
-		|| die "Could not pull repository"
+		|| die_with_local_changes_hint "Could not pull repository"
 else
 	status "Cloning deploy repository ($REPO_URL, branch $REPO_BRANCH)"
 	runuser -u minecraft -- git clone --branch "$REPO_BRANCH" "$REPO_URL" deploy \
