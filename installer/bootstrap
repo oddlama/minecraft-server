@@ -511,10 +511,32 @@ echo "If you want to adjust any proxy related configuration, you may want to sta
 echo "them manually later.[m"
 echo
 
+# Geyser registers with Warden shortly after the proxy started (signaling mode nxs or hybrid)
+function wait_for_warden_address() {
+	local i address
+	grep -qE '^\s*mode: (nxs|hybrid)\s*$' proxy/plugins/Geyser-Velocity/config.yml || return 0
+	echo "Waiting for Geyser to register with Warden ..." >&2
+	for (( i = 0; i < 90; ++i )); do
+		address=$(grep -oP 'Players can join at https://\K[^\s()]+' proxy/logs/latest.log 2>/dev/null | tail -n1)
+		[[ -n "$address" ]] && { echo "${address%.}"; return 0; }
+		sleep 1
+	done
+	echo "Geyser did not register with Warden yet, check the proxy log later." >&2
+}
+
 postponed_service_message=""
+warden_message=""
 if ask "Enable and start system services now?"; then
 	systemctl enable --now minecraft-server minecraft-proxy < "$TTY" \
 		|| die "Error while enabling services"
+	warden_address=$(wait_for_warden_address)
+	if [[ -n "$warden_address" ]]; then
+		warden_message="
+Bedrock players can connect via ${C_HL}${warden_address}${C_RESET}. This address stays the same as
+long as you keep proxy/plugins/Geyser-Velocity/nethernet/. The proxy log also contains
+a link to claim it in the Warden panel, keep that link private.
+"
+	fi
 else
 	postponed_service_message="
 You have postponed enabling the system services. Make sure to execute the
@@ -540,7 +562,7 @@ Please make sure that TCP port [35m25565[m (server), [35m25566[m (multiplex 
 (bluemap webserver) and UDP port [35m19132[m (bedrock) are exposed to the internet via
 a port-foward or similar mechanism. If you want to change your server configuration,
 please do so now.
-$bedrock_domain_message$postponed_service_message
+$warden_message$bedrock_domain_message$postponed_service_message
 For more information, visit [35mhttps://github.com/oddlama/minecraft-server[m
 [1m================================================================================[m
 EOF
