@@ -291,7 +291,7 @@ function die_with_local_changes_hint() {
 	local changes
 	changes=$(runuser -u minecraft -- git -C deploy status --porcelain --untracked-files=no 2>/dev/null)
 	if [[ -n "$changes" ]]; then
-		echo "The deploy directory contains local changes that would be overwritten:" >&2
+		echo "The deploy directory contains local changes, which may conflict with the update:" >&2
 		echo "$changes" >&2
 		echo "Save them with the following command, then run the installer again:" >&2
 		echo >&2
